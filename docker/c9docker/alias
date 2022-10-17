@@ -1,0 +1,10 @@
+alias c9docker="/$WORKSPACE/docker/c9 build c9docker"
+alias c9start="/$WORKSPACE/docker/c9 build c9start"
+alias c9open="/$WORKSPACE/docker/c9 build c9open"
+
+alias build="/$WORKSPACE/docker/c9 build c9docker"
+alias remove="/$WORKSPACE/docker/c9 remove c9docker"
+alias start="/$WORKSPACE/docker/c9 start c9docker"
+alias stop="/$WORKSPACE/docker/c9 stop c9docker"
+
+alias c9="/$WORKSPACE/docker/c9"
