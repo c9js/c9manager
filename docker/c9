@@ -1,4 +1,8 @@
 #!/bin/bash
+# reset
+# reset1
+# (( $? == 0 )) && echo '111' || echo '222'
+# exit
 #
 # Что умеет этот скрипт?
 # 1. Создать новый образ и удалить старый.
@@ -7,7 +11,7 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеку │
 #└──────────────────────┘
-. ~/lib
+. ~/cli/lib
 
 #┌─────────────────────────┐
 #│ Список аргументов       │
@@ -285,32 +289,41 @@ esac
         if [[ "$COMMAND" == 'build' ]] ||  ! is_image "$IMAGE_NAME"; then
         # Копируем временные файлы
             status 8 'Копирование временных файлов...'
-            cp "/$WORKSPACE/cli/lib" "$C9_PATH/lib" # bash-библиотека
-            cp "/$WORKSPACE/c9settings/bash_profile" "$C9_PATH/bash_profile" # bash-профиль
-            cp "/$WORKSPACE/c9settings/user.settings" "$C9_PATH/user.settings" # Настройки редактора
+            
+        # Создаем временный каталог
+            mkdir -vp "$C9_PATH/temp/cli"
+            
+        # Копируем bash-библиотеку
+            cp -vr "/$WORKSPACE/cli/." "$C9_PATH/temp/cli"
+            
+        # Копируем настройки редактора и bash-профиль 
+            cp -vr "/$WORKSPACE/c9settings/." "$C9_PATH/temp"
             
         # Проверяем предусмотрены-ли для образа дополнительные алиасы
             if [ -s "$C9_PATH/$IMAGE_NAME/alias" ]; then
             # Добавляем алиасы в bash-профиль
-                cat "$C9_PATH/$IMAGE_NAME/alias" >> "$C9_PATH/bash_profile"
+                cat "$C9_PATH/$IMAGE_NAME/alias" >> "$C9_PATH/temp/bash_profile"
             fi
             
         # Создаем новый образ
             status 9 'Создание нового образа...'
-            if ! docker build \
+            docker build \
                 --build-arg "entrypoint=$IMAGE_NAME/Entrypoint" \
                 -f "$C9_PATH/$IMAGE_NAME/Dockerfile" \
                 -t "$IMAGE_NAME" \
-                "$C9_PATH" ; then
-            # Выводим сообщение об ошибке и завершаем процесс
-                error "Что-то не так в 'docker build ...'"
-            fi
+                "$C9_PATH"
+                
+        # Сохраняем результат
+            res=$?
             
         # Удаляем временные файлы
             status 10 'Удаление временных файлов...'
-            rm "$C9_PATH/lib" # bash-библиотеку
-            rm "$C9_PATH/bash_profile" # bash-профиль
-            rm "$C9_PATH/user.settings" # Настройки редактора
+            rm -vr "$C9_PATH/temp" # Временный каталог
+            
+        # Выводим сообщение об ошибке и завершаем процесс
+            # if (( "$res" != 0 )); then
+            #     error "Что-то не так в 'docker build ...'"
+            # fi
         fi
         
     # Получаем список свободных портов

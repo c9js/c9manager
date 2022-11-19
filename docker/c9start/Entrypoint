@@ -4,7 +4,7 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеку │
 #└──────────────────────┘
-. ~/lib
+. ~/cli/lib
 
 #┌───────────────────────────────────────────────┐
 #│ Конвертируем:                                 │
@@ -47,7 +47,7 @@ IMAGE_NAME='c9js/c9docker'
 #┌───────────────┐
 #│ Версия образа │
 #└───────────────┘
-IMAGE_VERSION='1.0.30'
+IMAGE_VERSION='1.0.32'
 
 #┌─────────────────────┐
 #│ Имя текущего образа │
@@ -249,20 +249,16 @@ view() { case "$1" in
 #│ Предлагает пользователю скачать репозиторий │
 #└─────────────────────────────────────────────┘
     'download')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. Download 'github.com/$GIT_USER/$PROJECT_NAME'"
-             'Gray' '0. Exit'
-        )
-        
     # Выводим меню на экран
         menu "$HEADER" 1
-        
+        #   Цвет      Строка
+            Green "1. Download 'github.com/$GIT_USER/$PROJECT_NAME'"
+             Exit '0. Exit'
+             
     # Проходим по пунктам меню
         case $? in
-            1) controller 'download' ;; # Выбран пункт: "download"
-            0) controller 'exit' ;;     # Выбран пункт: "Exit"
+            1) controller 'download';; # Выбран пункт: "Download"
+            0) controller 'exit';;     # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -274,20 +270,16 @@ view() { case "$1" in
         view 'error' \
         "Каталог '$(printf '%q' "$CD")' должен быть пуст!"
         
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. Обновить (download 'github.com/$GIT_USER/$PROJECT_NAME')"
-             'Gray' '0. Exit'
-        )
-        
     # Выводим меню на экран
         menu "$HEADER" 1
-        
+        #   Цвет      Строка
+            Green "1. Обновить (download 'github.com/$GIT_USER/$PROJECT_NAME')"
+             Exit '0. Exit'
+             
     # Проходим по пунктам меню
         case $? in
-            1) controller 'download' ;; # Выбран пункт: "Обновить"
-            0) controller 'exit' ;;     # Выбран пункт: "Exit"
+            1) controller 'download';; # Выбран пункт: "Обновить"
+            0) controller 'exit';;     # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -295,20 +287,16 @@ view() { case "$1" in
 #│ Предлагает пользователю установить образ │
 #└──────────────────────────────────────────┘
     'install')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. Install  Установить '$IMAGE_NAME:$IMAGE_VERSION'"
-             'Gray' '0. Exit'
-        )
-        
     # Выводим меню на экран
         menu "$HEADER" 1
-        
+        #   Цвет      Строка
+            Green "1. Install  Установить '$IMAGE_NAME:$IMAGE_VERSION'"
+             Exit '0. Exit'
+             
     # Проходим по пунктам меню
         case $? in
-            1) view 'choice_port' "$1" ;; # Выбран пункт: "Install"
-            0) controller 'exit' ;;       # Выбран пункт: "Exit"
+            1) view 'choice_port' "$1";; # Выбран пункт: "Install"
+            0) controller 'exit';;       # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -316,22 +304,18 @@ view() { case "$1" in
 #│ Предлагает пользователю запустить контейнер │
 #└─────────────────────────────────────────────┘
     'start')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. Start      Запустить '$IMAGE_NAME:$IMAGE_VERSION'"
-            'Green' '2. Настройки  Перейти в раздел'
-             'Gray' '0. Exit'
-        )
-        
     # Выводим меню на экран
-        menu "$1" "$HEADER" 1
-        
+        menu "$HEADER" 1
+        #   Цвет      Строка
+            Green "1. Start      Запустить '$IMAGE_NAME:$IMAGE_VERSION'"
+            Green '2. Настройки  Перейти в раздел'
+             Exit '0. Exit'
+             
     # Проходим по пунктам меню
         case $? in
-            1) view 'choice_port' "$1" ;; # Выбран пункт: "Start"
-            2) view 'uninstall' "$1" ;;   # Выбран пункт: "Uninstall"
-            0) controller 'exit' ;;       # Выбран пункт: "Exit"
+            1) view 'choice_port' "$1";; # Выбран пункт: "Start"
+            2) view 'settings' "$1";;    # Выбран пункт: "Настройки"
+            0) controller 'exit';;       # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -339,24 +323,20 @@ view() { case "$1" in
 #│ Предлагает пользователю перезагрузить контейнер │
 #└─────────────────────────────────────────────────┘
     'restart')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. Restart    Перезагрузить '$IMAGE_NAME:$IMAGE_VERSION'"
-            'Green' "2. Stop       Остановить '$IMAGE_NAME:$IMAGE_VERSION'"
-            'Green' '3. Настройки  Перейти в раздел'
-             'Gray' '0. Exit'
-        )
-        
     # Выводим меню на экран
-        menu "$1" "$HEADER" 1
-        
+        menu "$HEADER" 1
+        #   Цвет      Строка
+            Green "1. Restart    Перезагрузить '$IMAGE_NAME:$IMAGE_VERSION'"
+            Green "2. Stop       Остановить '$IMAGE_NAME:$IMAGE_VERSION'"
+            Green '3. Настройки  Перейти в раздел'
+             Exit '0. Exit'
+             
     # Проходим по пунктам меню
         case $? in
-            1) view 'choice_port' "$1" ;; # Выбран пункт: "Restart"
-            2) controller 'stop' ;;       # Выбран пункт: "Stop"
-            3) view 'settings' "$1" ;;    # Выбран пункт: "Uninstall"
-            0) controller 'exit' ;;       # Выбран пункт: "Exit"
+            1) view 'choice_port' "$1";; # Выбран пункт: "Restart"
+            2) controller 'stop';;       # Выбран пункт: "Stop"
+            3) view 'settings' "$1";;    # Выбран пункт: "Настройки"
+            0) controller 'exit';;       # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -364,22 +344,18 @@ view() { case "$1" in
 #│ Предлагает пользователю выбрать порт │
 #└──────────────────────────────────────┘
     'choice_port')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. $PORT_DEFAULT (по умолчанию)"
-            'Green' '2. Редактировать'
-             'Gray' '0. Отмена'
-        )
-        
     # Выводим меню на экран
         menu 'Выберите порт:' 1
-        
+        #   Цвет      Строка
+            Green "1. $PORT_DEFAULT (по умолчанию)"
+            Green '2. Редактировать'
+             Exit '0. Отмена'
+             
     # Проходим по пунктам меню
         case $? in
-            1) controller "$2" "$PORT_DEFAULT" ;; # Выбран пункт: "По умолчанию"
-            2) view 'input_port' "$2" ;;          # Выбран пункт: "Редактировать"
-            0) view "$2" ;;                       # Выбран пункт: "Отмена"
+            1) controller "$2" "$PORT_DEFAULT";; # Выбран пункт: "По умолчанию"
+            2) view 'input_port' "$2";;          # Выбран пункт: "Редактировать"
+            0) view "$2";;                       # Выбран пункт: "Отмена"
         esac
     ;;
     
@@ -404,22 +380,18 @@ view() { case "$1" in
 #│ Настройки │
 #└───────────┘
     'settings')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' '1. SSH-Keygen  Перейти в раздел'
-            'Green' '2. Uninstall   Перейти в раздел'
-             'Gray' '0. Назад'
-        )
-        
     # Выводим меню на экран
-        menu "$1" "$HEADER" 0
-        
+        menu "$HEADER" 0
+        #   Цвет      Строка
+            Green '1. SSH-Keygen  Перейти в раздел'
+            Green '2. Uninstall   Перейти в раздел'
+             Exit '0. Назад'
+             
     # Проходим по пунктам меню
         case $? in
-            1) view 'ssh-keygen' "$1" "$2" ;; # Выбран пункт: "SSH-Keygen"
-            2) view 'uninstall' "$1" "$2" ;;  # Выбран пункт: "Uninstall"
-            0) view "$2" ;;                   # Выбран пункт: "Назад"
+            1) view 'ssh-keygen' "$1" "$2";; # Выбран пункт: "SSH-Keygen"
+            2) view 'uninstall' "$1" "$2";;  # Выбран пункт: "Uninstall"
+            0) view "$2";;                   # Выбран пункт: "Назад"
         esac
     ;;
     
@@ -427,21 +399,18 @@ view() { case "$1" in
 #│ Предлагает пользователю настроить соединение с Github │
 #└───────────────────────────────────────────────────────┘
     'ssh-keygen')
-    # Создаем пункты меню
-        menuItems=(
-        #     Цвет     Строка
-            'Green' '1. SSH-Keygen  Сгенерировать новый ssh-ключ'
-            'Green' '2. List        Список ключей'
-             'Gray' '0. Назад'
-        )
-        
     # Выводим меню на экран
-        menu "$1" "$HEADER" 0
-        
+        menu "$HEADER" 0
+        #   Цвет      Строка
+            Green '1. SSH-Keygen  Сгенерировать новый ssh-ключ'
+            Green '2. List        Список ключей'
+             Exit '0. Назад'
+             
     # Проходим по пунктам меню
         case $? in
-            1) view 'choice_user' "$1" "$2" "$3" ;; # Выбран пункт: "Сгенерировать"
-            0) view "$2" "$3" ;;                    # Выбран пункт: "Назад"
+            1) view 'choice_user' "$1" "$2" "$3";; # Выбран пункт: "Сгенерировать"
+            2) view 'choice_user' "$1" "$2" "$3";; # Выбран пункт: "List"
+            0) view "$2" "$3";;                    # Выбран пункт: "Назад"
         esac
     ;;
     
@@ -449,22 +418,18 @@ view() { case "$1" in
 #│ Предлагает пользователю выбрать git-юзера │
 #└───────────────────────────────────────────┘
     'choice_user')
-    # Создаем пункты меню
-        menuItems=(
-        #    Цвет       Строка
-            'Green' "1. $GIT_USER (по умолчанию)"
-            'Green' '2. Редактировать'
-             'Gray' '0. Отмена'
-        )
-        
     # Выводим меню на экран
         menu 'Выберите git-юзера:' 0
-        
+        #   Цвет      Строка
+            Green "1. $GIT_USER (по умолчанию)"
+            Green '2. Редактировать'
+             Exit '0. Отмена'
+             
     # Проходим по пунктам меню
         case $? in
-            1) controller "$2" "$GIT_USER" ;; # Выбран пункт: "По умолчанию"
-            2) view 'input_user' "$2" ;;      # Выбран пункт: "Редактировать"
-            0) view "$2" "$3" "$4" ;;         # Выбран пункт: "Отмена"
+            1) controller "$2" "$GIT_USER";; # Выбран пункт: "По умолчанию"
+            2) view 'input_user' "$2";;      # Выбран пункт: "Редактировать"
+            0) view "$2" "$3" "$4";;         # Выбран пункт: "Отмена"
         esac
     ;;
     
@@ -489,22 +454,18 @@ view() { case "$1" in
 #│ Предлагает пользователю удалить все образы │
 #└────────────────────────────────────────────┘
     'uninstall')
-    # Создаем пункты меню
-        menuItems=(
-        #     Цвет     Строка
-             'Red' '1. Stop    Остановить все контейнеры'
-             'Red' '2. Remove  Удалить все образы'
-            'Gray' '0. Назад'
-        )
-        
     # Выводим меню на экран
         menu "$HEADER" 0
-        
+        #   Цвет     Строка
+             Red '1. Stop    Остановить все контейнеры'
+             Red '2. Remove  Удалить все образы'
+            Exit '0. Назад'
+            
     # Проходим по пунктам меню
         case $? in
-            1) controller 'stop_all' ;;   # Выбран пункт: "Stop"
-            2) controller 'remove_all' ;; # Выбран пункт: "Remove"
-            0) view "$2" "$3" ;;          # Выбран пункт: "Назад"
+            1) controller 'stop_all';;   # Выбран пункт: "Stop"
+            2) controller 'remove_all';; # Выбран пункт: "Remove"
+            0) view "$2" "$3";;          # Выбран пункт: "Назад"
         esac
     ;;
 esac
@@ -516,16 +477,6 @@ esac
 #█              █
 #▀──────────────▀
 controller() { [ -n "$2" ] && CONTROLLER="$2" || CONTROLLER="$1"; case "$1" in
-#┌─────────────────────────────┐
-#│ Команда: SSH-Keygen         │
-#│ • Генерирует новый ssh-ключ │
-#└─────────────────────────────┘
-    'ssh-keygen')\
-        # ssh-keygen -q -t 'rsa' -N '' -C '' -f /dir/file
-        echo 'ssh-keygen'
-        read
-    ;;
-    
 #┌─────────────────────────┐
 #│ Команда: Download       │
 #│ • Скачивает репозиторий │
@@ -561,20 +512,20 @@ controller() { [ -n "$2" ] && CONTROLLER="$2" || CONTROLLER="$1"; case "$1" in
         getContainerIDs "${imageIDs[@]}"
         
     # Останавливаем контейнеры
-        for ((i = 0; i < ${#containerIDs[@]}; i++)); do
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
         # Обновляем текущий статус
             view 'status' \
-               3 'Остановка контейнеров' $i ${#containerIDs[@]}
+               3 'Остановка контейнеров' $i ${#containerIDs[*]}
                
         # Останавливаем контейнер
             docker stop "${containerIDs[$i]}" &> '/dev/null'
         done
         
     # Удаляем контейнеры
-        for ((i = 0; i < ${#containerIDs[@]}; i++)); do
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
         # Обновляем текущий статус
             view 'status' \
-               4 'Удаление контейнеров' $i ${#containerIDs[@]}
+               4 'Удаление контейнеров' $i ${#containerIDs[*]}
                
         # Удаляем контейнер
             docker rm "${containerIDs[$i]}" &> '/dev/null'
@@ -661,20 +612,20 @@ controller() { [ -n "$2" ] && CONTROLLER="$2" || CONTROLLER="$1"; case "$1" in
         getContainerIDs "${imageIDs[@]}"
         
     # Останавливаем все контейнеры
-        for ((i = 0; i < ${#containerIDs[@]}; i++)); do
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
         # Обновляем текущий статус
             view 'status' \
-               3 'Остановка контейнеров' $i ${#containerIDs[@]}
+               3 'Остановка контейнеров' $i ${#containerIDs[*]}
                
         # Останавливаем контейнер
             docker stop "${containerIDs[$i]}" &> '/dev/null'
         done
         
     # Удаляем все контейнеры
-        for ((i = 0; i < ${#containerIDs[@]}; i++)); do
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
         # Обновляем текущий статус
             view 'status' \
-               4 'Удаление контейнеров' $i ${#containerIDs[@]}
+               4 'Удаление контейнеров' $i ${#containerIDs[*]}
                
         # Удаляем контейнер
             docker rm "${containerIDs[$i]}" &> '/dev/null'
@@ -699,10 +650,10 @@ controller() { [ -n "$2" ] && CONTROLLER="$2" || CONTROLLER="$1"; case "$1" in
         getImageIDs
         
     # Удаляем все образы
-        for ((i = 0; i < ${#imageIDs[@]}; i++)); do
+        for ((i = 0; i < ${#imageIDs[*]}; i++)); do
         # Обновляем текущий статус
             view 'status' \
-               5 'Удаление образов' $i ${#imageIDs[@]}
+               5 'Удаление образов' $i ${#imageIDs[*]}
                
         # Удаляем образ
             docker rmi "${imageIDs[$i]}" -f &> '/dev/null'
@@ -712,6 +663,16 @@ controller() { [ -n "$2" ] && CONTROLLER="$2" || CONTROLLER="$1"; case "$1" in
         view 'complete' \
         'Все контейнеры были остановлены и удалены!' \
         'Образы также были удалены!'
+    ;;
+    
+#┌─────────────────────────────┐
+#│ Команда: SSH-Keygen         │
+#│ • Генерирует новый ssh-ключ │
+#└─────────────────────────────┘
+    'ssh-keygen')\
+        # ssh-keygen -q -t 'rsa' -N '' -C '' -f /c9manager/x/user
+        echo 'ssh-keygen'
+        read
     ;;
     
 #┌───────────────┐
@@ -764,6 +725,17 @@ case "$1" in
             git remote set-url --add 'origin' "git@github.com:$GIT_USER/$PROJECT_NAME.git"
             git remote set-url --delete 'origin' "https://github.com/$GIT_USER/$PROJECT_NAME.git"
         ;;
+        
+    # Проверяет существует-ли ssh-ключ 
+        'is_key')
+            echo 'is_key'
+        ;;
+        
+    # Генерирует новый ssh-ключ
+        'ssh-keygen')
+            echo 'ssh-keygen'
+            # ssh-keygen -q -t 'rsa' -N '' -C '' -f "$DOWNLOAD_PATH"/ssh
+        ;;
     esac
     ;;
     
@@ -771,6 +743,15 @@ case "$1" in
 #│ Меню │
 #└──────┘
     *) view 'header'; while :; do
+    # Проверяем переменную окружения
+        if [[ "$CD" == '' ]]; then
+        # Выводим сообщение об ошибке
+            echo "Ошибка! Переменная окружения '\$CD' не задана!"
+            
+        # Завершаем процесс
+            exit
+        fi
+        
     # Каталог пуст
         if [[ "$(request 'is_empty')" == 'empty' ]]; then
         # Выводим меню на экран
@@ -796,7 +777,7 @@ case "$1" in
                     getContainerIDs $GLOBAL_ID
                     
                 # Контейнеры не найдены
-                    if (( ${#containerIDs[@]} == 0 )); then
+                    if (( ${#containerIDs[*]} == 0 )); then
                     # Выводим меню на экран
                         view 'start'
                         

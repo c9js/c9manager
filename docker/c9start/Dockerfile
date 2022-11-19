@@ -24,7 +24,7 @@ RUN apk add sed bash git docker --no-cache \
 #┌─────────────────┐
 #│ bash-библиотека │
 #└─────────────────┘
-COPY lib /root/lib
+COPY temp/cli /root/cli
 
 #┌─────────────┐
 #│ Точка входа │

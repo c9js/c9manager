@@ -107,17 +107,17 @@ ENV C9_PORT 8000
 #┌─────────────────┐
 #│ bash-библиотека │
 #└─────────────────┘
-COPY lib /root/lib
+COPY temp/cli /root/cli
 
 #┌──────────────┐
 #│ Bash-профиль │
 #└──────────────┘
-COPY bash_profile /root/.bash_profile
+COPY temp/bash_profile /root/.bash_profile
 
 #┌─────────────────────┐
 #│ Настройки редактора │
 #└─────────────────────┘
-COPY user.settings /root/.c9/user.settings
+COPY temp/user.settings /root/.c9/user.settings
 
 #┌─────────────┐
 #│ Точка входа │
