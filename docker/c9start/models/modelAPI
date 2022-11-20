@@ -1,0 +1,74 @@
+#▄───────────────────────▄
+#█                       █
+#█  Model: API           █
+#█  • Внутренний запрос  █
+#█                       █
+#▀───────────────────────▀
+#┌────────────────────────────┐
+#│ Передает внутренний запрос │
+#└────────────────────────────┘
+model:API:request() {
+# Имя текущего образа
+    local image="$IMAGE_API:$VERSION"
+    
+# Имя текущего образа для тестирования
+    if [[ "$IMAGE_DEV" != '' ]]; then
+        image="$IMAGE_DEV"
+    fi
+    
+# Передаем внутренний запрос
+    docker run \
+        -v "$DOCKER_PWD:$CURRENT_PATH" \
+        --rm -it \
+        "$image" \
+        'API' \
+        "$1" 2>&1
+}
+
+#┌───────────────────────────────────┐
+#│ Проверяет пуст-ли текущий каталог │
+#└───────────────────────────────────┘
+model:API:yes_empty() {
+    if [[ $(ls -A "$CURRENT_PATH" 2>&1) == '' ]]; then
+        printf 'empty' # Каталог пуст
+    fi
+}
+
+#┌────────────────────────────────────────┐
+#│ Проверяет существует-ли ".git" каталог │
+#└────────────────────────────────────────┘
+model:API:no_git() {
+    if [ ! -d "$CURRENT_PATH/.git" ]; then
+        printf 'no_exist' # Каталог не найден
+    fi
+}
+
+#┌───────────────────────┐
+#│ Скачивает репозиторий │
+#└───────────────────────┘
+model:API:download() {
+# Переходим в каталог где будет храниться репозиторий
+    cd "$CURRENT_PATH"
+    
+# Скачиваем репозиторий
+    git clone "https://$GIT_URL/$GIT_USER/$PROJECT_NAME.git" '.'
+    
+# Обновлем URL
+    git remote set-url --add 'origin' "git@$GIT_URL:$GIT_USER/$PROJECT_NAME.git"
+    git remote set-url --delete 'origin' "https://$GIT_URL/$GIT_USER/$PROJECT_NAME.git"
+}
+
+#┌──────────────────────────────────┐
+#│ Проверяет существует-ли ssh-ключ │
+#└──────────────────────────────────┘
+model:API:is_key() {
+    echo 'is_key'
+}
+
+#┌───────────────────────────┐
+#│ Генерирует новый ssh-ключ │
+#└───────────────────────────┘
+model:API:ssh_keygen() {
+    echo 'ssh_keygen'
+    # ssh-keygen -q -t 'rsa' -N '' -C '' -f "$CURRENT_PATH"/ssh
+}

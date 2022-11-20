@@ -29,7 +29,13 @@ COPY temp/cli /root/cli
 #┌─────────────┐
 #│ Точка входа │
 #└─────────────┘
+ARG controllers
+ARG models
+ARG views
 ARG entrypoint
-COPY "$entrypoint" /usr/local/bin/Entrypoint
-RUN chmod 700 /usr/local/bin/Entrypoint
-ENTRYPOINT ["/bin/bash", "Entrypoint"]
+COPY "$controllers" /controllers/
+COPY "$models" /models/
+COPY "$views" /views/
+COPY "$entrypoint" /entrypoint
+RUN chmod 700 /entrypoint
+ENTRYPOINT ["/bin/bash", "entrypoint"]

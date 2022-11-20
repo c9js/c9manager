@@ -5,19 +5,19 @@
 # 2. Запустить новый контейнер, остановить и удалить старый.
 #
 #┌──────────────────────┐
-#│ Загружаем библиотеку │
+#│ Загружаем библиотеки │
 #└──────────────────────┘
 . ~/cli/lib.base
 . ~/cli/lib.docker
 . ~/cli/gui.input
 
-#┌─────────────────────────┐
-#│ Список аргументов       │
-#├─────────────────────────┤
-#│ ./c9 COMMAND IMAGE_NAME │
-#└─────────────────────────┘
+#┌────────────────────────────┐
+#│ Список аргументов          │
+#├────────────────────────────┤
+#│ ./c9 <COMMAND> <IMAGE_RUN> │
+#└────────────────────────────┘
 COMMAND=$1 # Команда
-IMAGE_NAME=$2 # Имя образа
+IMAGE_RUN=$2 # Имя образа
 
 #┌─────────────────────────────────────────────────┐
 #│ Выводит сообщение об ошибке и завершает процесс │
@@ -36,7 +36,7 @@ complete() {
     
 # Выводим какой был выбран образ
     if [[ $1 != '-h' ]]; then
-        echo "Образ '$IMAGE_NAME'"
+        echo "Образ '$IMAGE_RUN'"
     fi
     
 # Проходим по списку сообщений
@@ -73,9 +73,6 @@ status() {
 #│ ./c9 start  c9docker               │
 #│ ./c9 stop   c9docker               │
 #└────────────────────────────────────┘
-# bad_command() {
-#     case $1 in 'build' | 'remove' | 'start' | 'stop') return 1 ;; esac
-# }
 isValidCommand() { [[ "$1" =~ ^(build|remove|start|stop)$ ]]; }
 
 #┌─────────────────────────────────────────────────┐
@@ -109,9 +106,6 @@ isValidCommand() { [[ "$1" =~ ^(build|remove|start|stop)$ ]]; }
 #│ ./c9 build c9open                     │
 #│ ./c9 build c9start                    │
 #└───────────────────────────────────────┘
-# bad_image_name() {
-#     case $1 in 'c9docker' | 'c9open' | 'c9start') return 1 ;; esac
-# }
 isValidImageName() { [[ "$1" =~ ^(c9docker|c9open|c9start)$ ]]; }
 
 #┌────────────────────────────────────────────────────┐
@@ -131,7 +125,7 @@ isValidImageName() { [[ "$1" =~ ^(c9docker|c9open|c9start)$ ]]; }
         
     # Просим пользователя ввести имя образа вручную
         input 'c9docker' 'isValidImageName' "Образ '%s' не найден!"
-        IMAGE_NAME=$REPLY
+        IMAGE_RUN=$REPLY
         
     # Очищаем экран
         reset
@@ -144,7 +138,7 @@ case $COMMAND in
 # Команда "Build"
     'build')
     # Заголовок
-        header="Создание образа '$IMAGE_NAME'"
+        header="Создание образа '$IMAGE_RUN'"
         
     # Количество шагов
         full=13
@@ -153,7 +147,7 @@ case $COMMAND in
 # Команда "Remove"
     'remove')
      # Заголовок
-        header="Удаление образа '$IMAGE_NAME'"
+        header="Удаление образа '$IMAGE_RUN'"
         
     # Количество шагов
         full=6
@@ -162,7 +156,7 @@ case $COMMAND in
 # Команда "Start"
     'start')
      # Заголовок
-        header="Запуск контейнера от образа '$IMAGE_NAME'"
+        header="Запуск контейнера от образа '$IMAGE_RUN'"
         
     # Количество шагов
         full=13
@@ -171,7 +165,7 @@ case $COMMAND in
 # Команда "Stop"
     'stop')
      # Заголовок
-        header="Удаление контейнеров от образа '$IMAGE_NAME'"
+        header="Удаление контейнеров от образа '$IMAGE_RUN'"
         
     # Количество шагов
         full=4
@@ -187,7 +181,7 @@ esac
     status 1 'Поиск контейнеров...'
     
 # Контейнеры не найдены
-    if ! is_container "name=$IMAGE_NAME"; then
+    if ! is_container "name=$IMAGE_RUN"; then
     # Выводим финальное сообщение и завершаем процесс
     # Но только если это команда "Stop"
         if [[ "$COMMAND" == 'stop' ]]; then
@@ -197,7 +191,7 @@ esac
 # Контейнеры найдены
     else
     # Получаем ID контейнеров
-        containerID=$GLOBAL_ID
+        containerID=${GLOBAL_ID[*]}
         
     # Останавливаем контейнеры
         status 2 'Остановка контейнеров...'
@@ -234,17 +228,17 @@ esac
         status 5 'Поиск старого образа...'
         
     # Старый образ не найден
-        if ! is_image "$IMAGE_NAME"; then
+        if ! is_image "$IMAGE_RUN"; then
         # Выводим финальное сообщение и завершаем процесс
         # Но только если это команда "Remove"
             if [[ "$COMMAND" == 'remove' ]]; then
-                complete -h "Образ '$IMAGE_NAME' не найден!"
+                complete -h "Образ '$IMAGE_RUN' не найден!"
             fi
             
     # Старый образ найден
         else
         # Получаем ID образов
-            imageID=$GLOBAL_ID
+            imageID=${GLOBAL_ID[*]}
             
         # Удаляем старый образ
             status 6 'Удаление старого образа...'
@@ -254,12 +248,12 @@ esac
             if [[ "$COMMAND" == 'remove' ]]; then
             # Контейнеров не было найдено
                 if [[ ${#containerID} != '12' ]]; then
-                    complete -h "Образ '$IMAGE_NAME' успешно удален!"
+                    complete -h "Образ '$IMAGE_RUN' успешно удален!"
                     
             # Контейнеры были найдены
                 else
                     complete -h "Все контейнеры были остановлены и удалены!" \
-                                "Образ '$IMAGE_NAME' также был удален!"
+                                "Образ '$IMAGE_RUN' также был удален!"
                 fi
             fi
         fi
@@ -275,7 +269,7 @@ esac
         status 7 'Поиск образа...'
         # Наверно это не очевидно,
         # но мы все же ищем образ ниже во второй части,
-        # прямо в условии в if-е, вот тут [ ! is_image "$IMAGE_NAME" ]
+        # прямо в условии в if-е, вот тут [ ! is_image "$IMAGE_RUN" ]
     fi
     
 #┌─────────────────────────────────────────┐
@@ -284,7 +278,7 @@ esac
 #└─────────────────────────────────────────┘
     if [[ "$COMMAND" == 'build' || "$COMMAND" == 'start' ]]; then
     # Старый образ не найден
-        if [[ "$COMMAND" == 'build' ]] ||  ! is_image "$IMAGE_NAME"; then
+        if [[ "$COMMAND" == 'build' ]] ||  ! is_image "$IMAGE_RUN"; then
         # Копируем временные файлы
             status 8 'Копирование временных файлов...'
             
@@ -298,17 +292,20 @@ esac
             cp -vr "/$WORKSPACE/c9settings/." "$C9_PATH/temp"
             
         # Проверяем предусмотрены-ли для образа дополнительные алиасы
-            if [ -s "$C9_PATH/$IMAGE_NAME/alias" ]; then
+            if [ -s "$C9_PATH/$IMAGE_RUN/alias" ]; then
             # Добавляем алиасы в bash-профиль
-                cat "$C9_PATH/$IMAGE_NAME/alias" >> "$C9_PATH/temp/bash_profile"
+                cat "$C9_PATH/$IMAGE_RUN/alias" >> "$C9_PATH/temp/bash_profile"
             fi
             
         # Создаем новый образ
             status 9 'Создание нового образа...'
             docker build \
-                --build-arg "entrypoint=$IMAGE_NAME/Entrypoint" \
-                -f "$C9_PATH/$IMAGE_NAME/Dockerfile" \
-                -t "$IMAGE_NAME" \
+                --build-arg "controllers=$IMAGE_RUN/controllers/" \
+                --build-arg "models=$IMAGE_RUN/models/" \
+                --build-arg "views=$IMAGE_RUN/views/" \
+                --build-arg "entrypoint=$IMAGE_RUN/Entrypoint" \
+                -f "$C9_PATH/$IMAGE_RUN/Dockerfile" \
+                -t "$IMAGE_RUN" \
                 "$C9_PATH"
                 
         # Сохраняем результат
@@ -338,21 +335,21 @@ esac
     # Запускаем контейнер
         status 12 'Запуск контейнера...'
         if ! containerID=$(docker run \
-            --name "$IMAGE_NAME" \
-            --hostname "$IMAGE_NAME" \
+            --name "$IMAGE_RUN" \
+            --hostname "$IMAGE_RUN" \
             -p "$PORT1:$PORT1" \
             -p "$PORT2:$PORT2" \
             -e "C9_PORT=$PORT1" \
             -e "PORT=$PORT2" \
-            -e "WORKSPACE=$IMAGE_NAME" \
+            -e "WORKSPACE=$IMAGE_RUN" \
             -e "GIT_USER=$GIT_USER" \
             -e "DOCKER_PWD=/$DOCKER_PWD" \
-            -v "/$DOCKER_PWD/projects/$IMAGE_NAME:/$IMAGE_NAME" \
+            -v "/$DOCKER_PWD/projects/$IMAGE_RUN:/$IMAGE_RUN" \
             -v "/$DOCKER_PWD/ssh:/root/.sshsource" \
             -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
             --restart unless-stopped \
             --detach -it \
-            "$IMAGE_NAME"
+            "$IMAGE_RUN"
         ); then
         # Выводим сообщение об ошибке и завершаем процесс
             error "Что-то не так в 'docker run ...'"

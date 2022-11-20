@@ -1,0 +1,223 @@
+#▄──────────────▄
+#█              █
+#█  Model       █
+#█  Controller  █
+#█  Логика      █
+#█  Управление  █
+#█  Контроллер  █
+#█              █
+#▀──────────────▀
+controller() { [ -n "$2" ] && CONTROLLER="$2" || CONTROLLER="$1"; case "$1" in
+#┌─────────────────────────┐
+#│ Команда: Download       │
+#│ • Скачивает репозиторий │
+#└─────────────────────────┘
+    'download')
+    # Обнуляем заголовок
+        view 'header'
+        
+    # Обновляем текущий статус
+        view 'status' \
+           1 'Проверяем текущий каталог...'
+           
+    # Текущий каталог пуст
+        if controller:API:yes_empty; then
+        # Обновляем текущий статус
+            view 'status' \
+               2 'Скачиваем репозиторий...'
+               
+        # Скачиваем репозиторий
+            controller:API:download 2>&1
+        fi
+    ;;
+    
+#┌─────────────────────────────────────────────────┐
+#│ Команда: Stop                                   │
+#│ • Останавливает и удаляет все старые контейнеры │
+#└─────────────────────────────────────────────────┘
+    'stop')
+    # Получаем список ID-образов
+        getImageIDs "${IMAGES[@]}"
+        
+    # Получаем список ID-контейнеров
+        getContainerIDs "${imageIDs[@]}"
+        
+    # Останавливаем контейнеры
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            view 'status' \
+               3 'Остановка контейнеров' $i ${#containerIDs[*]}
+               
+        # Останавливаем контейнер
+            docker stop "${containerIDs[$i]}" &> '/dev/null'
+        done
+        
+    # Удаляем контейнеры
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            view 'status' \
+               4 'Удаление контейнеров' $i ${#containerIDs[*]}
+               
+        # Удаляем контейнер
+            docker rm "${containerIDs[$i]}" &> '/dev/null'
+        done
+        
+    # Выводим финальное сообщение, но только если дальше нет команд
+        if [[ "$2" == '' ]]; then
+            view 'complete' \
+            "Контейнеры '$IMAGE_RUN:$VERSION' были остановлены и удалены!"
+        fi
+    ;;
+    
+#┌──────────────────────────────────┐
+#│ Команды: Install, Restart, Start │
+#│ • Запускает новый контейнер      │
+#└──────────────────────────────────┘
+    'install' | 'restart' |'start')
+    # Останавливаем и удаляем все старые контейнеры
+        controller 'stop' "$1"
+        
+    # Создаем порты
+        local PORT1="$2"
+        local PORT2=$(($2+1))
+        
+    # Обновляем текущий статус
+        view 'status' \
+           5 'Запуск контейнера...'
+           
+    # Образ не найден
+        if ! is_image "$IMAGE_RUN:$VERSION"; then
+        # Скачиваем образ
+             docker pull "$IMAGE_RUN:$VERSION"
+        fi
+        
+    # Запускаем контейнер
+        if ! error_msg=$(docker run \
+            --name "$PROJECT_NAME" \
+            --hostname "$PROJECT_NAME" \
+            -p "$PORT1:$PORT1" \
+            -p "$PORT2:$PORT2" \
+            -e "C9_PORT=$PORT1" \
+            -e "PORT=$PORT2" \
+            -e "WORKSPACE=$PROJECT_NAME" \
+            -e "GIT_USER=$GIT_USER" \
+            -e "DOCKER_PWD=$DOCKER_PWD" \
+            -v "$DOCKER_PWD:/$PROJECT_NAME" \
+            -v "$DOCKER_PWD/ssh:/root/.sshsource" \
+            -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
+            --restart unless-stopped \
+            --detach -it \
+            "$IMAGE_RUN:$VERSION" 2>&1
+        ); then
+        # Выводим сообщение об ошибке
+            view 'error' \
+            "$error_msg" "Что-то не так в 'docker run ...'"
+            
+        # Завершаем процесс
+            return
+        fi
+        
+    # Команда: "Restart"
+        if [[ "$1" == 'restart' ]]; then
+            view 'complete' \
+            "Контейнер '$IMAGE_RUN:$VERSION' успешно перезагружен!" \
+            "http://localhost:$PORT1/"
+            
+    # Команды: "Install", "Start"
+        else
+            view 'complete' \
+            "Контейнер '$IMAGE_RUN:$VERSION' успешно запущен!" \
+            "http://localhost:$PORT1/"
+        fi
+    ;;
+    
+#┌──────────────────────────────────────────┐
+#│ Команда: Stop all                        │
+#│ • Останавливает и удаляет все контейнеры │
+#└──────────────────────────────────────────┘
+    'stop_all')
+    # Получаем список всех ID-образов
+        getImageIDs
+        
+    # Получаем список всех ID-контейнеров
+        getContainerIDs "${imageIDs[@]}"
+        
+    # Останавливаем все контейнеры
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            view 'status' \
+               3 'Остановка контейнеров' $i ${#containerIDs[*]}
+               
+        # Останавливаем контейнер
+            docker stop "${containerIDs[$i]}" &> '/dev/null'
+        done
+        
+    # Удаляем все контейнеры
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            view 'status' \
+               4 'Удаление контейнеров' $i ${#containerIDs[*]}
+               
+        # Удаляем контейнер
+            docker rm "${containerIDs[$i]}" &> '/dev/null'
+        done
+        
+    # Выводим финальное сообщение, но только если дальше нет команд
+        if [[ "$2" == '' ]]; then
+            view 'complete' \
+            'Все контейнеры были остановлены и удалены!'
+        fi
+    ;;
+    
+#┌──────────────────────┐
+#│ Команда: Remove all  │
+#│ • Удаляет все образы │
+#└──────────────────────┘
+    'remove_all')
+    # Останавливаем и удаляем все контейнеры
+        controller 'stop_all' "$1"
+        
+    # Получаем список всех ID-образов
+        getImageIDs
+        
+    # Удаляем все образы
+        for ((i = 0; i < ${#imageIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            view 'status' \
+               5 'Удаление образов' $i ${#imageIDs[*]}
+               
+        # Удаляем образ
+            docker rmi "${imageIDs[$i]}" -f &> '/dev/null'
+        done
+        
+    # Выводим финальное сообщение
+        view 'complete' \
+        'Все контейнеры были остановлены и удалены!' \
+        'Образы также были удалены!'
+    ;;
+    
+#┌─────────────────────────────┐
+#│ Команда: SSH-Keygen         │
+#│ • Генерирует новый ssh-ключ │
+#└─────────────────────────────┘
+    'ssh_keygen')\
+        # ssh-keygen -q -t 'rsa' -N '' -C '' -f /c9manager/x/user
+        echo 'ssh_keygen'
+        read
+    ;;
+    
+#┌───────────────┐
+#│ Команда: Exit │
+#└───────────────┘
+    'exit')
+    # Очищаем экран
+        reset
+        
+    # Выводим финальное сообщение
+        echo 'Вам всего доброго, счастья, здоровья и хорошего настроения!'
+        
+    # Завершаем процесс
+        exit
+    ;;
+esac
+}
