@@ -1,26 +1,183 @@
-#▄───────────────────────▄
-#█                       █
-#█  Model: Docker        █
-#█  • Докер              █
-#█                       █
-#▀───────────────────────▀
+#▄────────────────────▄
+#█                    █
+#█  Model: Docker     █
+#█  • Докер (логика)  █
+#█                    █
+#▀────────────────────▀
+model:Docker() { local i; case "$1" in
 #┌───────────────────────────────┐
 #│ Проверяет существует-ли образ │
 #└───────────────────────────────┘
-model:Docker:no_image() {
-    ! is_image "$IMAGE_RUN"
-}
-
+    'no_image')
+        ! is_image "$IMAGE_RUN"
+    ;;
+    
 #┌───────────────────────────────────┐
 #│ Проверяет существует-ли контейнер │
 #└───────────────────────────────────┘
-model:Docker:no_container() {
-# Получаем список ID-образов
-    is_image "$IMAGE_RUN"
+    'no_container')
+    # Получаем список ID-образов
+        is_image "$IMAGE_RUN"
+        
+    # Получаем список ID-контейнеров
+        getContainerIDs 'view' "${GLOBAL_ID[@]}"
+        
+    # Контейнер не найден
+        (( ${#containerIDs[*]} == 0 ))
+    ;;
     
-# Получаем список ID-контейнеров
-    getContainerIDs "${GLOBAL_ID[@]}"
+#┌─────────────────────────────────────────────┐
+#│ Получает список ID-образов и ID-контейнеров │
+#└─────────────────────────────────────────────┘
+    'get_ids')
+    # Получаем список всех ID-образов
+        if [[ "$3" == 'all' ]]; then
+            getImageIDs "$2 1"
+            
+    # Получаем список ID-образов из списка $IMAGES
+        else
+            getImageIDs "$2 1" "${IMAGES[@]}"
+        fi
+        
+    # Получаем список ID-контейнеров
+        getContainerIDs "$2 2" "${imageIDs[@]}"
+    ;;
     
-# Контейнер не найден
-    (( ${#containerIDs[*]} == 0 ))
+#┌──────────────────────────┐
+#│ Останавливает контейнеры │
+#└──────────────────────────┘
+    'stop_containers')
+    # Проходим по списку ID-контейнеров
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            $2 \
+                3 'Остановка контейнеров' $i ${#containerIDs[*]}
+                
+        # Останавливаем контейнер
+            docker stop "${containerIDs[$i]}" &> '/dev/null'
+        done
+    ;;
+    
+#┌────────────────────┐
+#│ Удаляет контейнеры │
+#└────────────────────┘
+    'remove_containers')
+    # Проходим по списку ID-контейнеров
+        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            $2 \
+                4 'Удаление контейнеров' $i ${#containerIDs[*]}
+                
+        # Удаляем контейнер
+            docker rm "${containerIDs[$i]}" &> '/dev/null'
+        done
+    ;;
+    
+#┌────────────────┐
+#│ Удаляет образы │
+#└────────────────┘
+    'remove_images')
+    # Удаляем все образы
+        for ((i = 0; i < ${#imageIDs[*]}; i++)); do
+        # Обновляем текущий статус
+            $2 \
+                5 'Удаление образов' $i ${#imageIDs[*]}
+                
+        # Удаляем образ
+            docker rmi "${imageIDs[$i]}" -f &> '/dev/null'
+        done
+    ;;
+    
+#┌──────────────────────────────────────────────────────┐
+#│ Останавливает и удаляет контейнеры из списка $IMAGES │
+#└──────────────────────────────────────────────────────┘
+    'stop')
+    # Получаем список ID-контейнеров
+        model:Docker 'get_ids' "$2"
+        
+    # Останавливаем контейнеры
+        model:Docker 'stop_containers' "$2"
+        
+    # Удаляем контейнеры
+        model:Docker 'remove_containers' "$2"
+    ;;
+    
+#┌────────────────────────────────────────┐
+#│ Останавливает и удаляет все контейнеры │
+#└────────────────────────────────────────┘
+    'stop_all')
+    # Получаем список всех ID-контейнеров
+        model:Docker 'get_ids' "$2" 'all'
+        
+    # Останавливаем все контейнеры
+        model:Docker 'stop_containers' "$2"
+        
+    # Удаляем все контейнеры
+        model:Docker 'remove_containers' "$2"
+    ;;
+    
+#┌────────────────────┐
+#│ Удаляет все образы │
+#└────────────────────┘
+    'remove_all')
+    # Получаем список ID-образов и ID-контейнеров
+        model:Docker 'get_ids' "$2" 'all'
+        
+    # Останавливаем все контейнеры
+        model:Docker 'stop_containers' "$2"
+        
+    # Удаляем все контейнеры
+        model:Docker 'remove_containers' "$2"
+        
+    # Удаляем все образы
+        model:Docker 'remove_images' "$2"
+    ;;
+    
+#┌─────────────────┐
+#│ Скачивает образ │
+#└─────────────────┘
+    'download')
+    # Образ не найден
+        if ! is_image "$IMAGE_RUN:$VERSION"; then
+        # Скачиваем образ
+             docker pull "$IMAGE_RUN:$VERSION"
+        fi
+    ;;
+    
+#┌───────────────────────────┐
+#│ Запускает новый контейнер │
+#└───────────────────────────┘
+    'start')
+    # Локальные переменные
+        local PORT1="$2"
+        local PORT2=$(($2+1))
+        local error_msg
+        
+    # Запускаем контейнер
+        if ! i=$(docker run \
+            --name "$PROJECT_NAME" \
+            --hostname "$PROJECT_NAME" \
+            -p "$PORT1:$PORT1" \
+            -p "$PORT2:$PORT2" \
+            -e "C9_PORT=$PORT1" \
+            -e "PORT=$PORT2" \
+            -e "WORKSPACE=$PROJECT_NAME" \
+            -e "GIT_USER=$GIT_USER" \
+            -e "DOCKER_PWD=$DOCKER_PWD" \
+            -v "$DOCKER_PWD:/$PROJECT_NAME" \
+            -v "$DOCKER_PWD/ssh:/root/.sshsource" \
+            -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
+            --restart unless-stopped \
+            --detach -it \
+            "$IMAGE_RUN:$VERSION" 2>&1
+        ); then
+        # Выводим сообщение об ошибке
+            echo "$error_msg"
+            return 1
+        fi
+        
+    # Контейнер успешно запущен
+        return 0
+    ;;
+esac
 }

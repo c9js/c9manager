@@ -303,6 +303,7 @@ esac
                 --build-arg "controllers=$IMAGE_RUN/controllers/" \
                 --build-arg "models=$IMAGE_RUN/models/" \
                 --build-arg "views=$IMAGE_RUN/views/" \
+                --build-arg "entrypoints=$IMAGE_RUN/entrypoints/" \
                 --build-arg "entrypoint=$IMAGE_RUN/Entrypoint" \
                 -f "$C9_PATH/$IMAGE_RUN/Dockerfile" \
                 -t "$IMAGE_RUN" \
@@ -316,9 +317,9 @@ esac
             rm -vr "$C9_PATH/temp" # Временный каталог
             
         # Выводим сообщение об ошибке и завершаем процесс
-            # if (( "$res" != 0 )); then
-            #     error "Что-то не так в 'docker build ...'"
-            # fi
+            if (( "$res" != 0 )); then
+                error "Что-то не так в 'docker build ...'"
+            fi
         fi
         
     # Получаем список свободных портов

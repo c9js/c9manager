@@ -2,7 +2,7 @@
 #┌───────────────┐
 #│ Версия образа │
 #└───────────────┘
-VERSION='1.0.35'
+VERSION='1.0.36'
 
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
@@ -16,20 +16,24 @@ VERSION='1.0.35'
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
-# API
-. /controllers/controllerAPI
+# Models
 . /models/modelAPI
-
-# Docker
-. /controllers/controllerDocker
+. /models/modelMenu
 . /models/modelDocker
+. /models/modelRequest
 
-# Menu
+# Entrypoints
+. /entrypoints/entrypointAPI
+. /entrypoints/entrypointMenu
+
+# Controllers
 . /controllers/controllerMenu
+. /controllers/controllerDocker
+. /controllers/controllerRequest
 
-# Временно (доделать)
-. /controllers/controller
+# Views
 . /views/view
+. /views/viewMenu
 
 #┌───────────────────────────────────────────────┐
 #│ Путь к текущему каталогу вне docker-а         │
@@ -59,7 +63,7 @@ PROJECT_NAME='c9manager'  # Имя проекта
 CURRENT_PATH='/root/repo' # Путь к текущему каталогу из docker-а
 IMAGE_RUN='c9js/c9docker' # Имя образа который запускаем
 IMAGE_API='c9js/c9start'  # Имя текущего образа
-IMAGE_DEV='c9start'       # Имя текущего образа для тестирования
+# IMAGE_DEV='c9start'     # Имя текущего образа для тестирования
 IMAGES=(                  # Список всех образов
     'c9js/c9docker'
     'c9js/c9start'
@@ -70,9 +74,9 @@ IMAGES=(                  # Список всех образов
 )
 
 #┌─────────────┐
-#│ Точка входа │
+#│ Точки входа │
 #└─────────────┘
 case "$1" in
-    'API') controller:API "$2" ;; # Внутренний запрос
-    *)     controller:Menu     ;; # Меню
+    'API') entrypoint:API "$2" ;; # Внутренний запрос
+    *)     entrypoint:Menu     ;; # Меню
 esac

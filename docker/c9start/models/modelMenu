@@ -1,0 +1,15 @@
+#▄───────────────────▄
+#█                   █
+#█  Model: Menu      █
+#█  • Меню (логика)  █
+#█                   █
+#▀───────────────────▀
+model:Menu() { case "$1" in
+#┌───────────────────────────────┐
+#│ WWWWWWWWWWWWWWWWWWWWWWWWWWWWW │
+#└───────────────────────────────┘
+    'WWWWWWWWWWWWWWWWWWWWWWWWWWW')
+
+    ;;
+esac
+}
