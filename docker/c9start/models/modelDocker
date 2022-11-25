@@ -154,7 +154,7 @@ model:Docker() { local i; case "$1" in
         local error_msg
         
     # Запускаем контейнер
-        if ! i=$(docker run \
+        if ! error_msg=$(docker run \
             --name "$PROJECT_NAME" \
             --hostname "$PROJECT_NAME" \
             -p "$PORT1:$PORT1" \

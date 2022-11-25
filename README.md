@@ -1,18 +1,18 @@
 ## Быстрый старт для WINDOWS
 1. Запустите cmd.exe
-2. Перейдите в пустую директорию.
+2. Перейдите в пустой каталог.
 3. Ведите команду:
 ```
-docker run -itv "//var/run/docker.sock:/var/run/docker.sock" -e "CD=%CD%" --privileged --rm c9js/c9start:1.0.36
+docker run -itv "//var/run/docker.sock:/var/run/docker.sock" -e "CD=%CD%" --privileged --rm c9js/c9start:1.0.37
 ```
 
 
 ## Быстрый старт для LINUX
 1. Запустите bash
-2. Перейдите в пустую директорию.
+2. Перейдите в пустой каталог.
 3. Ведите команду:
 ```
-docker run -itv "//var/run/docker.sock:/var/run/docker.sock" -e "CD=$(PWD)" --privileged --rm c9js/c9start:1.0.36
+docker run -itv "//var/run/docker.sock:/var/run/docker.sock" -e "CD=$(PWD)" --privileged --rm c9js/c9start:1.0.37
 ```
 
 ## TODO
@@ -45,7 +45,7 @@ docker run -itv "//var/run/docker.sock:/var/run/docker.sock" -e "CD=$(PWD)" --pr
 https://serverfault.com/questions/253313/ssh-returns-bad-owner-or-permissions-on-ssh-config
 ```
 
-## Сгенерировать новый ssh-key
+## Создать новый ssh-key
 ```
 ssh-keygen -t rsa -b 4096 -C "email@email.email"
 ```

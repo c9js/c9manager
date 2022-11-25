@@ -6,7 +6,7 @@ FROM alpine:3.11
 #┌────────────────┐
 #│ Базовые пакеты │
 #└────────────────┘
-RUN apk add sed bash git docker --no-cache \
+RUN apk add sed bash openssh-client git docker --no-cache \
 
 #┌──────┐
 #│ Bash │

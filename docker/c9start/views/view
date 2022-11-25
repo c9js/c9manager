@@ -19,8 +19,19 @@ view() { case "$1" in
     # Удаляем первый параметр
         shift
         
-    # Сохраняем сообщение
-        HEADER="$(notice_error "$@")Выберите команду:"
+    # Добавляем новое сообщение
+        menuMessage 'Red' "$(notice_error "$@")"
+    ;;
+    
+#┌─────────────────────────────┐
+#│ Выводит сообщение об ошибке │
+#└─────────────────────────────┘
+    'error_log')
+    # Удаляем первый параметр
+        shift
+        
+    # Добавляем новое сообщение
+        menuMessage 'Red' "$(notice_errorlog "$@")"
     ;;
     
 #┌─────────────────────────────┐
@@ -30,8 +41,8 @@ view() { case "$1" in
     # Удаляем первый параметр
         shift
         
-    # Сохраняем сообщение
-        HEADER="$(notice 'Yellow' "$@")Выберите команду:"
+    # Добавляем новое сообщение
+        menuMessage 'Yellow' "$(notice "$@")"
         
     # Обнуляем меню
         menuRestart
@@ -56,6 +67,7 @@ view() { case "$1" in
             'stop')       full=4; printf "Остановка '%s'"    "$IMAGE_RUN:$VERSION";;
             'stop_all')   full=4; printf 'Остановка всех контейнеров';;
             'remove_all') full=5; printf 'Удаление всех образов';;
+            'ssh_keygen') full=2; printf 'Создание ssh-ключа';;
         esac
         
     # Статус

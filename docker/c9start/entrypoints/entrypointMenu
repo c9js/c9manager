@@ -17,7 +17,7 @@ entrypoint:Menu() { view 'header'; while :; do
 #┌──────────────────────┐
 #│ Текущий каталог пуст │
 #└──────────────────────┘
-    if controller:Request 'yes_empty'; then
+    if controller:Request 'current_dir_is_empty'; then
     # Выводим меню на экран
         view:Menu 'download'
         continue

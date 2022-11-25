@@ -4,11 +4,12 @@
 #█  • Внутренний запрос (точка входа)  █
 #█                                     █
 #▀─────────────────────────────────────▀
-entrypoint:API() { case "$1" in
-    'yes_empty')  model:API "$@" ;; # Проверяет пуст-ли текущий каталог
-    'no_git')     model:API "$@" ;; # Проверяет существует-ли ".git" каталог
-    'download')   model:API "$@" ;; # Скачивает репозиторий
-    'is_key')     model:API "$@" ;; # Проверяет существует-ли ssh-ключ
-    'ssh_keygen') model:API "$@" ;; # Генерирует новый ssh-ключ
+entrypoint:API() { shift; case "$1" in
+    'is_empty_dir') model:API "$@" ;; # Проверяет пуст-ли каталог
+    'is_exists')    model:API "$@" ;; # Проверяет существует-ли файл или каталог
+    'dir_exists')   model:API "$@" ;; # Проверяет существует-ли каталог
+    'file_exists')  model:API "$@" ;; # Проверяет существует-ли файл
+    'download')     model:API "$@" ;; # Скачивает репозиторий
+    'ssh_keygen')   model:API "$@" ;; # Создает новый ssh-ключ
 esac
 }
