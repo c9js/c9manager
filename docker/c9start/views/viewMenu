@@ -5,20 +5,20 @@
 #█                      █
 #▀──────────────────────▀
 view:Menu() { case "$1" in
-#┌─────────────────────────────────────────────┐
-#│ Предлагает пользователю скачать репозиторий │
-#└─────────────────────────────────────────────┘
-    'download')
+#┌──────────────────────────────────────────────────┐
+#│ Предлагает пользователю склонировать репозиторий │
+#└──────────────────────────────────────────────────┘
+    'gitclone')
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Download '$GIT_URL/$GIT_USER/$PROJECT_NAME'"
+            Green "1. Git clone '$GIT_URL/$GIT_USER/$PROJECT_NAME'"
              Exit '0. Exit'
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Menu 'download' ;; # Выбран пункт: "Download"
-            0)       view:Menu 'exit'     ;; # Выбран пункт: "Exit"
+            1) controller:Menu "$1"   ;; # Выбран пункт: "Git clone"
+            0)       view:Menu 'exit' ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -29,18 +29,18 @@ view:Menu() { case "$1" in
     # Выводим сообщение об ошибке
         view 'error' \
         "Каталог должен быть пуст!" \
-        "$CD"
+        "Путь: $CD"
         
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Обновить (download '$GIT_URL/$GIT_USER/$PROJECT_NAME')"
+            Green "1. Обновить (git clone '$GIT_URL/$GIT_USER/$PROJECT_NAME')"
              Exit '0. Exit'
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Menu 'download' ;; # Выбран пункт: "Обновить"
-            0)       view:Menu 'exit'     ;; # Выбран пункт: "Exit"
+            1) controller:Menu "$1"   ;; # Выбран пункт: "Обновить"
+            0)       view:Menu 'exit' ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -164,13 +164,13 @@ view:Menu() { case "$1" in
         menu "$HEADER" 0
         #   Цвет      Строка
             Green '1. SSH-Keygen  Создать новый ssh-ключ'
-            Green '2. List        Список ключей'
+            # Green '2. List        Список ключей'
              Exit '0. Назад'
              
     # Проходим по пунктам меню
         case $? in
             1) view:Menu 'input_ssh' "$1" ;; # Выбран пункт: "Создать"
-            2) view:Menu "$2" "$3"        ;; # Выбран пункт: "List"
+            # 2) view:Menu "$2" "$3"        ;; # Выбран пункт: "List"
             0) view:Menu "$2" "$3"        ;; # Выбран пункт: "Назад"
         esac
     ;;

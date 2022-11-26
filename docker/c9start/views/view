@@ -60,7 +60,7 @@ view() { case "$1" in
         
     # Заголовок
         case "$CONTROLLER" in
-            'download')   full=2; printf "Loading '%s'" "$GIT_URL/$GIT_USER/$PROJECT_NAME";;
+            'gitclone')   full=2; printf "Клонирование '%s'" "$GIT_URL/$GIT_USER/$PROJECT_NAME";;
             'install')    full=5; printf "Установка '%s'"    "$IMAGE_RUN:$VERSION";;
             'restart')    full=5; printf "Перезагрузка '%s'" "$IMAGE_RUN:$VERSION";;
             'start')      full=5; printf "Запуск '%s'"       "$IMAGE_RUN:$VERSION";;

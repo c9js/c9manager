@@ -5,26 +5,6 @@
 #█                   █
 #▀───────────────────▀
 model:Menu() { case "$1" in
-#┌─────────────────────────┐
-#│ Команда: Download       │
-#│ • Скачивает репозиторий │
-#└─────────────────────────┘
-    'download')
-    # Обновляем текущий статус
-        view 'status' \
-           1 "Проверяем каталог '$CD'"
-           
-    # Текущий каталог пуст
-        if controller:Request 'current_dir_is_empty'; then
-        # Обновляем текущий статус
-            view 'status' \
-               2 'Скачиваем репозиторий...'
-               
-        # Скачиваем репозиторий
-            controller:Request 'download' 2>&1
-        fi
-    ;;
-    
 #┌────────────────────────────────────────────────────────┐
 #│ Команда: Stop                                          │
 #│ • Останавливает и удаляет контейнеры из списка $IMAGES │
@@ -155,7 +135,7 @@ model:Menu() { case "$1" in
         # Выводим сообщение об ошибке
             view 'error' \
             'Каталог не найден!' \
-            "${CD}${SEP}$SSH_DIR"
+            "Путь: ${CD}${SEP}$SSH_DIR"
             return
         fi
         
@@ -164,13 +144,49 @@ model:Menu() { case "$1" in
            2 'Генерируем новый ssh-ключ...'
            
     # Создаем новый ssh-ключ
-        controller:Request 'ssh_keygen' "$2"
+        if controller:Request 'ssh_keygen' "$2"; then
+        # SSH-ключ не был создан
+            view 'error_log' \
+            "$ERROR_LOG" "Что-то не так в 'ssh-keygen ...'"
+            return
+        fi
         
     # Выводим финальное сообщение
         view 'complete' \
         "Новый ssh-ключ успешно создан!" \
         "${CD}${SEP}${SSH_DIR}${SEP}$2" \
         "${CD}${SEP}${SSH_DIR}${SEP}$2.pub"
+    ;;
+    
+#┌─────────────────────────┐
+#│ Команда: Gitclone       │
+#│ • Клонирует репозиторий │
+#└─────────────────────────┘
+    'gitclone')
+    # Обновляем текущий статус
+        view 'status' \
+           1 "Проверяем каталог '$CD'"
+           
+    # Текущий каталог пуст
+        if controller:Request 'current_dir_is_empty'; then
+        # Обновляем текущий статус
+            view 'status' \
+               2 'Клонируем репозиторий...'
+               
+        # Клонируем репозиторий
+            if controller:Request 'gitclone'; then
+            # Репозиторий не был склонирован
+                view 'error_log' \
+                "$ERROR_LOG" "Что-то не так в 'git clone ...'"
+                return
+            fi
+            
+        # Выводим финальное сообщение
+            view 'complete' \
+            "Клонирование прошло успешно!" \
+            "URL:  $GIT_URL/$GIT_USER/$PROJECT_NAME" \
+            "Путь: $CD"
+        fi
     ;;
 esac
 }

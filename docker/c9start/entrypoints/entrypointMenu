@@ -18,8 +18,8 @@ entrypoint:Menu() { view 'header'; while :; do
 #│ Текущий каталог пуст │
 #└──────────────────────┘
     if controller:Request 'current_dir_is_empty'; then
-    # Выводим меню на экран
-        view:Menu 'download'
+    # Предлагаем пользователю склонировать репозиторий
+        view:Menu 'gitclone'
         continue
     fi
     
@@ -36,7 +36,7 @@ entrypoint:Menu() { view 'header'; while :; do
 #│ Образ не найден │
 #└─────────────────┘
     if controller:Docker 'no_image'; then
-    # Выводим меню на экран
+    # Предлагаем пользователю установить образ
         view:Menu 'install'
         continue
     fi
@@ -45,7 +45,7 @@ entrypoint:Menu() { view 'header'; while :; do
 #│ Контейнер не найден │
 #└─────────────────────┘
     if controller:Docker 'no_container'; then
-    # Выводим меню на экран
+    # Предлагаем пользователю запустить контейнер
         view:Menu 'start'
         continue
     fi

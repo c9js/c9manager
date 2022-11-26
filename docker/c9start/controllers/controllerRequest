@@ -8,8 +8,8 @@ controller:Request() { case "$1" in
 #┌─────────────────┐
 #│ Список запросов │
 #└─────────────────┘
-    'download')   model:Request "$@" ;; # Скачивает репозиторий
-    'ssh_keygen') model:Request "$@" ;; # Создает новый ssh-ключ
+    'ssh_keygen') stream "model:Request $@" ;; # Создает новый ssh-ключ
+    'gitclone')   stream "model:Request $@" ;; # Клонирует репозиторий
     
 #┌───────────────────────────────────┐
 #│ Проверяет пуст-ли текущий каталог │

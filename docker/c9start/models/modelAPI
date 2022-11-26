@@ -42,14 +42,20 @@ model:API() { case "$1" in
     ;;
     
 #┌───────────────────────┐
-#│ Скачивает репозиторий │
+#│ Клонирует репозиторий │
 #└───────────────────────┘
-    'download')
+    'gitclone')
+    # Путь к репозиторию
+        URL="https://$GIT_URL/$GIT_USER/$PROJECT_NAME.git"
+        
     # Переходим в каталог где будет храниться репозиторий
         cd "$CURRENT_PATH"
         
-    # Скачиваем репозиторий
-        git clone "https://$GIT_URL/$GIT_USER/$PROJECT_NAME.git" '.'
+    # Клонируем репозиторий
+        if ! git clone "$URL" .; then
+        # Репозиторий не был склонирован
+            return 1
+        fi
         
     # Обновлем URL
         git remote set-url --add 'origin' "git@$GIT_URL:$GIT_USER/$PROJECT_NAME.git"
@@ -61,7 +67,10 @@ model:API() { case "$1" in
 #└────────────────────────┘
     'ssh_keygen')
     # Создаем каталог
-        mkdir -p "$CURRENT_PATH/$SSH_DIR"
+        if ! mkdir -p "$CURRENT_PATH/$SSH_DIR"; then
+        # Каталог не был создан
+            return 1
+        fi
         
     # Создаем новый ssh-ключ
         ssh-keygen -t 'rsa' -N '' -C '' -f "$CURRENT_PATH/$SSH_DIR/$2"

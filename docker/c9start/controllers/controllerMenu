@@ -5,7 +5,7 @@
 #█                       █
 #▀───────────────────────▀
 controller:Menu() { CONTROLLER="$1"; case "$1" in
-    'download')     model:Menu "$@" ;; # Скачивает репозиторий
+    'gitclone')     model:Menu "$@" ;; # Клонирует репозиторий
     'stop')         model:Menu "$@" ;; # Останавливает и удаляет контейнеры из списка $IMAGES
     'stop_all')     model:Menu "$@" ;; # Останавливает и удаляет все контейнеры
     'remove_all')   model:Menu "$@" ;; # Удаляет все образы
