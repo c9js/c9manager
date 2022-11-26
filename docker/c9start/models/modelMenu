@@ -58,7 +58,12 @@ model:Menu() { case "$1" in
            5 'Запуск контейнера...'
            
     # Скачиваем образ
-        controller:Docker 'download'
+        if controller:Docker 'download'; then
+        # Образ не был скачан
+            view 'error_log' \
+            "$ERROR_LOG" "Что-то не так в 'docker pull ...'"
+            return 1
+        fi
         
     # Запускаем новый контейнер
         local error_log=$(controller:Docker 'start' "$2")

@@ -140,7 +140,10 @@ model:Docker() { local i; case "$1" in
     # Образ не найден
         if ! is_image "$IMAGE_RUN:$VERSION"; then
         # Скачиваем образ
-             docker pull "$IMAGE_RUN:$VERSION"
+            if ! docker pull "$IMAGE_RUN:$VERSION"; then
+            # Образ не был скачан
+                return 1
+            fi
         fi
     ;;
     
