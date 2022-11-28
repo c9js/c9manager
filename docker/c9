@@ -285,6 +285,9 @@ esac
         # Создаем временный каталог
             mkdir -vp "$C9_PATH/temp/cli"
             
+        # Копируем версию
+            cp -vr "/$WORKSPACE/VERSION" "$C9_PATH/temp/VERSION"
+            
         # Копируем bash-библиотеку
             cp -vr "/$WORKSPACE/cli/." "$C9_PATH/temp/cli"
             

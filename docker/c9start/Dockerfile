@@ -21,6 +21,11 @@ RUN apk add sed bash openssh-client git docker --no-cache \
 && rm -rf /var/tmp/* \
 && rm -rf /tmp/*
 
+#┌────────┐
+#│ Версия │
+#└────────┘
+COPY temp/VERSION /root/VERSION
+
 #┌─────────────────┐
 #│ bash-библиотека │
 #└─────────────────┘
