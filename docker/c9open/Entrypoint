@@ -24,7 +24,7 @@ git config --global user.name 'Sergei'
 #│ Если репозитория нет, то пробуем привязать к Github │
 #└─────────────────────────────────────────────────────┘
 if [ ! -e "/$WORKSPACE/.git" ]; then
-    git clone git@github.com:$GIT_USER/$WORKSPACE.git /$WORKSPACE
+    git clone git@github.com:$GIT_USER/$GIT_REPO.git /$WORKSPACE
 fi
 
 #┌───────────────┐

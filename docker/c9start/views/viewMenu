@@ -5,20 +5,30 @@
 #█                      █
 #▀──────────────────────▀
 view:Menu() { case "$1" in
+#┌────────────────────────┐
+#│ Создает заголовок меню │
+#└────────────────────────┘
+    'header') HEADER='Выберите команду:' ;;
+    
 #┌──────────────────────────────────────────────────┐
 #│ Предлагает пользователю склонировать репозиторий │
 #└──────────────────────────────────────────────────┘
     'gitclone')
+    # Выводим сообщение с предупреждением
+        view 'warning' \
+        'Вам необходим локальный репозиторий!' \
+        "Нажмите 'Git clone'"
+        
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Git clone '$GIT_URL/$GIT_USER/$PROJECT_NAME'"
+            Green "1. Git clone '$GIT_URL/$GIT_USER/$GIT_REPO'"
              Exit '0. Exit'
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Menu "$1"   ;; # Выбран пункт: "Git clone"
-            0)       view:Menu 'exit' ;; # Выбран пункт: "Exit"
+            1) controller:Menu 'gitclone' ;; # Выбран пункт: "Git clone"
+            0)       menu:Exit            ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -34,13 +44,13 @@ view:Menu() { case "$1" in
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Обновить (git clone '$GIT_URL/$GIT_USER/$PROJECT_NAME')"
+            Green "1. Обновить (git clone '$GIT_URL/$GIT_USER/$GIT_REPO')"
              Exit '0. Exit'
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Menu "$1"   ;; # Выбран пункт: "Обновить"
-            0)       view:Menu 'exit' ;; # Выбран пункт: "Exit"
+            1) controller:Menu 'gitclone' ;; # Выбран пункт: "Обновить"
+            0)       menu:Exit            ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -57,7 +67,7 @@ view:Menu() { case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) view:Menu 'choice_port' "$1" ;; # Выбран пункт: "Install"
-            0) view:Menu 'exit'             ;; # Выбран пункт: "Exit"
+            0) menu:Exit                    ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -76,7 +86,7 @@ view:Menu() { case "$1" in
         case $? in
             1) view:Menu 'choice_port' "$1" ;; # Выбран пункт: "Start"
             2) view:Menu 'settings' "$1"    ;; # Выбран пункт: "Настройки"
-            0) view:Menu 'exit'             ;; # Выбран пункт: "Exit"
+            0) menu:Exit                    ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -97,7 +107,26 @@ view:Menu() { case "$1" in
             1)       view:Menu 'choice_port' "$1" ;; # Выбран пункт: "Restart"
             2) controller:Menu 'stop'             ;; # Выбран пункт: "Stop"
             3)       view:Menu 'settings' "$1"    ;; # Выбран пункт: "Настройки"
-            0)       view:Menu 'exit'             ;; # Выбран пункт: "Exit"
+            0)       menu:Exit                    ;; # Выбран пункт: "Exit"
+        esac
+    ;;
+    
+#┌─────────────────────────────────────────────────────┐
+#│ Предлагает пользователю только остановить контейнер │
+#└─────────────────────────────────────────────────────┘
+    'stop')
+    # Выводим меню на экран
+        menu "$HEADER" 1
+        #   Цвет      Строка
+            Green "1. Stop       Остановить '$RUN_IMAGE:$RUN_VERSION'"
+            Green '2. Настройки  Перейти в раздел'
+             Exit '0. Exit'
+             
+    # Проходим по пунктам меню
+        case $? in
+            1) controller:Menu 'stop'          ;; # Выбран пункт: "Stop"
+            2)       view:Menu 'settings' "$1" ;; # Выбран пункт: "Настройки"
+            0)       menu:Exit                 ;; # Выбран пункт: "Exit"
         esac
     ;;
     
@@ -164,13 +193,11 @@ view:Menu() { case "$1" in
         menu "$HEADER" 0
         #   Цвет      Строка
             Green '1. SSH-Keygen  Создать новый ssh-ключ'
-            # Green '2. List        Список ключей'
              Exit '0. Назад'
              
     # Проходим по пунктам меню
         case $? in
             1) view:Menu 'input_ssh' "$1" ;; # Выбран пункт: "Создать"
-            # 2) view:Menu "$2" "$3"        ;; # Выбран пункт: "List"
             0) view:Menu "$2" "$3"        ;; # Выбран пункт: "Назад"
         esac
     ;;
@@ -209,20 +236,6 @@ view:Menu() { case "$1" in
             2) controller:Menu 'remove_all' ;; # Выбран пункт: "Remove"
             0)       view:Menu "$2" "$3"    ;; # Выбран пункт: "Назад"
         esac
-    ;;
-    
-#┌───────┐
-#│ Выход │
-#└───────┘
-    'exit')
-    # Очищаем экран
-        reset
-        
-    # Выводим финальное сообщение
-        echo 'Вам всего доброго, счастья, здоровья и хорошего настроения!'
-        
-    # Завершаем процесс
-        exit
     ;;
 esac
 }

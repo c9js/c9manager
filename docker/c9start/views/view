@@ -5,47 +5,34 @@
 #█                       █
 #▀───────────────────────▀
 view() { case "$1" in
-#┌────────────────────┐
-#│ Обнуляет заголовок │
-#└────────────────────┘
-    'header')
-        HEADER='Выберите команду:'
-    ;;
+#┌──────────────────────────────┐
+#│ Выводит уведомление на экран │
+#└──────────────────────────────┘
+    'info')        menu:Notice "$@"       ;; # Выводит информационное сообщение
+    'success')     menu:Notice "$@"       ;; # Выводит сообщение об успешном завершении
+    'warning')     menu:Notice "$@"       ;; # Выводит сообщение с предупреждением
+    'error')       menu:Notice "$@"       ;; # Выводит сообщение об ошибке
+    'error_log')   menu:Notice "$@"       ;; # Выводит сообщение со списком ошибок
+    'fatal_error') notice:FatalError "$@" ;; # Выводит сообщение о фатальной ошибке
     
-#┌─────────────────────────────┐
-#│ Выводит сообщение об ошибке │
-#└─────────────────────────────┘
-    'error')
-    # Удаляем первый параметр
-        shift
+#┌───────────────┐
+#│ Инициализация │
+#└───────────────┘
+    'init')
+    # Создаем заголовок меню
+        view:Menu 'header'
         
-    # Добавляем новое сообщение
-        menuMessage 'Red' "$(notice_error "$@")"
-    ;;
-    
-#┌─────────────────────────────┐
-#│ Выводит сообщение об ошибке │
-#└─────────────────────────────┘
-    'error_log')
-    # Удаляем первый параметр
-        shift
+    # Получает информацию о запущенном контейнере
+        getContainerInfo "$WORKSPACE"
         
-    # Добавляем новое сообщение
-        menuMessage 'Red' "$(notice_errorlog "$@")"
-    ;;
-    
-#┌─────────────────────────────┐
-#│ Выводит финальное сообщение │
-#└─────────────────────────────┘
-    'complete')
-    # Удаляем первый параметр
-        shift
+    # Проверяем список информационных сообщений
+        controller:Notice 'info'
         
-    # Добавляем новое сообщение
-        menuMessage 'Yellow' "$(notice "$@")"
+    # Проверяем список предупреждений
+        controller:Notice 'warning'
         
-    # Обнуляем меню
-        menuRestart
+    # Проверяем список фатальных ошибок
+        controller:Notice 'fatal_error'
     ;;
     
 #┌──────────────────────────┐
@@ -53,21 +40,21 @@ view() { case "$1" in
 #└──────────────────────────┘
     'status')
     # Количество шагов
-        local full="$2"
+        local full
         
     # Очищаем экран
         reset
         
     # Заголовок
         case "$CONTROLLER" in
-            'gitclone')   full=2; printf "Клонирование '%s'" "$GIT_URL/$GIT_USER/$PROJECT_NAME";;
-            'install')    full=5; printf "Установка '%s'"    "$IMAGE_RUN:$VERSION";;
-            'restart')    full=5; printf "Перезагрузка '%s'" "$IMAGE_RUN:$VERSION";;
-            'start')      full=5; printf "Запуск '%s'"       "$IMAGE_RUN:$VERSION";;
-            'stop')       full=4; printf "Остановка '%s'"    "$IMAGE_RUN:$VERSION";;
-            'stop_all')   full=4; printf 'Остановка всех контейнеров';;
-            'remove_all') full=5; printf 'Удаление всех образов';;
-            'ssh_keygen') full=2; printf 'Создание ssh-ключа';;
+            'gitclone')   full=2; printf "Клонирование '%s'" "$GIT_URL/$GIT_USER/$GIT_REPO" ;;
+            'install')    full=5; printf "Установка '%s'"    "$IMAGE_RUN:$VERSION"          ;;
+            'restart')    full=5; printf "Перезагрузка '%s'" "$IMAGE_RUN:$VERSION"          ;;
+            'start')      full=5; printf "Запуск '%s'"       "$IMAGE_RUN:$VERSION"          ;;
+            'stop')       full=4; printf "Остановка '%s'"    "$RUN_IMAGE:$RUN_VERSION"      ;;
+            'stop_all')   full=4; printf 'Остановка всех контейнеров'                       ;;
+            'remove_all') full=5; printf 'Удаление всех образов'                            ;;
+            'ssh_keygen') full=2; printf 'Создание ssh-ключа'                               ;;
         esac
         
     # Статус

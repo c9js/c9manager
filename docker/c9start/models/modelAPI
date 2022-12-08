@@ -11,7 +11,7 @@ model:API() { case "$1" in
     'is_empty_dir')
     # Каталог пуст    = "yes"
     # Каталог не пуст = "no"
-        [[ $(ls -A "$2" 2>&1) == '' ]] && printf 'yes' || printf 'no'
+        is_empty_dir "$2" && printf 'yes' || printf 'no'
     ;;
     
 #┌──────────────────────────────────────────┐
@@ -45,21 +45,21 @@ model:API() { case "$1" in
 #│ Клонирует репозиторий │
 #└───────────────────────┘
     'gitclone')
-    # Путь к репозиторию
-        URL="https://$GIT_URL/$GIT_USER/$PROJECT_NAME.git"
+     # URL-адрес к репозиторию
+        local url="https://$GIT_URL/$GIT_USER/$GIT_REPO.git"
         
     # Переходим в каталог где будет храниться репозиторий
         cd "$CURRENT_PATH"
         
     # Клонируем репозиторий
-        if ! git clone "$URL" .; then
+        if ! git clone "$url" .; then
         # Репозиторий не был склонирован
             return 1
         fi
         
-    # Обновлем URL
-        git remote set-url --add 'origin' "git@$GIT_URL:$GIT_USER/$PROJECT_NAME.git"
-        git remote set-url --delete 'origin' "https://$GIT_URL/$GIT_USER/$PROJECT_NAME.git"
+    # Обновлем URL-адрес
+        git remote set-url --add 'origin' "git@$GIT_URL:$GIT_USER/$GIT_REPO.git"
+        git remote set-url --delete 'origin' "$url"
     ;;
     
 #┌────────────────────────┐

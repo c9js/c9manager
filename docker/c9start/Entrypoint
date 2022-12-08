@@ -3,6 +3,7 @@
 #│ Загружаем библиотеки │
 #└──────────────────────┘
 . ~/cli/lib.base
+. ~/cli/lib.filesystem
 . ~/cli/lib.docker
 . ~/cli/lib.stream
 . ~/cli/gui.menu
@@ -15,8 +16,10 @@
 # Models
 . /models/modelAPI
 . /models/modelMenu
+. /models/modelNotice
 . /models/modelDocker
 . /models/modelRequest
+. /models/modelRun
 
 # Entrypoints
 . /entrypoints/entrypointAPI
@@ -24,12 +27,15 @@
 
 # Controllers
 . /controllers/controllerMenu
+. /controllers/controllerNotice
 . /controllers/controllerDocker
 . /controllers/controllerRequest
+. /controllers/controllerRun
 
 # Views
 . /views/view
 . /views/viewMenu
+. /views/viewNotice
 
 #┌───────────────────────────────────────────────┐
 #│ Путь к текущему каталогу вне docker-а         │
@@ -57,12 +63,20 @@ DOCKER_PWD=$(echo "$CD" | sed \
 #┌───────────────────┐
 #│ Список переменных │
 #└───────────────────┘
-SSH_DIR='ssh'             # Имя каталога где хранятся ssh-ключи
-GIT_USER='c9js'           # Имя git-юзера
-PORT_DEFAULT='8000'       # Порт по умолчанию
-GIT_URL='github.com'      # URL git-репозитория
-PROJECT_NAME='c9manager'  # Имя проекта
+PATH_VERSION='VERSION'                 # Путь к файлу где хранится номер версии
+PATH_GIT_USER='.c9/pwd/git_user'       # Путь к файлу где хранится имя git-юзера
+PATH_GIT_REPO='.c9/pwd/git_repo'       # Путь к файлу где хранится имя git-репозитория
+PATH_DOCKER_USER='.c9/pwd/docker_user' # Путь к файлу где хранится логин от docker-репозитория
+PATH_DOCKER_PASS='.c9/pwd/docker_pass' # Путь к файлу где хранится пароль от docker-репозитория
+
+SSH_DIR='ssh'             # Путь к каталогу где хранятся ssh-ключи
 CURRENT_PATH='/root/repo' # Путь к текущему каталогу из docker-а
+GIT_URL='github.com'      # URL git-репозитория
+PORT_DEFAULT='8000'       # (по умолчанию) Порт
+DOCKER_USER='c9js'        # (по умолчанию) Логин от docker-репозитория
+GIT_USER='c9js'           # (по умолчанию) Имя git-юзера
+GIT_REPO='c9manager'      # (по умолчанию) Имя git-репозитория
+WORKSPACE='c9manager'     # (по умолчанию) Имя рабочего каталога
 IMAGE_RUN='c9js/c9docker' # Имя образа который запускаем
 IMAGE_API='c9js/c9start'  # Имя текущего образа
 # IMAGE_DEV='c9start'     # Имя текущего образа для тестирования
@@ -74,6 +88,11 @@ IMAGES=(                  # Список всех образов
     'c9start'
     'c9open'
 )
+
+#┌─────────────────────────┐
+#│ Загружаем версию образа │
+#└─────────────────────────┘
+VERSION="$(get_file "$HOME/$PATH_VERSION")"
 
 #┌─────────────┐
 #│ Точки входа │

@@ -13,9 +13,9 @@ model:Menu() { case "$1" in
     # Останавливаем и удаляем контейнеры из списка $IMAGES
         controller:Docker 'stop' 'view status'
         
-    # Выводим финальное сообщение
-        view 'complete' \
-        "Контейнеры '$IMAGE_RUN:$VERSION' были остановлены и удалены!"
+    # Выводим сообщение об успешном завершении
+        view 'success' \
+        "Контейнеры '$RUN_IMAGE:$RUN_VERSION' были остановлены!"
     ;;
     
 #┌──────────────────────────────────────────┐
@@ -26,8 +26,8 @@ model:Menu() { case "$1" in
     # Останавливаем и удаляет все контейнеры
         controller:Docker 'stop_all' 'view status'
         
-    # Выводим финальное сообщение
-        view 'complete' \
+    # Выводим сообщение об успешном завершении
+        view 'success' \
         'Все контейнеры были остановлены и удалены!'
     ;;
     
@@ -39,8 +39,8 @@ model:Menu() { case "$1" in
     # Удаляем все образы
         controller:Docker 'remove_all' 'view status'
         
-    # Выводим финальное сообщение
-        view 'complete' \
+    # Выводим сообщение об успешном завершении
+        view 'success' \
         'Все контейнеры были остановлены и удалены!' \
         'Образы также были удалены!'
     ;;
@@ -61,18 +61,18 @@ model:Menu() { case "$1" in
         if controller:Docker 'download'; then
         # Образ не был скачан
             view 'error_log' \
-            "$ERROR_LOG" "Что-то не так в 'docker pull ...'"
+            "Что-то не так в 'docker pull ...'"
             return 1
         fi
         
     # Запускаем новый контейнер
-        local error_log=$(controller:Docker 'start' "$2")
+        ERROR_LOG=$(controller:Docker 'start' "$2")
         
     # Контейнер не был запущен
         if (( $? == 1 )); then
-        # Выводим сообщение об ошибке
+        # Выводим сообщение со списком ошибок
             view 'error_log' \
-            "$error_log" "Что-то не так в 'docker run ...'"
+            "Что-то не так в 'docker run ...'"
             return 1
         fi
         
@@ -87,7 +87,8 @@ model:Menu() { case "$1" in
     'install' |'start')
     # Запускаем новый контейнер
         if model:Menu 'run' "$2"; then
-            view 'complete' \
+        # Выводим сообщение об успешном завершении
+            view 'success' \
             "Контейнер '$IMAGE_RUN:$VERSION' успешно запущен!" \
             "http://localhost:$2/"
         fi
@@ -100,7 +101,8 @@ model:Menu() { case "$1" in
     'restart')
     # Запускаем новый контейнер
         if model:Menu 'run' "$2"; then
-            view 'complete' \
+        # Выводим сообщение об успешном завершении
+            view 'success' \
             "Контейнер '$IMAGE_RUN:$VERSION' успешно перезагружен!" \
             "http://localhost:$2/"
         fi
@@ -152,13 +154,13 @@ model:Menu() { case "$1" in
         if controller:Request 'ssh_keygen' "$2"; then
         # SSH-ключ не был создан
             view 'error_log' \
-            "$ERROR_LOG" "Что-то не так в 'ssh-keygen ...'"
+            "Что-то не так в 'ssh-keygen ...'"
             return
         fi
         
-    # Выводим финальное сообщение
-        view 'complete' \
-        "Новый ssh-ключ успешно создан!" \
+    # Выводим сообщение об успешном завершении
+        view 'success' \
+        'Новый ssh-ключ успешно создан!' \
         "${CD}${SEP}${SSH_DIR}${SEP}$2" \
         "${CD}${SEP}${SSH_DIR}${SEP}$2.pub"
     ;;
@@ -182,15 +184,27 @@ model:Menu() { case "$1" in
             if controller:Request 'gitclone'; then
             # Репозиторий не был склонирован
                 view 'error_log' \
-                "$ERROR_LOG" "Что-то не так в 'git clone ...'"
+                "Что-то не так в 'git clone ...'"
                 return
             fi
             
-        # Выводим финальное сообщение
-            view 'complete' \
-            "Клонирование прошло успешно!" \
-            "URL:  $GIT_URL/$GIT_USER/$PROJECT_NAME" \
-            "Путь: $CD"
+        # Проверяем наличие образа
+            if ! controller:Docker 'no_image'; then
+            # Выводим сообщение об успешном завершении
+                view 'success' \
+                'Локальный репозиторий успешно создан!' \
+                "Путь: $CD"
+                
+        # Образ не найден
+            else
+            # Выводим сообщение об успешном завершении
+                view 'success' \
+                'Локальный репозиторий успешно создан!' \
+                "Путь: $CD" \
+                '' \
+                "Далее необходимо установить '$IMAGE_RUN:$VERSION'" \
+                "Нажмите 'Install'"
+            fi
         fi
     ;;
 esac

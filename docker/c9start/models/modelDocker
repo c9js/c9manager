@@ -16,14 +16,11 @@ model:Docker() { local i; case "$1" in
 #│ Проверяет существует-ли контейнер │
 #└───────────────────────────────────┘
     'no_container')
-    # Получаем список ID-образов
-        is_image "$IMAGE_RUN"
-        
-    # Получаем список ID-контейнеров
-        getContainerIDs 'view' "${GLOBAL_ID[@]}"
+    # Получает информацию о запущенном контейнере
+        getContainerInfo "$WORKSPACE"
         
     # Контейнер не найден
-        (( ${#containerIDs[*]} == 0 ))
+        [ -z "$RUN_IMAGE" ]
     ;;
     
 #┌─────────────────────────────────────────────┐
@@ -158,16 +155,25 @@ model:Docker() { local i; case "$1" in
         
     # Запускаем контейнер
         if ! error_msg=$(docker run \
-            --name "$PROJECT_NAME" \
-            --hostname "$PROJECT_NAME" \
+            --name "$WORKSPACE" \
+            --hostname "$WORKSPACE" \
             -p "$PORT1:$PORT1" \
             -p "$PORT2:$PORT2" \
             -e "C9_PORT=$PORT1" \
             -e "PORT=$PORT2" \
-            -e "WORKSPACE=$PROJECT_NAME" \
+            -e "VERSION=$VERSION" \
+            -e "PATH_VERSION=/$WORKSPACE/$PATH_VERSION" \
+            -e "PATH_GIT_USER=/$WORKSPACE/$PATH_GIT_USER" \
+            -e "PATH_GIT_REPO=/$WORKSPACE/$PATH_GIT_REPO" \
+            -e "PATH_DOCKER_USER=/$WORKSPACE/$PATH_DOCKER_USER" \
+            -e "PATH_DOCKER_PASS=/$WORKSPACE/$PATH_DOCKER_PASS" \
+            -e "GIT_URL=$GIT_URL" \
             -e "GIT_USER=$GIT_USER" \
+            -e "GIT_REPO=$GIT_REPO" \
+            -e "WORKSPACE=$WORKSPACE" \
+            -e "DOCKER_USER=$DOCKER_USER" \
             -e "DOCKER_PWD=$DOCKER_PWD" \
-            -v "$DOCKER_PWD:/$PROJECT_NAME" \
+            -v "$DOCKER_PWD:/$WORKSPACE" \
             -v "$DOCKER_PWD/ssh:/root/.sshsource" \
             -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
             --restart unless-stopped \
