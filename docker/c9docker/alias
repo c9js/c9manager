@@ -7,4 +7,7 @@ alias remove="/$WORKSPACE/docker/c9 remove c9docker"
 alias start="/$WORKSPACE/docker/c9 start c9docker"
 alias stop="/$WORKSPACE/docker/c9 stop c9docker"
 
+alias deploy="/$WORKSPACE/scripts/deploy/deploy"
+alias d="/$WORKSPACE/scripts/deploy/deploy"
+
 alias c9="/$WORKSPACE/docker/c9"
