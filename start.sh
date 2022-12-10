@@ -2,7 +2,7 @@
 #┌─────────────────────┐
 #│ Версия по умолчанию │
 #└─────────────────────┘
-    IMAGE_RUN='c9js/c9docker:1.0.40'
+    IMAGE_RUN='c9js/c9docker:1.0.41'
     if [[ $1 != '' ]]; then
         IMAGE_RUN="c9js/c9docker:$1"
     fi

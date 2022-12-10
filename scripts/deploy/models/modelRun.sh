@@ -114,9 +114,9 @@ model:Run() { case "$1" in
 #┌──────────────────┐
 #│ Создание образов │
 #└──────────────────┘
-    'build:c9open')   "/$WORKSPACE/docker/c9" 'build' "${1/*:}" ;;
-    'build:c9start')  "/$WORKSPACE/docker/c9" 'build' "${1/*:}" ;;
-    'build:c9docker') "/$WORKSPACE/docker/c9" 'build' "${1/*:}" ;;
+    'build:c9open')   "/$WORKSPACE/docker/c9.sh" 'build' "${1/*:}" ;;
+    'build:c9start')  "/$WORKSPACE/docker/c9.sh" 'build' "${1/*:}" ;;
+    'build:c9docker') "/$WORKSPACE/docker/c9.sh" 'build' "${1/*:}" ;;
     
 #┌────────────────┐
 #│ Создание тегов │

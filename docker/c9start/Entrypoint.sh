@@ -2,40 +2,40 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. ~/cli/lib.base
-. ~/cli/lib.filesystem
-. ~/cli/lib.docker
-. ~/cli/lib.stream
-. ~/cli/gui.menu
-. ~/cli/gui.input
-. ~/cli/gui.notice
+. ~/cli/lib.base.sh
+. ~/cli/lib.filesystem.sh
+. ~/cli/lib.docker.sh
+. ~/cli/lib.stream.sh
+. ~/cli/gui.menu.sh
+. ~/cli/gui.input.sh
+. ~/cli/gui.notice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
 # Models
-. /models/modelAPI
-. /models/modelMenu
-. /models/modelNotice
-. /models/modelDocker
-. /models/modelRequest
-. /models/modelRun
+. /models/modelAPI.sh
+. /models/modelMenu.sh
+. /models/modelNotice.sh
+. /models/modelDocker.sh
+. /models/modelRequest.sh
+. /models/modelRun.sh
 
 # Entrypoints
-. /entrypoints/entrypointAPI
-. /entrypoints/entrypointMenu
+. /entrypoints/entrypointAPI.sh
+. /entrypoints/entrypointMenu.sh
 
 # Controllers
-. /controllers/controllerMenu
-. /controllers/controllerNotice
-. /controllers/controllerDocker
-. /controllers/controllerRequest
-. /controllers/controllerRun
+. /controllers/controllerMenu.sh
+. /controllers/controllerNotice.sh
+. /controllers/controllerDocker.sh
+. /controllers/controllerRequest.sh
+. /controllers/controllerRun.sh
 
 # Views
-. /views/view
-. /views/viewMenu
-. /views/viewNotice
+. /views/view.sh
+. /views/viewMenu.sh
+. /views/viewNotice.sh
 
 #┌───────────────────────────────────────────────┐
 #│ Путь к текущему каталогу вне docker-а         │

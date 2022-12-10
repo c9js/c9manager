@@ -43,6 +43,6 @@ COPY "$controllers" /controllers/
 COPY "$models" /models/
 COPY "$views" /views/
 COPY "$entrypoints" /entrypoints/
-COPY "$entrypoint" /entrypoint
-RUN chmod 700 /entrypoint
-ENTRYPOINT ["/bin/bash", "entrypoint"]
+COPY "$entrypoint" /entrypoint.sh
+RUN chmod 700 /entrypoint.sh
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

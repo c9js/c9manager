@@ -1,0 +1,53 @@
+#!/bin/bash
+#┌──────────────────────┐
+#│ Загружаем библиотеки │
+#└──────────────────────┘
+. /$WORKSPACE/cli/lib.base.sh
+. /$WORKSPACE/cli/lib.filesystem.sh
+. /$WORKSPACE/cli/lib.stream.sh
+. /$WORKSPACE/cli/gui.menu.sh
+. /$WORKSPACE/cli/gui.input.sh
+. /$WORKSPACE/cli/gui.notice.sh
+
+#┌───────────────┐
+#│ Загружаем MVC │
+#└───────────────┘
+# Models
+. /$WORKSPACE/scripts/deploy/models/modelDeploy.sh
+. /$WORKSPACE/scripts/deploy/models/modelNotice.sh
+. /$WORKSPACE/scripts/deploy/models/modelRun.sh
+. /$WORKSPACE/scripts/deploy/models/modelSettings.sh
+
+# Entrypoints
+. /$WORKSPACE/scripts/deploy/entrypoints/entrypointMenu.sh
+
+# Controllers
+. /$WORKSPACE/scripts/deploy/controllers/controllerDeploy.sh
+. /$WORKSPACE/scripts/deploy/controllers/controllerMenu.sh
+. /$WORKSPACE/scripts/deploy/controllers/controllerNotice.sh
+. /$WORKSPACE/scripts/deploy/controllers/controllerRun.sh
+. /$WORKSPACE/scripts/deploy/controllers/controllerSettings.sh
+
+# Views
+. /$WORKSPACE/scripts/deploy/views/view.sh
+. /$WORKSPACE/scripts/deploy/views/viewDeploy.sh
+. /$WORKSPACE/scripts/deploy/views/viewMenu.sh
+. /$WORKSPACE/scripts/deploy/views/viewNotice.sh
+. /$WORKSPACE/scripts/deploy/views/viewSettings.sh
+
+#┌───────────────────────────────┐
+#│ Версии: Micro / Minor / Major │
+#└───────────────────────────────┘
+micro="${VERSION#[0-9]*.[0-9]*.}"
+minor="${VERSION#[0-9]*.}"
+minor="${minor%.[0-9]*}"
+major="${VERSION%.[0-9]*.[0-9]*}"
+
+MICRO="$major.$minor.$(($micro+1))"
+MINOR="$major.$(($minor+1)).0"
+MAJOR="$(($major+1)).0.0"
+
+#┌─────────────┐
+#│ Точки входа │
+#└─────────────┘
+entrypoint:Menu # Меню

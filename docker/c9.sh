@@ -7,9 +7,9 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. ~/cli/lib.base
-. ~/cli/lib.docker
-. ~/cli/gui.input
+. /$WORKSPACE/cli/lib.base.sh
+. /$WORKSPACE/cli/lib.docker.sh
+. /$WORKSPACE/cli/gui.input.sh
 
 #┌────────────────────────────┐
 #│ Список аргументов          │
@@ -205,7 +205,7 @@ esac
         status 4 'Удаление портов из списка...'
         for ID in $containerID; do
         # Удаляем порты из списка
-            "$C9_PATH/ports" remove "$ID" &> '/dev/null'
+            "$C9_PATH/ports.js" remove "$ID" &> '/dev/null'
         done
         
     # Выводим финальное сообщение и завершаем процесс
@@ -307,7 +307,7 @@ esac
                 --build-arg "models=$IMAGE_RUN/models/" \
                 --build-arg "views=$IMAGE_RUN/views/" \
                 --build-arg "entrypoints=$IMAGE_RUN/entrypoints/" \
-                --build-arg "entrypoint=$IMAGE_RUN/Entrypoint" \
+                --build-arg "entrypoint=$IMAGE_RUN/Entrypoint.sh" \
                 -f "$C9_PATH/$IMAGE_RUN/Dockerfile" \
                 -t "$IMAGE_RUN" \
                 "$C9_PATH"
@@ -327,7 +327,7 @@ esac
         
     # Получаем список свободных портов
         status 11 'Получение свободных портов...'
-        if ! PORTS=$("$C9_PATH/ports" getFreePorts 2 2>&1); then
+        if ! PORTS=$("$C9_PATH/ports.js" getFreePorts 2 2>&1); then
         # Выводим сообщение об ошибке и завершаем процесс
             error "$PORTS"
         fi
@@ -370,8 +370,8 @@ esac
         
     # Привязываем порты к containerID
         status 13 'Сохранение списка портов...'
-        "$C9_PATH/ports" add "$containerID" "$PORT1" &> '/dev/null'
-        "$C9_PATH/ports" add "$containerID" "$PORT2" &> '/dev/null'
+        "$C9_PATH/ports.js" add "$containerID" "$PORT1" &> '/dev/null'
+        "$C9_PATH/ports.js" add "$containerID" "$PORT2" &> '/dev/null'
         
     # Выводим финальное сообщение и завершаем процесс
         complete "Контейнер успешно запущен!" \

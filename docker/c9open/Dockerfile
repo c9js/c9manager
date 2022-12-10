@@ -128,6 +128,6 @@ COPY temp/user.settings /root/.c9/user.settings
 #│ Точка входа │
 #└─────────────┘
 ARG entrypoint
-COPY "$entrypoint" /usr/local/bin/Entrypoint
-RUN chmod 700 /usr/local/bin/Entrypoint
-ENTRYPOINT ["/bin/bash", "Entrypoint"]
+COPY "$entrypoint" /usr/local/bin/entrypoint.sh
+RUN chmod 700 /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
