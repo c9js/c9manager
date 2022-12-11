@@ -13,17 +13,19 @@ view:Menu() { case "$1" in
 #┌─────────────────────────────────────────────┐
 #│ Предлагает пользователю попробовать еще раз │
 #└─────────────────────────────────────────────┘
-    'continue')
+    'last_deploy')
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет     Строка
-             Red '1. Continue  Попробовать еще раз'
+             Red '1. Continue   Попробовать еще раз'
+             Red '2. Настройки  Перейти в раздел'
             Exit '0. Отмена'
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Deploy 'continue' "$2" ;; # Выбран: "Continue"
-            0)       view:Menu 'main'            ;; # Выбран: "Отмена"
+            1) controller:Deploy 'last_deploy' ;; # Выбран: "Continue"
+            2)       view:Menu   'settings'    ;; # Выбран: "Настройки"
+            0)       menu:Main                 ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -63,7 +65,7 @@ view:Menu() { case "$1" in
             1) view:Menu 'version1' 1      ;; # Выбран: "Docker + Git"
             2) view:Menu 'version2' 3 "$1" ;; # Выбран: "Docker"
             3) view:Menu 'version2' 2 "$1" ;; # Выбран: "Git"
-            0) view:Menu 'main'            ;; # Выбран: "Отмена"
+            0) menu:Main                   ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -81,8 +83,8 @@ view:Menu() { case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) controller:Deploy 'start' "$2" "$MICRO" ;; # Выбран: "Micro"
-            2)       view:Menu 'version2' "$2" "$1"    ;; # Выбран: "Изменить версию"
-            0)       view:Menu 'deploy'                ;; # Выбран: "Отмена"
+            2)       view:Menu   'version2' "$2" "$1"  ;; # Выбран: "Изменить версию"
+            0)       view:Menu   'deploy'              ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -124,7 +126,7 @@ view:Menu() { case "$1" in
         case $? in
             1) view:Menu 'input_git_user'    ;; # Выбран пункт: "Git"
             2) view:Menu 'input_docker_user' ;; # Выбран пункт: "Docker"
-            0) view:Menu 'main'              ;; # Выбран пункт: "Назад"
+            0) menu:Main                     ;; # Выбран пункт: "Назад"
         esac
     ;;
     

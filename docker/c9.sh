@@ -351,6 +351,7 @@ esac
             -e "PATH_GIT_REPO=$PATH_GIT_REPO" \
             -e "PATH_DOCKER_USER=$PATH_DOCKER_USER" \
             -e "PATH_DOCKER_PASS=$PATH_DOCKER_PASS" \
+            -e "PATH_LAST_DEPLOY=$PATH_LAST_DEPLOY" \
             -e "GIT_URL=$GIT_URL" \
             -e "GIT_USER=$GIT_USER" \
             -e "GIT_REPO=$GIT_REPO" \

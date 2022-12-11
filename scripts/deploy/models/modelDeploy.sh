@@ -8,21 +8,15 @@ model:Deploy() { case "$1" in
 #┌───────────────────────────────────┐
 #│ Пробует еще раз продолжить деплой │
 #└───────────────────────────────────┘
-    'continue')
-    # Сохраняем последнюю команду
-        local error_command="$2"
-        
-    # Сохраняем последний вариант деплоя
-        local error_selection="$SELECTION"
-        
-    # Обновляем выбранный вариант деплоя
-        SELECTION=0
-        
+    'last_deploy')
     # Выполняем список команд
-        model:Deploy 'run_list' "${CONTINUE_LIST[@]}"
+        model:Deploy 'run_list' "${GENERAL_LIST[@]}"
         
-    # Пробуем еще раз продолжить деплой
-        controller:Deploy 'start' "$error_selection" "$NEW_VERSION" "$error_command"
+    # Проверка прошла успешно
+        if [[ $? == 0 ]]; then
+        # Пробуем еще раз продолжить деплой
+            model:Deploy 'start' "$LAST_SELECTION" "$NEW_VERSION"
+        fi
     ;;
     
 #┌───────────────────────────────────┐
@@ -35,52 +29,48 @@ model:Deploy() { case "$1" in
     # Сохраняем новую версию
         NEW_VERSION="$3"
         
-    # Сохраняем последнюю команду
-        ERROR_COMMAND="$4"
-        
     # Деплоит один из выбранных вариантов
         case "$SELECTION" in
-        # Сразу в оба репозитория
-            1) model:Deploy 'deploy_git'    && # Деплоим в git-репозиторий
-               model:Deploy 'deploy_docker' && # Деплоим в docker-репозиторий
-                view:Deploy 'success'       && # Выводим сообщение об успешном завершении
-                return
-            ;;
-            
-        # Только в git-репозиторий
-            2) model:Deploy 'deploy_git'    && # Деплоим в git-репозиторий
-                view:Deploy 'success'       && # Выводим сообщение об успешном завершении
-                return
-            ;;
-            
-        # Только в docker-репозиторий
-            3) model:Deploy 'deploy_docker' && # Деплоим в docker-репозиторий
-                view:Deploy 'success'       && # Выводим сообщение об успешном завершении
-                return
-            ;;
+            1) model:Deploy 'run_list' "${ALL_LIST[@]}"    ;; # Сразу в оба репозитория
+            2) model:Deploy 'run_list' "${GIT_LIST[@]}"    ;; # Только в git-репозиторий
+            3) model:Deploy 'run_list' "${DOCKER_LIST[@]}" ;; # Только в docker-репозиторий
         esac
-    ;;
-    
-#┌────────────────────────────────────────┐
-#│ Деплоит новую версию в git-репозиторий │
-#└────────────────────────────────────────┘
-    'deploy_git')
-    # Сохраняем текущий репозиторий
-        CURRENT_REPO="$1"
         
-    # Выполняем список команд
-        model:Deploy 'run_list' "${GIT_LIST[@]}"
+    # Деплой прошел успешно
+        if [[ $? == 0 ]]; then
+             model:Deploy 'success'
+        fi
     ;;
     
-#┌───────────────────────────────────────────┐
-#│ Деплоит новую версию в docker-репозиторий │
-#└───────────────────────────────────────────┘
-    'deploy_docker')
-    # Сохраняем текущий репозиторий
-        CURRENT_REPO="$1"
-         
-    # Выполняем список команд
-        model:Deploy 'run_list' "${DOCKER_LIST[@]}"
+#┌───────────────────────┐
+#│ Деплой прошел успешно │
+#└───────────────────────┘
+    'success')
+    # Деплой прошел успешно, поэтому удаляем информацию о последнем деплое
+        model:Deploy 'remove_last_deploy'
+        
+    # Выводим сообщение об успешном завершении
+        view:Deploy 'success'
+    ;;
+    
+#┌────────────────────────┐
+#│ Деплой не был завершен │
+#└────────────────────────┘
+    'error')
+    # Последняя команда
+        local last_command="$2"
+        
+    # Выводим сообщение об ошибке
+        view:Deploy 'error' "$last_command"
+        
+    # Возвращаем старую версию
+        model:Deploy 'backup_version'
+        
+    # Сохраняем информацию о последнем деплое
+        model:Deploy 'save_last_deploy' "$last_command"
+        
+    # Добавляем задержку для визуального восприятия
+        sleep 0.5
     ;;
     
 #┌─────────────────────────┐
@@ -112,15 +102,14 @@ model:Deploy() { case "$1" in
         local now="$3"     # Текущий шаг
         
     # Проверяем текущую команду
-        if [[ "$command" == "$ERROR_COMMAND" ]]; then
+        if [[ "$command" == "$LAST_COMMAND" ]]; then
         # Обнуляем последнюю команду и выполняем текущую команду
-            ERROR_COMMAND=''
-        else
-        # Проверяем последнюю команду
-            if [ -n "$ERROR_COMMAND" ]; then
-            # Пропускаем текущую команду
-                return 1
-            fi
+            LAST_COMMAND=''
+            
+    # Проверяем последнюю команду
+        elif [[ "$SELECTION" != '' && "$LAST_COMMAND" != '' ]]; then
+        # Пропускаем текущую команду
+            return 1
         fi
         
     # Обновляем текущий статус
@@ -128,14 +117,8 @@ model:Deploy() { case "$1" in
         
     # Выполняем команду
         if controller:Run "$command"; then
-        # Выводим сообщение об ошибке
-            view:Deploy 'error' "$command"
-            
-        # Возвращаем старую версию
-            controller:Run 'backup_version'
-            
-        # Предлагаем пользователю попробовать еще раз
-            view:Menu 'continue' "$command"
+        # Деплой не был завершен
+            model:Deploy 'error' "$command"
             
          # Команда не была выполнена
             return 0
@@ -163,20 +146,15 @@ model:Deploy() { case "$1" in
     # Количество шагов
         local git_full=${#GIT_LIST[*]}
         local docker_full=${#DOCKER_LIST[*]}
-        local continue_full=${#CONTINUE_LIST[*]}
+        local general_full=${#GENERAL_LIST[*]}
         
     # Обновляем общее количество шагов
         case "$SELECTION" in
             1) let full=$git_full+$docker_full ;; # Сразу в оба репозитория
             2) let full=$git_full              ;; # Только в git-репозиторий
             3) let full=$docker_full           ;; # Только в docker-репозиторий
-            0) let full=$continue_full         ;; # Пробуем еще раз
+            *) let full=$general_full          ;; # Пробуем еще раз
         esac
-        
-    # Добавляем шаги от deploy git
-        if [[ "$SELECTION" == 1 && "$CURRENT_REPO" == 'deploy_docker' ]]; then
-            let now+=$git_full
-        fi
         
     # Переносим строку
         printf '\n'
@@ -190,5 +168,40 @@ model:Deploy() { case "$1" in
     # Переносим строку
         printf '\n'
     ;;
+    
+#┌──────────────────────────┐
+#│ Возвращает старую версию │
+#└──────────────────────────┘
+    'backup_version')
+        save_file "$PATH_VERSION" "$VERSION" 2>&1
+    ;;
+    
+#┌─────────────────────────────────────────┐
+#│ Сохраняет информацию о последнем деплое │
+#└─────────────────────────────────────────┘
+    'save_last_deploy')
+    # Проверяем текущий вариант деплоя
+        if [ -n "$SELECTION" ]; then
+        # Обновляем информацию
+            LAST_COMMAND="$2"           # Последняя команда
+            LAST_SELECTION="$SELECTION" # Последний вариант деплоя
+            SELECTION=''                # Обнуляем выбранный вариант деплоя
+            
+        # Сохраняем информацию в файл
+            save_file "$PATH_LAST_DEPLOY" "$NEW_VERSION $LAST_COMMAND $LAST_SELECTION" 2>&1
+        fi
+    ;;
+    
+#┌───────────────────────────────────────┐
+#│ Удаляет информацию о последнем деплое │
+#└───────────────────────────────────────┘
+    'remove_last_deploy')
+    # Удаляем файл
+        remove_file "$PATH_LAST_DEPLOY" "$last_deploy" 2>&1
+        
+    # Обнуляем последний вариант деплоя
+        LAST_SELECTION=''
+    ;;
 esac
 }
+

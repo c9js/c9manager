@@ -19,7 +19,6 @@
 . /models/modelNotice.sh
 . /models/modelDocker.sh
 . /models/modelRequest.sh
-. /models/modelRun.sh
 
 # Entrypoints
 . /entrypoints/entrypointAPI.sh
@@ -30,7 +29,6 @@
 . /controllers/controllerNotice.sh
 . /controllers/controllerDocker.sh
 . /controllers/controllerRequest.sh
-. /controllers/controllerRun.sh
 
 # Views
 . /views/view.sh
@@ -64,10 +62,11 @@ DOCKER_PWD=$(echo "$CD" | sed \
 #│ Список переменных │
 #└───────────────────┘
 PATH_VERSION='VERSION'                 # Путь к файлу где хранится номер версии
-PATH_GIT_USER='.c9/pwd/git_user'       # Путь к файлу где хранится имя git-юзера
-PATH_GIT_REPO='.c9/pwd/git_repo'       # Путь к файлу где хранится имя git-репозитория
-PATH_DOCKER_USER='.c9/pwd/docker_user' # Путь к файлу где хранится логин от docker-репозитория
-PATH_DOCKER_PASS='.c9/pwd/docker_pass' # Путь к файлу где хранится пароль от docker-репозитория
+PATH_GIT_USER='.c9/deploy/git_user'       # Путь к файлу где хранится имя git-юзера
+PATH_GIT_REPO='.c9/deploy/git_repo'       # Путь к файлу где хранится имя git-репозитория
+PATH_DOCKER_USER='.c9/deploy/docker_user' # Путь к файлу где хранится логин от docker-репозитория
+PATH_DOCKER_PASS='.c9/deploy/docker_pass' # Путь к файлу где хранится пароль от docker-репозитория
+PATH_LAST_DEPLOY='.c9/deploy/last_deploy' # Путь к файлу где хранится информация о последнем деплое
 
 SSH_DIR='ssh'             # Путь к каталогу где хранятся ssh-ключи
 CURRENT_PATH='/root/repo' # Путь к текущему каталогу из docker-а

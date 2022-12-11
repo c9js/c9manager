@@ -5,20 +5,15 @@
 #█                                █
 #▀────────────────────────────────▀
 controller:Run() { case "$1" in
-# Уведомления
-    'no_docker_pass')     model:Run "$@"    ;; # Проверяет задан-ли пароль от docker-репозитория
-    'no_current_version') model:Run "$@"    ;; # Проверяет устарела-ли текущая версия
-    'no_valid_version')   model:Run "$@"    ;; # Проверяет проходит-ли валидацию текущая версия
-    
 # Общие команды
-    'cd_workspace')   stream "model:Run $@" ;; # Переходит в рабочий каталог
-    'save_version')   stream "model:Run $@" ;; # Сохраняет новую версию
-    'backup_version') stream "model:Run $@" ;; # Возвращает старую версию
     'is_new_version') stream "model:Run $@" ;; # Проверяет новую версию
+    'save_version')   stream "model:Run $@" ;; # Сохраняет новую версию
+    'cd_workspace')   stream "model:Run $@" ;; # Переходит в рабочий каталог
     
 # Git-репозиторий
     'is_git_user')    stream "model:Run $@" ;; # Проверяет имя git-юзера
     'is_git_repo')    stream "model:Run $@" ;; # Проверяет имя git-репозитория
+    'git_login')      stream "model:Run $@" ;; # Проверяет авторизацию в git-репозиторий
     'git_add')        stream "model:Run $@" ;; # Добавляет рабочий каталог в индекс
     'git_commit')     stream "model:Run $@" ;; # Создает новый коммит
     'git_push')       stream "model:Run $@" ;; # Загружает коммит в git-репозиторий

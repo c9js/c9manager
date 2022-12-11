@@ -5,6 +5,25 @@
 #█                       █
 #▀───────────────────────▀
 view() { case "$1" in
+#┌───────────────┐
+#│ Инициализация │
+#└───────────────┘
+    'init')
+    # Создаем заголовок меню
+        view:Menu 'header'
+        
+    # Обновляем данные
+        controller:Update 'git'          # Обновляем настройки git-репозитория
+        controller:Update 'docker'       # Обновляем настройки docker-репозитория
+        controller:Update 'last_deploy'  # Обновляем информацию о последнем деплое
+        controller:Update 'repo_version' # Обновляем версию репозитория
+        
+    # Проверяем уведомления
+        controller:Notice 'warning'      # Проверяем список предупреждений
+        controller:Notice 'error'        # Проверяем список ошибок
+        controller:Notice 'fatal_error'  # Проверяем список фатальных ошибок
+    ;;
+    
 #┌──────────────────────────────┐
 #│ Выводит уведомление на экран │
 #└──────────────────────────────┘
@@ -14,28 +33,5 @@ view() { case "$1" in
     'error')       menu:Notice "$@"       ;; # Выводит сообщение об ошибке
     'error_log')   menu:Notice "$@"       ;; # Выводит сообщение со списком ошибок
     'fatal_error') notice:FatalError "$@" ;; # Выводит сообщение о фатальной ошибке
-    
-#┌───────────────┐
-#│ Инициализация │
-#└───────────────┘
-    'init')
-    # Создаем заголовок меню
-        view:Menu 'header'
-        
-    # Обновляем настройки git-репозитория
-        controller:Settings 'update_git'
-        
-    # Обновляем настройки docker-репозитория
-        controller:Settings 'update_docker'
-        
-    # Загружаем версию репозитория
-        controller:Settings 'load_repo_version'
-        
-    # Проверяем список предупреждений
-        controller:Notice 'warning'
-        
-    # Проверяем список фатальных ошибок
-        controller:Notice 'fatal_error'
-    ;;
 esac
 }

@@ -44,7 +44,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────┐
 #│ Запущен старый контейнер │
 #└──────────────────────────┘
-    if controller:Run 'is_run_old'; then
+    if controller:Notice 'run_old'; then
     # Предлагаем пользователю только остановить контейнер
         view:Menu 'stop'
         continue
@@ -54,6 +54,5 @@ entrypoint:Menu() { view 'init'; while :; do
 #│ Контейнер запущен │
 #└───────────────────┘
     view:Menu 'restart' # Выводим меню на экран
-    
 done
 }
