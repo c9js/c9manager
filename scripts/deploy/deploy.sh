@@ -2,12 +2,12 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. /$WORKSPACE/cli/lib.base.sh
-. /$WORKSPACE/cli/lib.filesystem.sh
-. /$WORKSPACE/cli/lib.stream.sh
-. /$WORKSPACE/cli/gui.menu.sh
-. /$WORKSPACE/cli/gui.input.sh
-. /$WORKSPACE/cli/gui.notice.sh
+. /$WORKSPACE/scripts/cli/lib.base.sh
+. /$WORKSPACE/scripts/cli/lib.filesystem.sh
+. /$WORKSPACE/scripts/cli/lib.stream.sh
+. /$WORKSPACE/scripts/cli/gui.menu.sh
+. /$WORKSPACE/scripts/cli/gui.input.sh
+. /$WORKSPACE/scripts/cli/gui.notice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │

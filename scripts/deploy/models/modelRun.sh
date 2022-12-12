@@ -5,6 +5,11 @@
 #█                            █
 #▀────────────────────────────▀
 model:Run() { case "$1" in
+#┌─────────────────────────────┐
+#│ Проходит контройльную точку │
+#└─────────────────────────────┘
+    'no_stop') return 0 ;;
+    
 #┌────────────────────────┐
 #│ Проверяет новую версию │
 #└────────────────────────┘
@@ -16,7 +21,7 @@ model:Run() { case "$1" in
 #│ Сохраняет новую версию │
 #└────────────────────────┘
     'save_version')
-        save_file "$PATH_VERSION" "$NEW_VERSION" 2>&1
+        save_file "$PATH_VERSION" "$NEW_VERSION"
     ;;
     
 #┌─────────────────────────────┐
@@ -59,7 +64,7 @@ model:Run() { case "$1" in
 #└───────────────────────────────────────────┘
     'docker_login')
         printf '%s' "$DOCKER_PASS" | \
-            docker login --username "$DOCKER_USER" --password-stdin 2>&1
+            docker login --username "$DOCKER_USER" --password-stdin
     ;;
     
 #┌─────────────────────────────────────────┐
@@ -68,7 +73,11 @@ model:Run() { case "$1" in
     'git_login')
         git remote show origin
     ;;
-    # *) return 0; ;; # Для тестирования
+    
+#┌──────────────────┐
+#│ Для тестирования │
+#└──────────────────┘
+    # *) return 0; ;;
     
 #┌────────────────────────────────────┐
 #│ Добавляет рабочий каталог в индекс │
@@ -94,9 +103,9 @@ model:Run() { case "$1" in
 #┌──────────────────┐
 #│ Создание образов │
 #└──────────────────┘
-    'build:c9open')   "/$WORKSPACE/docker/c9.sh" 'build' "${1/*:}" ;;
-    'build:c9start')  "/$WORKSPACE/docker/c9.sh" 'build' "${1/*:}" ;;
-    'build:c9docker') "/$WORKSPACE/docker/c9.sh" 'build' "${1/*:}" ;;
+    'build:c9open')   "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9start')  "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9docker') "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
     
 #┌────────────────┐
 #│ Создание тегов │

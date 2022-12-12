@@ -167,7 +167,7 @@ model:Docker() { local i; case "$1" in
             -e "PATH_GIT_REPO=/$WORKSPACE/$PATH_GIT_REPO" \
             -e "PATH_DOCKER_USER=/$WORKSPACE/$PATH_DOCKER_USER" \
             -e "PATH_DOCKER_PASS=/$WORKSPACE/$PATH_DOCKER_PASS" \
-            -e "PATH_LAST_DEPLOY=/$WORKSPACE/$PATH_LAST_DEPLOY" \
+            -e "PATH_BAD_DEPLOY=/$WORKSPACE/$PATH_BAD_DEPLOY" \
             -e "GIT_URL=$GIT_URL" \
             -e "GIT_USER=$GIT_USER" \
             -e "GIT_REPO=$GIT_REPO" \

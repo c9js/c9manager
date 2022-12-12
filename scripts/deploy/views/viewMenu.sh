@@ -13,7 +13,7 @@ view:Menu() { case "$1" in
 #┌─────────────────────────────────────────────┐
 #│ Предлагает пользователю попробовать еще раз │
 #└─────────────────────────────────────────────┘
-    'last_deploy')
+    'bad_deploy')
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет     Строка
@@ -23,9 +23,9 @@ view:Menu() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Deploy 'last_deploy' ;; # Выбран: "Continue"
-            2)       view:Menu   'settings'    ;; # Выбран: "Настройки"
-            0)       menu:Main                 ;; # Выбран: "Отмена"
+            1) controller:Deploy 'continue' ;; # Выбран: "Continue"
+            2)       view:Menu   'settings' ;; # Выбран: "Настройки"
+            0) controller:Deploy 'stop'     ;; # Выбран: "Отмена"
         esac
     ;;
     

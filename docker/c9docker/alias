@@ -1,10 +1,10 @@
-alias c9="/$WORKSPACE/docker/c9.sh"
+alias c9="/$WORKSPACE/docker/build.sh"
+alias build="c9 build"
 
 alias c9docker="c9 build c9docker"
 alias c9start="c9 build c9start"
 alias c9open="c9 build c9open"
 
-alias build="c9 build c9docker"
 alias remove="c9 remove c9docker"
 alias start="c9 start c9docker"
 alias stop="c9 stop c9docker"

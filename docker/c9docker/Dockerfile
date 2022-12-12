@@ -6,13 +6,35 @@ FROM alpine:3.11
 #┌────────────────┐
 #│ Базовые пакеты │
 #└────────────────┘
-RUN apk add g++ make python curl sed bash bash-doc bash-completion openssh-client git py-pip python-dev docker --no-cache \
+RUN apk add g++ make python curl sed bash bash-doc bash-completion openssh-client git py-pip python-dev --no-cache
+
+#┌────────┐
+#│ Docker │
+#└────────┘
+RUN apk add docker --no-cache
+
+#┌──────┐
+#│ Tmux │
+#└──────┘
+#&& apk add tmux=2.4-r0 -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main/ --no-cache \
+RUN apk add tmux -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache \
+
+#┌──────┐
+#│ Bash │
+#└──────┘
+&& echo > /etc/shells /bin/bash \
+&& sed -i "s/root:x:0:0:root:\/root:\/bin\/ash/root:x:0:0:root:\/root:\/bin\/bash/" /etc/passwd \
+
+#┌────────────┐
+#│ Git-Prompt │
+#└────────────┘
+&& curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /root/.git-prompt.sh
 
 #┌─────────────────────────────────────────────────────────┐
 #│ Так как запустить cloud9 можно только на версии v8.x.x, │
 #│ нам необходимо иметь на борту сразу две версии          │
 #└─────────────────────────────────────────────────────────┘
-&& apk add nodejs=16.17.1-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache --allow-untrusted \
+RUN apk add nodejs=16.17.1-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache --allow-untrusted \
 && apk add nodejs=8.14.0-r0  npm=8.14.0-r0 -X http://dl-cdn.alpinelinux.org/alpine/v3.8/main/  --no-cache --allow-untrusted \
 
 #┌────────────────────────────┐
@@ -37,29 +59,13 @@ RUN apk add g++ make python curl sed bash bash-doc bash-completion openssh-clien
 && curl http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/libssl1.0-1.0.2u-r0.apk    -o /apks/node/depends/libssl1.0-1.0.2u-r0.apk \
 && curl http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/http-parser-2.8.1-r0.apk   -o /apks/node/depends/http-parser-2.8.1-r0.apk \
 && curl http://dl-cdn.alpinelinux.org/alpine/v3.15/main/x86_64/brotli-libs-1.0.9-r5.apk  -o /apks/node/depends/brotli-libs-1.0.9-r5.apk \
-&& curl http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/libcrypto1.0-1.0.2u-r0.apk -o /apks/node/depends/libcrypto1.0-1.0.2u-r0.apk \
-
-#┌──────┐
-#│ Tmux │
-#└──────┘
-#&& apk add tmux=2.4-r0 -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main/ --no-cache \
-&& apk add tmux -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache \
-
-#┌──────┐
-#│ Bash │
-#└──────┘
-&& echo > /etc/shells /bin/bash \
-&& sed -i "s/root:x:0:0:root:\/root:\/bin\/ash/root:x:0:0:root:\/root:\/bin\/bash/" /etc/passwd \
-
-#┌────────────┐
-#│ Git-Prompt │
-#└────────────┘
-&& curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /root/.git-prompt.sh \
+&& curl http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/libcrypto1.0-1.0.2u-r0.apk -o /apks/node/depends/libcrypto1.0-1.0.2u-r0.apk
 
 #┌────────┐
 #│ Cloud9 │
 #└────────┘
-&& git clone -b master --single-branch https://github.com/c9open/core.git /root/.c9 && cd /root/.c9 \
+RUN git clone -b master --single-branch https://github.com/c9open/core.git /root/.c9
+RUN cd /root/.c9 \
 && mkdir -p ./node/bin ./bin ./node_modules \
 && ln -sf "`which tmux`" ./bin/tmux \
 && ln -s "`which node`" ./node/bin/node \

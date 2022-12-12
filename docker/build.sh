@@ -7,9 +7,9 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. /$WORKSPACE/cli/lib.base.sh
-. /$WORKSPACE/cli/lib.docker.sh
-. /$WORKSPACE/cli/gui.input.sh
+. /$WORKSPACE/scripts/cli/lib.base.sh
+. /$WORKSPACE/scripts/cli/lib.docker.sh
+. /$WORKSPACE/scripts/cli/gui.input.sh
 
 #┌────────────────────────────┐
 #│ Список аргументов          │
@@ -289,7 +289,7 @@ esac
             cp -vr "$PATH_VERSION" "$C9_PATH/temp/VERSION"
             
         # Копируем bash-библиотеку
-            cp -vr "/$WORKSPACE/cli/." "$C9_PATH/temp/cli"
+            cp -vr "/$WORKSPACE/scripts/cli/." "$C9_PATH/temp/cli"
             
         # Копируем настройки редактора и bash-профиль 
             cp -vr "/$WORKSPACE/c9settings/." "$C9_PATH/temp"
@@ -351,7 +351,7 @@ esac
             -e "PATH_GIT_REPO=$PATH_GIT_REPO" \
             -e "PATH_DOCKER_USER=$PATH_DOCKER_USER" \
             -e "PATH_DOCKER_PASS=$PATH_DOCKER_PASS" \
-            -e "PATH_LAST_DEPLOY=$PATH_LAST_DEPLOY" \
+            -e "PATH_BAD_DEPLOY=$PATH_BAD_DEPLOY" \
             -e "GIT_URL=$GIT_URL" \
             -e "GIT_USER=$GIT_USER" \
             -e "GIT_REPO=$GIT_REPO" \

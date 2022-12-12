@@ -5,6 +5,9 @@
 #█                                █
 #▀────────────────────────────────▀
 controller:Run() { case "$1" in
+# Контройльная точка
+    'no_stop')        stream "model:Run $@" ;; # Проходит контройльную точку
+    
 # Общие команды
     'is_new_version') stream "model:Run $@" ;; # Проверяет новую версию
     'save_version')   stream "model:Run $@" ;; # Сохраняет новую версию

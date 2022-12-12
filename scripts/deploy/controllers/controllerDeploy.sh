@@ -5,7 +5,8 @@
 #█                         █
 #▀─────────────────────────▀
 controller:Deploy() { case "$1" in
-    'last_deploy') model:Deploy "$@" ;; # Пробует еще раз продолжить деплой
-    'start')       model:Deploy "$@" ;; # Начинает один из вариантов деплоя
+    'stop')     model:Deploy "$@" ;; # Останавливает деплой
+    'continue') model:Deploy "$@" ;; # Пробует еще раз продолжить деплой
+    'start')    model:Deploy "$@" ;; # Начинает один из вариантов деплоя
 esac
 }

@@ -2,13 +2,13 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. ~/cli/lib.base.sh
-. ~/cli/lib.filesystem.sh
-. ~/cli/lib.docker.sh
-. ~/cli/lib.stream.sh
-. ~/cli/gui.menu.sh
-. ~/cli/gui.input.sh
-. ~/cli/gui.notice.sh
+. $HOME/cli/lib.base.sh
+. $HOME/cli/lib.filesystem.sh
+. $HOME/cli/lib.docker.sh
+. $HOME/cli/lib.stream.sh
+. $HOME/cli/gui.menu.sh
+. $HOME/cli/gui.input.sh
+. $HOME/cli/gui.notice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
@@ -66,7 +66,7 @@ PATH_GIT_USER='.c9/deploy/git_user'       # Путь к файлу где хра
 PATH_GIT_REPO='.c9/deploy/git_repo'       # Путь к файлу где хранится имя git-репозитория
 PATH_DOCKER_USER='.c9/deploy/docker_user' # Путь к файлу где хранится логин от docker-репозитория
 PATH_DOCKER_PASS='.c9/deploy/docker_pass' # Путь к файлу где хранится пароль от docker-репозитория
-PATH_LAST_DEPLOY='.c9/deploy/last_deploy' # Путь к файлу где хранится информация о последнем деплое
+PATH_BAD_DEPLOY='.c9/deploy/bad_deploy'   # Путь к файлу где хранится информация о последнем деплое
 
 SSH_DIR='ssh'             # Путь к каталогу где хранятся ssh-ключи
 CURRENT_PATH='/root/repo' # Путь к текущему каталогу из docker-а

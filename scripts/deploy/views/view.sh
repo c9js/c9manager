@@ -15,7 +15,7 @@ view() { case "$1" in
     # Обновляем данные
         controller:Update 'git'          # Обновляем настройки git-репозитория
         controller:Update 'docker'       # Обновляем настройки docker-репозитория
-        controller:Update 'last_deploy'  # Обновляем информацию о последнем деплое
+        controller:Update 'bad_deploy'   # Обновляем информацию о последнем деплое
         controller:Update 'repo_version' # Обновляем версию репозитория
         
     # Проверяем уведомления
