@@ -17,9 +17,16 @@ controller:Run() { case "$1" in
     'is_git_user')    stream "model:Run $@" ;; # Проверяет имя git-юзера
     'is_git_repo')    stream "model:Run $@" ;; # Проверяет имя git-репозитория
     'git_login')      stream "model:Run $@" ;; # Проверяет авторизацию в git-репозиторий
+    
+# Загрузка в репозиторий
     'git_add')        stream "model:Run $@" ;; # Добавляет рабочий каталог в индекс
     'git_commit')     stream "model:Run $@" ;; # Создает новый коммит
     'git_push')       stream "model:Run $@" ;; # Загружает коммит в git-репозиторий
+    
+# Создание тегов
+    'tag_remove')     stream "model:Run $@" ;; # Удаляет старый тег из git-репозитория
+    'tag_create')     stream "model:Run $@" ;; # Создает тег для новой версии
+    'tag_push')       stream "model:Run $@" ;; # Загружает тег в git-репозиторий
     
 # Docker-репозиторий
     'is_docker_user') stream "model:Run $@" ;; # Проверяет логин от docker-репозитория
@@ -32,12 +39,12 @@ controller:Run() { case "$1" in
     'build:c9docker') stream "model:Run $@" ;; # Создает новый образ
     
 # Создание тегов
-    'tag1:c9open')    stream "model:Run $@" ;; # Создает теги для новой версии
-    'tag1:c9start')   stream "model:Run $@" ;; # Создает теги для новой версии
-    'tag1:c9docker')  stream "model:Run $@" ;; # Создает теги для новой версии
-    'tag2:c9open')    stream "model:Run $@" ;; # Создает теги для последней версии
-    'tag2:c9start')   stream "model:Run $@" ;; # Создает теги для последней версии
-    'tag2:c9docker')  stream "model:Run $@" ;; # Создает теги для последней версии
+    'tag1:c9open')    stream "model:Run $@" ;; # Создает тег для новой версии
+    'tag1:c9start')   stream "model:Run $@" ;; # Создает тег для новой версии
+    'tag1:c9docker')  stream "model:Run $@" ;; # Создает тег для новой версии
+    'tag2:c9open')    stream "model:Run $@" ;; # Создает тег для последней версии
+    'tag2:c9start')   stream "model:Run $@" ;; # Создает тег для последней версии
+    'tag2:c9docker')  stream "model:Run $@" ;; # Создает тег для последней версии
     
 # Загрузка в репозиторий
     'push1:c9open')   stream "model:Run $@" ;; # Загружает последнюю версию в docker-репозиторий
