@@ -57,6 +57,9 @@ model:API() { case "$1" in
             return 1
         fi
         
+    # Перемещаем указатель на версию образа
+        git checkout -B master "$VERSION"
+        
     # Обновлем URL-адрес
         git remote set-url --add 'origin' "git@$GIT_URL:$GIT_USER/$GIT_REPO.git"
         git remote set-url --delete 'origin' "$url"
