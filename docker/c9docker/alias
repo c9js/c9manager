@@ -11,3 +11,6 @@ alias stop="c9 stop c9docker"
 
 alias d="/$WORKSPACE/scripts/deploy/deploy.sh"
 alias deploy="d"
+
+alias a="/$WORKSPACE/scripts/amend/amend.sh"
+alias amend="a"
