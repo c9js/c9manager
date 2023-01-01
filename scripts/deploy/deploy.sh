@@ -8,6 +8,7 @@
 . /$WORKSPACE/scripts/cli/gui.menu.sh
 . /$WORKSPACE/scripts/cli/gui.input.sh
 . /$WORKSPACE/scripts/cli/gui.notice.sh
+. /$WORKSPACE/scripts/cli/mvNotice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │

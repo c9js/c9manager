@@ -9,6 +9,7 @@
 . $HOME/cli/gui.menu.sh
 . $HOME/cli/gui.input.sh
 . $HOME/cli/gui.notice.sh
+. $HOME/cli/mvNotice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
