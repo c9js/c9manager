@@ -90,7 +90,7 @@ model:Deploy() { case "$1" in
     # Сохраняем новую версию
         NEW_VERSION="$3"
         
-    # Деплоит один из выбранных вариантов
+    # Деплоим один из выбранных вариантов
         case "$SELECTION" in
             1) model:Deploy 'run_list' "${ALL_LIST[@]}"    ;; # Сразу в оба репозитория
             2) model:Deploy 'run_list' "${GIT_LIST[@]}"    ;; # Только в git-репозиторий
@@ -119,7 +119,7 @@ model:Deploy() { case "$1" in
             fi
         done
         
-    # Команда успешно выполнена
+    # Все команды успешно выполнены
         return 0
     ;;
     
