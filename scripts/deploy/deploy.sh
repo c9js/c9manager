@@ -15,7 +15,6 @@
 #└───────────────┘
 # Models
 . /$WORKSPACE/scripts/deploy/models/modelDeploy.sh
-. /$WORKSPACE/scripts/deploy/models/modelNotice.sh
 . /$WORKSPACE/scripts/deploy/models/modelRun.sh
 . /$WORKSPACE/scripts/deploy/models/modelSettings.sh
 . /$WORKSPACE/scripts/deploy/models/modelUpdate.sh
@@ -25,10 +24,12 @@
 
 # Controllers
 . /$WORKSPACE/scripts/deploy/controllers/controllerDeploy.sh
-. /$WORKSPACE/scripts/deploy/controllers/controllerNotice.sh
 . /$WORKSPACE/scripts/deploy/controllers/controllerRun.sh
 . /$WORKSPACE/scripts/deploy/controllers/controllerSettings.sh
 . /$WORKSPACE/scripts/deploy/controllers/controllerUpdate.sh
+
+# Runners
+. /$WORKSPACE/scripts/deploy/runners/runnerNotice.sh
 
 # Views
 . /$WORKSPACE/scripts/deploy/views/view.sh

@@ -41,10 +41,12 @@ COPY temp/cli /root/cli
 #└─────────────┘
 ARG controllers
 ARG entrypoints
+ARG runners
 ARG models
 ARG views
 ARG entrypoint
 COPY "$controllers" /controllers/
+COPY "$runners" /runners/
 COPY "$models" /models/
 COPY "$views" /views/
 COPY "$entrypoints" /entrypoints/

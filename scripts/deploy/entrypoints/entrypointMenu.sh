@@ -8,7 +8,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────────────┐
 #│ Последний деплой не был завершен │
 #└──────────────────────────────────┘
-    if controller:Notice 'bad_deploy'; then
+    if runner:Notice 'bad_deploy'; then
     # Предлагаем пользователю попробовать еще раз
         view:Menu 'bad_deploy'
         

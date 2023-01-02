@@ -17,7 +17,6 @@
 # Models
 . /models/modelAPI.sh
 . /models/modelMenu.sh
-. /models/modelNotice.sh
 . /models/modelDocker.sh
 . /models/modelRequest.sh
 
@@ -27,9 +26,11 @@
 
 # Controllers
 . /controllers/controllerMenu.sh
-. /controllers/controllerNotice.sh
 . /controllers/controllerDocker.sh
 . /controllers/controllerRequest.sh
+
+# Runners
+. /runners/runnerNotice.sh
 
 # Views
 . /views/view.sh

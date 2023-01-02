@@ -37,7 +37,7 @@ modelView:Notice() { case "$1" in
     # Проходим по списку команд
         for ((i = 1; i <= $#; i++)); do
         # Выполняем команду
-            if model:Notice "${!i}"; then
+            if runner:Notice "${!i}"; then
             # Сохраняем информацию об уведомлении
                 NOTICE_COMMAND="${!i}"
                 
