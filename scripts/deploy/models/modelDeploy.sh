@@ -151,7 +151,7 @@ model:Deploy() { case "$1" in
         model:Deploy 'status' "$command" "$now"
         
     # Выполняем команду
-        if controller:Run "$command"; then
+        if stream 'runner:Deploy' "$command"; then
         # Деплой не был завершен
             model:Deploy 'error' "$command"
             

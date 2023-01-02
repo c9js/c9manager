@@ -10,7 +10,7 @@ model:Update() { case "$1" in
 #└──────────────────────────┘
     'pass_hidden')
     # Пароль не задан
-        if controller:Run 'is_docker_pass'; then
+        if stream 'runner:Deploy' 'is_docker_pass'; then
             DOCKER_PASS_HIDDEN="$(view:Settings 'empty_pass')"
             return
         fi
