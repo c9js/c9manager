@@ -163,7 +163,7 @@ runner:Edit() { case "$1" in
                 git cherry-pick -n "$current" || return
                 
             # Сохраняем описание из коммита $current
-                git commit -qC "$current"      || return
+                git commit -qC "$current"     || return
             fi
             
         # Доходим до коммита который мы редактируем
@@ -192,7 +192,7 @@ runner:Edit() { case "$1" in
 #│ Отменяет все изменения │
 #└────────────────────────┘
     'void:backup')
-        git checkout -qB "$CURRENT_BRANCH" "$CURRENT_COMMIT" &> '/dev/null'
+        git checkout -B "$CURRENT_BRANCH" "$CURRENT_COMMIT" &> '/dev/null'
         git branch -D "$BRANCH_AMEND" &> '/dev/null'
         # Обязательно return 1, так как это все равно ошибка.
         # Кроме того мы не знаем какая часть скрипта уже выполнена, а какая еще нет.
