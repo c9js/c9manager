@@ -20,6 +20,9 @@
 . /models/modelDocker.sh
 . /models/modelRequest.sh
 
+# Runners
+. /runners/runnerNotice.sh
+
 # Entrypoints
 . /entrypoints/entrypointAPI.sh
 . /entrypoints/entrypointMenu.sh
@@ -28,9 +31,6 @@
 . /controllers/controllerMenu.sh
 . /controllers/controllerDocker.sh
 . /controllers/controllerRequest.sh
-
-# Runners
-. /runners/runnerNotice.sh
 
 # Views
 . /views/view.sh

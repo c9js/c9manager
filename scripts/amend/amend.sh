@@ -21,6 +21,10 @@
 . /$WORKSPACE/scripts/amend/models/modelLoad.sh
 . /$WORKSPACE/scripts/amend/models/modelMenu.sh
 
+# Runners
+. /$WORKSPACE/scripts/amend/runners/runnerEdit.sh
+. /$WORKSPACE/scripts/amend/runners/runnerNotice.sh
+
 # Entrypoints
 . /$WORKSPACE/scripts/amend/entrypoints/entrypointMenu.sh
 
@@ -29,10 +33,6 @@
 . /$WORKSPACE/scripts/amend/controllers/controllerEdit.sh
 . /$WORKSPACE/scripts/amend/controllers/controllerLoad.sh
 . /$WORKSPACE/scripts/amend/controllers/controllerMenu.sh
-
-# Runners
-. /$WORKSPACE/scripts/amend/runners/runnerEdit.sh
-. /$WORKSPACE/scripts/amend/runners/runnerNotice.sh
 
 # Views
 . /$WORKSPACE/scripts/amend/views/view.sh

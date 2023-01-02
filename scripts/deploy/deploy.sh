@@ -18,6 +18,10 @@
 . /$WORKSPACE/scripts/deploy/models/modelSettings.sh
 . /$WORKSPACE/scripts/deploy/models/modelUpdate.sh
 
+# Runners
+. /$WORKSPACE/scripts/deploy/runners/runnerDeploy.sh
+. /$WORKSPACE/scripts/deploy/runners/runnerNotice.sh
+
 # Entrypoints
 . /$WORKSPACE/scripts/deploy/entrypoints/entrypointMenu.sh
 
@@ -25,10 +29,6 @@
 . /$WORKSPACE/scripts/deploy/controllers/controllerDeploy.sh
 . /$WORKSPACE/scripts/deploy/controllers/controllerSettings.sh
 . /$WORKSPACE/scripts/deploy/controllers/controllerUpdate.sh
-
-# Runners
-. /$WORKSPACE/scripts/deploy/runners/runnerDeploy.sh
-. /$WORKSPACE/scripts/deploy/runners/runnerNotice.sh
 
 # Views
 . /$WORKSPACE/scripts/deploy/views/view.sh
