@@ -64,7 +64,7 @@ model:Run() { case "$1" in
 #└───────────────────────────────────────────┘
     'docker_login')
         printf '%s' "$DOCKER_PASS" | \
-            docker login --username "$DOCKER_USER" --password-stdin &> '/dev/null'
+            docker login --username "$DOCKER_USER" --password-stdin
     ;;
     
 #┌─────────────────────────────────────────┐
@@ -97,7 +97,7 @@ model:Run() { case "$1" in
 #│ Загружает коммит в git-репозиторий │
 #└────────────────────────────────────┘
     'git_push')
-        git push -q
+        git push
     ;;
     
 #┌───────────────────────────────────────┐
@@ -119,15 +119,15 @@ model:Run() { case "$1" in
 #│ Загружает тег в git-репозиторий │
 #└─────────────────────────────────┘
     'tag_push')
-        git push -q origin "$NEW_VERSION"
+        git push origin "$NEW_VERSION"
     ;;
     
 #┌──────────────────┐
 #│ Создание образов │
 #└──────────────────┘
-    'build:c9open')   "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" 2>&1 ;;
-    'build:c9start')  "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" 2>&1 ;;
-    'build:c9docker') "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" 2>&1 ;;
+    'build:c9open')   "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9start')  "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9docker') "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
     
 #┌────────────────┐
 #│ Создание тегов │
