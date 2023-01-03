@@ -171,53 +171,53 @@ view:Deploy() { case "$1" in
 #└─────────────────────────────┘
     'error') case "$2" in
     # Контройльная точка
-        'no_stop')        view 'error'     'На этом шаге деплой уже не отменить!'       ;;
+        'no_stop')        error 'На этом шаге деплой уже не отменить!'       ;;
         
     # Общие команды
-        'is_new_version') view 'error'     "Версия '$NEW_VERSION' не прошла валидацию!" ;;
-        'save_version')   view 'error_log' 'Новая версия не была сохранена!'            ;;
-        'cd_workspace')   view 'error_log' 'Переход в рабочий каталог не был выполнен!' ;;
+        'is_new_version') error "Версия '$NEW_VERSION' не прошла валидацию!" ;;
+        'save_version')   error 'Новая версия не была сохранена!'            ;;
+        'cd_workspace')   error 'Переход в рабочий каталог не был выполнен!' ;;
         
     # Git-репозиторий
-        'is_git_user')    view 'error'     'Имя юзера для git-репозитория не задано!'   ;;
-        'is_git_repo')    view 'error'     'Имя git-репозитория не задано!'             ;;
-        'git_login')      view 'error_log' 'Авторизация не была пройдена!'              ;;
+        'is_git_user')    error 'Имя юзера для git-репозитория не задано!'   ;;
+        'is_git_repo')    error 'Имя git-репозитория не задано!'             ;;
+        'git_login')      error 'Авторизация не была пройдена!'              ;;
         
     # Загрузка в репозиторий
-        'git_add')        view 'error_log' 'Рабочий каталог не был добавлен в индекс!'  ;;
-        'git_commit')     view 'error_log' 'Коммит не был создан!'                      ;;
-        'git_push')       view 'error_log' 'Коммит в git-репозиторий не был загружен!'  ;;
+        'git_add')        error 'Рабочий каталог не был добавлен в индекс!'  ;;
+        'git_commit')     error 'Коммит не был создан!'                      ;;
+        'git_push')       error 'Коммит в git-репозиторий не был загружен!'  ;;
         
     # Создание тегов
-        'tag_remove')     view 'error_log' "Тег '$NEW_VERSION' не был удален!"          ;;
-        'tag_create')     view 'error_log' "Тег '$NEW_VERSION' не был создан!"          ;;
-        'tag_push')       view 'error_log' "Тег '$NEW_VERSION' не был загружен!"        ;;
+        'tag_remove')     error "Тег '$NEW_VERSION' не был удален!"          ;;
+        'tag_create')     error "Тег '$NEW_VERSION' не был создан!"          ;;
+        'tag_push')       error "Тег '$NEW_VERSION' не был загружен!"        ;;
         
     # Docker-репозиторий
-        'is_docker_user') view 'error'     'Логин от docker-репозитория не задан!'      ;;
-        'is_docker_pass') view 'error'     'Пароль от docker-репозитория не задан!'     ;;
-        'docker_login')   view 'error_log' 'Авторизация не была пройдена!'              ;;
+        'is_docker_user') error 'Логин от docker-репозитория не задан!'      ;;
+        'is_docker_pass') error 'Пароль от docker-репозитория не задан!'     ;;
+        'docker_login')   error 'Авторизация не была пройдена!'              ;;
         
     # Создание образов
-        'build:c9open')   view 'error_log' "Образ '${2/*:}' не был создан!"             ;;
-        'build:c9start')  view 'error_log' "Образ '${2/*:}' не был создан!"             ;;
-        'build:c9docker') view 'error_log' "Образ '${2/*:}' не был создан!"             ;;
+        'build:c9open')   error "Образ '${2/*:}' не был создан!"             ;;
+        'build:c9start')  error "Образ '${2/*:}' не был создан!"             ;;
+        'build:c9docker') error "Образ '${2/*:}' не был создан!"             ;;
         
     # Создание тегов
-        'tag1:c9open')    view 'error_log' "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
-        'tag1:c9start')   view 'error_log' "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
-        'tag1:c9docker')  view 'error_log' "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
-        'tag2:c9open')    view 'error_log' "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
-        'tag2:c9start')   view 'error_log' "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
-        'tag2:c9docker')  view 'error_log' "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
+        'tag1:c9open')    error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
+        'tag1:c9start')   error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
+        'tag1:c9docker')  error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
+        'tag2:c9open')    error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
+        'tag2:c9start')   error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
+        'tag2:c9docker')  error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
         
     # Загрузка в репозиторий
-        'push1:c9open')   view 'error_log' "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
-        'push1:c9start')  view 'error_log' "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
-        'push1:c9docker') view 'error_log' "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
-        'push2:c9open')   view 'error_log' "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
-        'push2:c9start')  view 'error_log' "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
-        'push2:c9docker') view 'error_log' "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
+        'push1:c9open')   error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
+        'push1:c9start')  error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
+        'push1:c9docker') error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
+        'push2:c9open')   error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
+        'push2:c9start')  error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
+        'push2:c9docker') error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
     esac
     ;;
     
@@ -225,7 +225,7 @@ view:Deploy() { case "$1" in
 #│ Добавляет информацию о новой версии │
 #└─────────────────────────────────────┘
     'new_version')
-        view 'success' "$2" "Новая версия: '$NEW_VERSION'"
+        success "$2" "Новая версия: '$NEW_VERSION'"
     ;;
     
 #┌──────────────────────────────────────────┐
@@ -235,7 +235,7 @@ view:Deploy() { case "$1" in
         1) view:Deploy 'new_version' 'Деплой в оба репозитория прошел успешно!'    ;;
         2) view:Deploy 'new_version' 'Деплой в git-репозиторий прошел успешно!'    ;;
         3) view:Deploy 'new_version' 'Деплой в docker-репозиторий прошел успешно!' ;;
-        *) view        'success'     'Деплой успешно отменен!'                     ;;
+        *) success                   'Деплой успешно отменен!'                     ;;
     esac
     ;;
 esac

@@ -14,8 +14,7 @@ model:Menu() { case "$1" in
         controller:Docker 'stop' 'view status'
         
     # Выводим сообщение об успешном завершении
-        view 'success' \
-        "Контейнеры '$RUN_IMAGE:$RUN_VERSION' были остановлены!"
+        success "Контейнеры '$RUN_IMAGE:$RUN_VERSION' были остановлены!"
     ;;
     
 #┌──────────────────────────────────────────┐
@@ -27,8 +26,7 @@ model:Menu() { case "$1" in
         controller:Docker 'stop_all' 'view status'
         
     # Выводим сообщение об успешном завершении
-        view 'success' \
-        'Все контейнеры были остановлены и удалены!'
+        success 'Все контейнеры были остановлены и удалены!'
     ;;
     
 #┌──────────────────────┐
@@ -40,7 +38,7 @@ model:Menu() { case "$1" in
         controller:Docker 'remove_all' 'view status'
         
     # Выводим сообщение об успешном завершении
-        view 'success' \
+        success \
         'Все контейнеры были остановлены и удалены!' \
         'Образы также были удалены!'
     ;;
@@ -60,8 +58,7 @@ model:Menu() { case "$1" in
     # Скачиваем образ
         if controller:Docker 'download'; then
         # Образ не был скачан
-            view 'error_log' \
-            "Что-то не так в 'docker pull ...'"
+            error "Что-то не так в 'docker pull ...'"
             return 1
         fi
         
@@ -71,8 +68,7 @@ model:Menu() { case "$1" in
     # Контейнер не был запущен
         if (( $? == 1 )); then
         # Выводим сообщение со списком ошибок
-            view 'error_log' \
-            "Что-то не так в 'docker run ...'"
+            error "Что-то не так в 'docker run ...'"
             return 1
         fi
         
@@ -88,7 +84,7 @@ model:Menu() { case "$1" in
     # Запускаем новый контейнер
         if model:Menu 'run' "$2"; then
         # Выводим сообщение об успешном завершении
-            view 'success' \
+            success \
             "Контейнер '$IMAGE_RUN:$VERSION' успешно запущен!" \
             "http://localhost:$2/"
         fi
@@ -102,7 +98,7 @@ model:Menu() { case "$1" in
     # Запускаем новый контейнер
         if model:Menu 'run' "$2"; then
         # Выводим сообщение об успешном завершении
-            view 'success' \
+            success \
             "Контейнер '$IMAGE_RUN:$VERSION' успешно перезагружен!" \
             "http://localhost:$2/"
         fi
@@ -140,7 +136,7 @@ model:Menu() { case "$1" in
     # Проверяем существует-ли файл с именем "ssh"
         if controller:Request 'is_ssh'; then
         # Выводим сообщение об ошибке
-            view 'error' \
+            error \
             'Каталог не найден!' \
             "Путь: ${CD}${SEP}$SSH_DIR"
             return
@@ -153,13 +149,12 @@ model:Menu() { case "$1" in
     # Создаем новый ssh-ключ
         if controller:Request 'ssh_keygen' "$2"; then
         # SSH-ключ не был создан
-            view 'error_log' \
-            "Что-то не так в 'ssh-keygen ...'"
+            error "Что-то не так в 'ssh-keygen ...'"
             return
         fi
         
     # Выводим сообщение об успешном завершении
-        view 'success' \
+        success \
         'Новый ssh-ключ успешно создан!' \
         "${CD}${SEP}${SSH_DIR}${SEP}$2" \
         "${CD}${SEP}${SSH_DIR}${SEP}$2.pub"
@@ -183,22 +178,21 @@ model:Menu() { case "$1" in
         # Клонируем репозиторий
             if controller:Request 'gitclone'; then
             # Репозиторий не был склонирован
-                view 'error_log' \
-                "Что-то не так в 'git clone ...'"
+                error "Что-то не так в 'git clone ...'"
                 return
             fi
             
         # Проверяем наличие образа
             if ! controller:Docker 'no_image'; then
             # Выводим сообщение об успешном завершении
-                view 'success' \
+                success \
                 'Локальный репозиторий успешно создан!' \
                 "Путь: $CD"
                 
         # Образ не найден
             else
             # Выводим сообщение об успешном завершении
-                view 'success' \
+                success \
                 'Локальный репозиторий успешно создан!' \
                 "Путь: $CD" \
                 '' \

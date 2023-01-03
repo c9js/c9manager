@@ -1,4 +1,4 @@
-#▄────────▄1.0.4
+#▄────────▄1.0.5
 #█        █
 #█  Меню  █
 #█        █
@@ -320,33 +320,10 @@ menu:MsgAdd() {
 #┌──────────────────────────────┐
 #│ Выводит уведомление на экран │
 #└──────────────────────────────┘
-menu:Notice() {
-# Тип сообщения
-    local type="$1"
-    
-# Удаляем первый аргумент
-    shift
-    
-# Список типов сообщений
-    case "$type" in
-        'info')      menu:Msg 'Blue'   "$(notice:Card "$@")"     ;; # Информационное сообщение
-        'success')   menu:Msg 'Green'  "$(notice:Card "$@")"     ;; # Сообщение об успешном завершении
-        'warning')   menu:Msg 'Yellow' "$(notice:Card "$@")"     ;; # Сообщение с предупреждением
-        'error')     menu:Msg 'Red'    "$(notice:Error "$@")"    ;; # Сообщение об ошибке
-        'error_log') menu:Msg 'Red'    "$(notice:Errorlog "$@")" ;; # Сообщение со списком ошибок
-    esac
-    
-# Обнуляем сохраненные состояния пунктов меню
-    reset:Menu
-}
-
-#┌──────────────────────────────┐
-#│ Выводит уведомление на экран │
-#└──────────────────────────────┘
-info()    { menu:Msg 'Blue'   "$(notice:Card "$@")"    ; reset:Menu; } # Информационное сообщение
-success() { menu:Msg 'Green'  "$(notice:Card "$@")"    ; reset:Menu; } # Сообщение об успешном завершении
-warning() { menu:Msg 'Yellow' "$(notice:Card "$@")"    ; reset:Menu; } # Сообщение с предупреждением
-error()   { menu:Msg 'Red'    "$(notice:Errorlog "$@")"; reset:Menu; } # Сообщение об ошибке
+info()    { menu:Msg 'Blue'   "$(notice:Card "$@")" ; reset:Menu; } # Информационное сообщение
+success() { menu:Msg 'Green'  "$(notice:Card "$@")" ; reset:Menu; } # Сообщение об успешном завершении
+warning() { menu:Msg 'Yellow' "$(notice:Card "$@")" ; reset:Menu; } # Сообщение с предупреждением
+error()   { menu:Msg 'Red'    "$(notice:Error "$@")"; reset:Menu; } # Сообщение об ошибке
 
 #┌─────────────────────────────────────────────┐
 #│ Обнуляет сохраненные состояния пунктов меню │

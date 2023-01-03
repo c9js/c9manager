@@ -37,14 +37,14 @@ view:Notice() { case "$1" in
 #│ Пароль не задан │
 #└─────────────────┘
     'no_docker_pass')
-        view 'warning' 'Пароль для docker-репозитория не задан!'
+        warning 'Пароль для docker-репозитория не задан!'
     ;;
     
 #┌─────────────────┐
 #│ Версия устарела │
 #└─────────────────┘
     'no_current_version')
-        view 'warning' \
+        warning \
         "Внимание! Текущая версия '$VERSION' устарела!" \
         "Новая версия: '$REPO_VERSION'"
     ;;
@@ -60,8 +60,7 @@ view:Notice() { case "$1" in
 #│ Валидация не пройдена │
 #└───────────────────────┘
     'no_valid_version')
-        view 'fatal_error' \
-        "Версия '$VERSION' не прошла валидацию!"
+        fatal_error "Версия '$VERSION' не прошла валидацию!"
     ;;
 esac
 }

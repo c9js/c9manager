@@ -36,7 +36,7 @@ view:Notice() { case "$1" in
 #│ Запущен старый контейнер │
 #└──────────────────────────┘
     'run_old')
-        view 'warning' \
+        warning \
         "Контейнер '$RUN_IMAGE:$RUN_VERSION' устарел!" \
         "Новая версия: '$VERSION'"
     ;;
@@ -45,7 +45,7 @@ view:Notice() { case "$1" in
 #│ Контейнер запущен │
 #└───────────────────┘
     'run')
-        view 'info' \
+        info \
         "Контейнер '$RUN_IMAGE:$RUN_VERSION' уже запущен!" \
         "http://localhost:$RUN_PORT/"
     ;;
@@ -54,8 +54,7 @@ view:Notice() { case "$1" in
 #│ Переменная '$CD' не задана │
 #└────────────────────────────┘
     'no_cd')
-        view 'fatal_error' \
-        "Переменная окружения '\$CD' не задана!"
+        fatal_error "Переменная окружения '\$CD' не задана!"
     ;;
 esac
 }

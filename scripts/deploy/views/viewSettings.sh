@@ -17,14 +17,14 @@ view:Settings() { case "$1" in
 #└──────────────────────────────────────────┘
     'success') case "$2" in
     # Git-репозиторий
-        'save_git') view 'success' \
+        'save_git') success \
             'Данные для git-репозитория успешно сохранены!' \
             "Имя юзера:       '$GIT_USER'" \
             "Имя репозитория: '$GIT_REPO'"
         ;;
         
     # Docker-репозиторий
-        'save_docker') view 'success' \
+        'save_docker') success \
             'Данные для docker-репозитория успешно сохранены!' \
             "Логин:  '$DOCKER_USER'" \
             "Пароль: '$DOCKER_PASS_HIDDEN'"
