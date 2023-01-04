@@ -18,8 +18,9 @@ view() { case "$1" in
         controller:Update 'bad_deploy'   # Обновляем информацию о последнем деплое
         controller:Update 'repo_version' # Обновляем версию репозитория
         
-    # Проверяем список всех уведомлений
-        modelView:Notice 'check'
+    # Проверяем списки уведомлений
+        modelView:Notice 'fatal_error' # Фатальные ошибки
+        modelView:Notice 'warning'     # Предупреждения
     ;;
 esac
 }
