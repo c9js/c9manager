@@ -147,6 +147,13 @@ runner:Edit() { case "$1" in
         git commit --amend -m "$NEW_MESSAGE"
     ;;
     
+#┌───────────────────────────────────────┐
+#│ Сохраняет новую дату создания коммита │
+#└───────────────────────────────────────┘
+    'save:new_date')
+        git commit --amend --no-edit --date="$NEW_DATE"
+    ;;
+    
 #┌───────────────────────────────┐
 #│ Пересоздает остальные коммиты │
 #└───────────────────────────────┘
@@ -162,8 +169,11 @@ runner:Edit() { case "$1" in
             # Получаем изменения из коммита $current 
                 git cherry-pick -n "$current" || return
                 
-            # Сохраняем описание из коммита $current
-                git commit -qC "$current"     || return
+            # Сохраняем один из выбранных вариантов
+                case "$SELECTION" in
+                    1) git commit -qC "$current"                    || return ;; # Описание из коммита
+                    2) git commit -qC "$current" --date="$NEW_DATE" || return ;; # Дата созданя
+                esac
             fi
             
         # Доходим до коммита который мы редактируем

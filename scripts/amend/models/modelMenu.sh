@@ -41,12 +41,36 @@ model:Menu() { case "$1" in
             local text="${COMMITS_TEXT[$i]}"     # Описание
             local date="${COMMITS_DATE[$i]}"     # Дата создания
             
-        # Добавляем пункт с информацией о коммите
-            # MENU_ITEMS+=("$hash $date $text")
-            MENU_ITEMS+=("$hash $text")
+        # Добавляем пункт с информацией о коммите (для выбранного варианта)
+            case "$SELECTION" in
+                1) MENU_ITEMS+=("$hash │ $text")         ;; # Описание коммита
+                2) MENU_ITEMS+=("$hash │ $date │ $text") ;; # Дата созданя коммита
+            esac
         done
     ;;
-
+    
+#┌──────────────────────────────────────────────────────┐
+#│ Сохраняет выбранный вариант "Редактировать описание" │
+#└──────────────────────────────────────────────────────┘
+    'edit')
+    # Сохраняем выбранный вариант
+        SELECTION=1
+        
+    # Предлагаем пользователю выбрать коммит
+        controller:Menu 'choice'
+    ;;
+    
+#┌──────────────────────────────────────────────────────┐
+#│ Сохраняет выбранный вариант "Изменить дату создания" │
+#└──────────────────────────────────────────────────────┘
+    'date')
+    # Сохраняем выбранный вариант
+        SELECTION=2
+        
+    # Предлагаем пользователю выбрать коммит
+        controller:Menu 'choice'
+    ;;
+    
 #┌────────────────────────────────────────┐
 #│ Предлагает пользователю выбрать коммит │
 #└────────────────────────────────────────┘
@@ -57,7 +81,7 @@ model:Menu() { case "$1" in
         local last_select="$4" # Пункт меню (выбранный ранее)
         
     # Загружаем список коммитов
-        controller:Load 'load' "$2"
+        controller:Load 'load' "$page"
         
     # Обнуляем сохраненные состояния пунктов меню
         reset:Menu
@@ -66,7 +90,7 @@ model:Menu() { case "$1" in
         MENU_ITEMS=()
         
     # Создаем выбранный пункт по умолчанию
-        local defaultSelection="$(number "$3")"
+        local defaultSelection="$(number "$select")"
         
     # Пункт по умолчанию не указан
         if (( $defaultSelection == 0 && $PAGE != 0 )); then
@@ -139,12 +163,12 @@ model:Menu() { case "$1" in
     # Это первая страница
         if [[ "$PAGE" == 0 ]]; then
         # Проверяем можно-ли редактировать коммит
-            controller:Edit 'is_edit' "$(($select-1))" "${COMMITS_TEXT[$select-1]}" "$select"
+            controller:Edit 'is_edit' "$(($select-1))" "$select"
             
     # Это не первая страница
         else
         # Проверяем можно-ли редактировать коммит
-            controller:Edit 'is_edit' "$(($select-2))" "${COMMITS_TEXT[$select-2]}" "$select"
+            controller:Edit 'is_edit' "$(($select-2))" "$select"
         fi
     ;;
 esac
