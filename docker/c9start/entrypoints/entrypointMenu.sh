@@ -8,7 +8,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────┐
 #│ Текущий каталог пуст │
 #└──────────────────────┘
-    if controller:Request 'current_dir_is_empty'; then
+    if modelView:Notice 'warning' 'current_dir_is_empty'; then
     # Предлагаем пользователю склонировать репозиторий
         view:Menu 'gitclone'
         continue
@@ -17,7 +17,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────┐
 #│ Каталог ".git" не найден │
 #└──────────────────────────┘
-    if controller:Request 'no_git'; then
+    if modelView:Notice 'error' 'no_git'; then
     # Предлагаем пользователю выбрать пустой каталог
         view:Menu 'dir_error'
         continue
@@ -44,7 +44,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────┐
 #│ Запущен старый контейнер │
 #└──────────────────────────┘
-    if runner:Notice 'run_old'; then
+    if modelView:Notice 'warning' 'run_old'; then
     # Предлагаем пользователю только остановить контейнер
         view:Menu 'stop'
         continue

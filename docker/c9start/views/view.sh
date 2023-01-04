@@ -15,8 +15,9 @@ view() { case "$1" in
     # Получает информацию о запущенном контейнере
         getContainerInfo "$WORKSPACE"
         
-    # Проверяем список всех уведомлений
-        modelView:Notice 'check'
+    # Проверяем списки уведомлений
+        modelView:Notice 'fatal_error' # Фатальные ошибки
+        modelView:Notice 'info'        # Информационные сообщения
     ;;
     
 #┌──────────────────────────┐

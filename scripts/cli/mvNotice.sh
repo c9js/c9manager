@@ -1,4 +1,4 @@
-#▄──────────────────────────────────────────▄1.0.0
+#▄──────────────────────────────────────────▄1.0.1
 #█                                          █
 #█  ModelView: Notice                       █
 #█  • Уведомление (управление интерфейсом)  █
@@ -8,20 +8,20 @@ modelView:Notice() { case "$1" in
 #┌──────────────────────────────┐
 #│ Проверяет список уведомлений │
 #└──────────────────────────────┘
-    'fatal_error') modelView:Notice "${FATAL_LIST[@]}"   ;; # Список фатальных ошибок
-    'error')       modelView:Notice "${ERROR_LIST[@]}"   ;; # Список ошибок
-    'warning')     modelView:Notice "${WARNING_LIST[@]}" ;; # Список предупреждений
-    'info')        modelView:Notice "${INFO_LIST[@]}"    ;; # Список информационных сообщений
+    'fatal_error') modelView:Notice 'run' "$2" "${FATAL_LIST[@]}"   ;; # Список фатальных ошибок
+    'error')       modelView:Notice 'run' "$2" "${ERROR_LIST[@]}"   ;; # Список ошибок
+    'warning')     modelView:Notice 'run' "$2" "${WARNING_LIST[@]}" ;; # Список предупреждений
+    'info')        modelView:Notice 'run' "$2" "${INFO_LIST[@]}"    ;; # Список информационных сообщений
     
 #┌───────────────────────────────────┐
 #│ Проверяет список всех уведомлений │
 #└───────────────────────────────────┘
     'check')
     # Проверяем списки уведомлений
-        modelView:Notice "${FATAL_LIST[@]}"   && return 0 # Фатальные ошибки
-        modelView:Notice "${ERROR_LIST[@]}"   && return 0 # Ошибки
-        modelView:Notice "${WARNING_LIST[@]}" && return 0 # Предупреждения
-        modelView:Notice "${INFO_LIST[@]}"    && return 0 # Информационные сообщения
+        modelView:Notice 'run' "$2" "${FATAL_LIST[@]}"   && return 0 # Фатальные ошибки
+        modelView:Notice 'run' "$2" "${ERROR_LIST[@]}"   && return 0 # Ошибки
+        modelView:Notice 'run' "$2" "${WARNING_LIST[@]}" && return 0 # Предупреждения
+        modelView:Notice 'run' "$2" "${INFO_LIST[@]}"    && return 0 # Информационные сообщения
         
     # Уведомления не найдены
         return 1
@@ -30,22 +30,28 @@ modelView:Notice() { case "$1" in
 #┌─────────────────────────┐
 #│ Выполняет список команд │
 #└─────────────────────────┘
-    *)
+    'run')
+    # Список аргументов
+        local command="$2" # Текущая команда
+        
     # Локальные переменные
         local i
         
     # Проходим по списку команд
-        for ((i = 1; i <= $#; i++)); do
-        # Выполняем команду
-            if runner:Notice "${!i}"; then
-            # Сохраняем информацию об уведомлении
-                NOTICE_COMMAND="${!i}"
-                
-            # Выводим уведомление на экран
-                view:Notice "${!i}"
-                
-            # Уведомление найдено
-                return 0
+        for ((i = 3; i <= $#; i++)); do
+        # Проверяем текущую команду
+            if [[ "$command" == '' || "$command" == "${!i}" ]]; then
+            # Выполняем команду
+                if runner:Notice "${!i}"; then
+                # Сохраняем информацию об уведомлении
+                    NOTICE_COMMAND="${!i}"
+                    
+                # Выводим уведомление на экран
+                    view:Notice "${!i}"
+                    
+                # Уведомление найдено
+                    return 0
+                fi
             fi
         done
         
