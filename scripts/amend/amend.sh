@@ -1,6 +1,4 @@
 #!/bin/bash
-# reset
-# exit
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
@@ -37,7 +35,6 @@
 # Views
 . /$WORKSPACE/scripts/amend/views/view.sh
 . /$WORKSPACE/scripts/amend/views/viewEdit.sh
-. /$WORKSPACE/scripts/amend/views/viewLoad.sh
 . /$WORKSPACE/scripts/amend/views/viewMenu.sh
 . /$WORKSPACE/scripts/amend/views/viewNotice.sh
 
