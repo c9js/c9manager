@@ -17,7 +17,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────┐
 #│ Каталог ".git" не найден │
 #└──────────────────────────┘
-    if modelView:Notice 'error' 'no_git'; then
+    if modelView:Notice 'error' 'bad_git'; then
     # Предлагаем пользователю выбрать пустой каталог
         view:Menu 'dir_error'
         continue
