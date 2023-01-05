@@ -5,11 +5,23 @@
 #▀───────────────────────▀
 GENERAL_LIST=(
 # Общие команды
-    'cd_workspace'   # Переходит в рабочий каталог
     'is_branch'      # Проверяет текущую ветку
     'is_status'      # Проверяет текущий статус
     'is_new_version' # Проверяет новую версию
     'save_version'   # Сохраняет новую версию
+)
+
+#▄────────────────────────────────────────▄
+#█                                        █
+#█  Список команд для продолжения деплоя  █
+#█                                        █
+#▀────────────────────────────────────────▀
+CONTINUE_LIST=(
+# Общие команды
+    'is_branch'      # Проверяет текущую ветку
+    'is_new_version' # Проверяет новую версию
+    'save_version'   # Сохраняет новую версию
+    'is_status'      # Проверяет текущий статус
 )
 
 #▄─────────────────────────────────────▄
@@ -121,52 +133,51 @@ view:Deploy() { case "$1" in
         'no_stop')        printf 'Проходим контройльную точку...'                      ;;
         
     # Общие команды
-        'cd_workspace')   printf 'Переход в рабочий каталог...'                        ;;
-        'is_branch')      printf 'Проверка текущей ветке...'                           ;;
-        'is_status')      printf 'Проверка текущего статуса...'                        ;;
-        'is_new_version') printf 'Проверка новой версии...'                            ;;
-        'save_version')   printf 'Сохранение новой версии...'                          ;;
+        'is_branch')      printf 'Проверяем текущую ветку...'                          ;;
+        'is_status')      printf 'Проверяем текущий статус...'                         ;;
+        'is_new_version') printf 'Проверяем новую версию...'                           ;;
+        'save_version')   printf 'Сохраняем новую версию...'                           ;;
         
     # Git-репозиторий
-        'is_git_user')    printf 'Проверка имени git-юзера...'                         ;;
-        'is_git_repo')    printf 'Проверка имени git-репозитория...'                   ;;
+        'is_git_user')    printf 'Проверяем имя git-юзера...'                          ;;
+        'is_git_repo')    printf 'Проверяем имя git-репозитория...'                    ;;
         'git_login')      printf 'Авторизация в git-репозиторий...'                    ;;
         
     # Загрузка в репозиторий
-        'git_add')        printf 'Добавление новой версии в индекс...'                 ;;
-        'git_commit')     printf 'Создание коммита...'                                 ;;
-        'git_push')       printf 'Загрузка коммита в git-репозиторий...'               ;;
+        'git_add')        printf 'Добавляем новую версию в индекс...'                  ;;
+        'git_commit')     printf 'Создаем коммит...'                                   ;;
+        'git_push')       printf 'Загружаем коммит в git-репозиторий...'               ;;
         
     # Создание тегов
-        'tag_remove')     printf "Удаление старого тега '$NEW_VERSION'"                ;;
-        'tag_create')     printf "Создание тега '$NEW_VERSION'"                        ;;
-        'tag_push')       printf "Загрузка тега '$NEW_VERSION'"                        ;;
+        'tag_remove')     printf "Удаляем старый тег '$NEW_VERSION'"                   ;;
+        'tag_create')     printf "Создаем новый тег '$NEW_VERSION'"                    ;;
+        'tag_push')       printf "Загружаем новый тег '$NEW_VERSION'"                  ;;
         
     # Docker-репозиторий
-        'is_docker_user') printf 'Проверка логина от docker-репозитория...'            ;;
-        'is_docker_pass') printf 'Проверка пароля от docker-репозитория...'            ;;
+        'is_docker_user') printf 'Проверяем логин от docker-репозитория...'            ;;
+        'is_docker_pass') printf 'Проверяем пароль от docker-репозитория...'           ;;
         'docker_login')   printf 'Авторизация в docker-репозиторий...'                 ;;
         
     # Создание образов
-        'build:c9open')   printf "Создание образа '${2/*:}'"                           ;;
-        'build:c9start')  printf "Создание образа '${2/*:}'"                           ;;
-        'build:c9docker') printf "Создание образа '${2/*:}'"                           ;;
+        'build:c9open')   printf "Создаем образ '${2/*:}'"                             ;;
+        'build:c9start')  printf "Создаем образ '${2/*:}'"                             ;;
+        'build:c9docker') printf "Создаем образ '${2/*:}'"                             ;;
         
     # Создание тегов
-        'tag1:c9open')    printf "Создание тега '$DOCKER_USER/${2/*:}:$NEW_VERSION'"   ;;
-        'tag1:c9start')   printf "Создание тега '$DOCKER_USER/${2/*:}:$NEW_VERSION'"   ;;
-        'tag1:c9docker')  printf "Создание тега '$DOCKER_USER/${2/*:}:$NEW_VERSION'"   ;;
-        'tag2:c9open')    printf "Создание тега '$DOCKER_USER/${2/*:}:latest'"         ;;
-        'tag2:c9start')   printf "Создание тега '$DOCKER_USER/${2/*:}:latest'"         ;;
-        'tag2:c9docker')  printf "Создание тега '$DOCKER_USER/${2/*:}:latest'"         ;;
+        'tag1:c9open')    printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
+        'tag1:c9start')   printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
+        'tag1:c9docker')  printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
+        'tag2:c9open')    printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
+        'tag2:c9start')   printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
+        'tag2:c9docker')  printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
         
     # Загрузка в репозиторий
-        'push1:c9open')   printf "Загрузка образа '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
-        'push1:c9start')  printf "Загрузка образа '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
-        'push1:c9docker') printf "Загрузка образа '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
-        'push2:c9open')   printf "Загрузка образа '$DOCKER_USER/${2/*:}:latest'"       ;;
-        'push2:c9start')  printf "Загрузка образа '$DOCKER_USER/${2/*:}:latest'"       ;;
-        'push2:c9docker') printf "Загрузка образа '$DOCKER_USER/${2/*:}:latest'"       ;;
+        'push1:c9open')   printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
+        'push1:c9start')  printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
+        'push1:c9docker') printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
+        'push2:c9open')   printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
+        'push2:c9start')  printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
+        'push2:c9docker') printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
     esac
     ;;
     
@@ -178,7 +189,6 @@ view:Deploy() { case "$1" in
         'no_stop')        error 'На этом шаге деплой уже не отменить!'       ;;
         
     # Общие команды
-        'cd_workspace')   error 'Переход в рабочий каталог не был выполнен!' ;;
         'is_branch')      error 'Вы не находитесь на ветке!'                 ;;
         'is_status')      error "Ваш 'git status' должен быть пуст!"         ;;
         'is_new_version') error "Версия '$NEW_VERSION' не прошла валидацию!" ;;

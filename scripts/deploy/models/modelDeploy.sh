@@ -71,7 +71,7 @@ model:Deploy() { case "$1" in
 #└───────────────────────────────────┘
     'continue')
     # Выполняем список команд
-        model:Deploy 'run_list' "${GENERAL_LIST[@]}"
+        model:Deploy 'run_list' "${CONTINUE_LIST[@]}"
         
     # Проверка прошла успешно
         if [[ $? == 0 ]]; then
