@@ -31,10 +31,10 @@ RUN echo > /etc/shells /bin/bash \
 #└────────┘
 COPY temp/VERSION /root/VERSION
 
-#┌─────────────────┐
-#│ bash-библиотека │
-#└─────────────────┘
-COPY temp/cli /root/cli
+#┌──────────────┐
+#│ Bash-скрипты │
+#└──────────────┘
+COPY temp/scripts /root/scripts
 
 #┌─────────────┐
 #│ Точка входа │

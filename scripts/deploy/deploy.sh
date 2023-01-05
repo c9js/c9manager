@@ -1,41 +1,46 @@
 #!/bin/bash
+#┌────────────────────────────────────────────┐
+#│ Путь к каталогу где расположен этот скрипт │
+#└────────────────────────────────────────────┘
+DIR_PATH="$(dirname $0)"
+
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. /$WORKSPACE/scripts/cli/lib.base.sh
-. /$WORKSPACE/scripts/cli/lib.filesystem.sh
-. /$WORKSPACE/scripts/cli/lib.stream.sh
-. /$WORKSPACE/scripts/cli/gui.menu.sh
-. /$WORKSPACE/scripts/cli/gui.input.sh
-. /$WORKSPACE/scripts/cli/gui.notice.sh
-. /$WORKSPACE/scripts/cli/mvNotice.sh
+. $DIR_PATH/../cli/lib.base.sh
+. $DIR_PATH/../cli/lib.filesystem.sh
+. $DIR_PATH/../cli/lib.stream.sh
+. $DIR_PATH/../cli/gui.menu.sh
+. $DIR_PATH/../cli/gui.input.sh
+. $DIR_PATH/../cli/gui.notice.sh
+. $DIR_PATH/../cli/mvNotice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
 # Models
-. /$WORKSPACE/scripts/deploy/models/modelDeploy.sh
-. /$WORKSPACE/scripts/deploy/models/modelSettings.sh
-. /$WORKSPACE/scripts/deploy/models/modelUpdate.sh
+. $DIR_PATH/models/modelDeploy.sh
+. $DIR_PATH/models/modelSettings.sh
+. $DIR_PATH/models/modelUpdate.sh
 
 # Runners
-. /$WORKSPACE/scripts/deploy/runners/runnerDeploy.sh
-. /$WORKSPACE/scripts/deploy/runners/runnerNotice.sh
+. $DIR_PATH/runners/runnerDeploy.sh
+. $DIR_PATH/runners/runnerNotice.sh
 
 # Entrypoints
-. /$WORKSPACE/scripts/deploy/entrypoints/entrypointMenu.sh
+. $DIR_PATH/entrypoints/entrypointMenu.sh
 
 # Controllers
-. /$WORKSPACE/scripts/deploy/controllers/controllerDeploy.sh
-. /$WORKSPACE/scripts/deploy/controllers/controllerSettings.sh
-. /$WORKSPACE/scripts/deploy/controllers/controllerUpdate.sh
+. $DIR_PATH/controllers/controllerDeploy.sh
+. $DIR_PATH/controllers/controllerSettings.sh
+. $DIR_PATH/controllers/controllerUpdate.sh
 
 # Views
-. /$WORKSPACE/scripts/deploy/views/view.sh
-. /$WORKSPACE/scripts/deploy/views/viewDeploy.sh
-. /$WORKSPACE/scripts/deploy/views/viewMenu.sh
-. /$WORKSPACE/scripts/deploy/views/viewNotice.sh
-. /$WORKSPACE/scripts/deploy/views/viewSettings.sh
+. $DIR_PATH/views/view.sh
+. $DIR_PATH/views/viewDeploy.sh
+. $DIR_PATH/views/viewMenu.sh
+. $DIR_PATH/views/viewNotice.sh
+. $DIR_PATH/views/viewSettings.sh
 
 #┌───────────────────────────────┐
 #│ Версии: Micro / Minor / Major │

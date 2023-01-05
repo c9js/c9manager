@@ -4,6 +4,11 @@
 # 1. Создать новый образ и удалить старый.
 # 2. Запустить новый контейнер, остановить и удалить старый.
 #
+#┌────────────────────────────────────────────┐
+#│ Путь к каталогу где расположен этот скрипт │
+#└────────────────────────────────────────────┘
+DIR_PATH="$(dirname $0)"
+
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
@@ -205,7 +210,7 @@ esac
         status 4 'Удаление портов из списка...'
         for ID in $containerID; do
         # Удаляем порты из списка
-            "$C9_PATH/ports.js" remove "$ID" &> '/dev/null'
+            "$DIR_PATH/ports.js" remove "$ID" &> '/dev/null'
         done
         
     # Выводим финальное сообщение и завершаем процесс
@@ -283,21 +288,21 @@ esac
             status 8 'Копирование временных файлов...'
             
         # Создаем временный каталог
-            mkdir -vp "$C9_PATH/temp/cli"
+            mkdir -vp "$DIR_PATH/temp/scripts"
             
         # Копируем версию
-            cp -vr "$PATH_VERSION" "$C9_PATH/temp/VERSION"
+            cp -vr "$PATH_VERSION" "$DIR_PATH/temp/VERSION"
             
-        # Копируем bash-библиотеку
-            cp -vr "/$WORKSPACE/scripts/cli/." "$C9_PATH/temp/cli"
+        # Копируем bash-скрипты
+            cp -vr "/$WORKSPACE/scripts/." "$DIR_PATH/temp/scripts"
             
         # Копируем настройки редактора и bash-профиль 
-            cp -vr "/$WORKSPACE/c9settings/." "$C9_PATH/temp"
+            cp -vr "/$WORKSPACE/c9settings/." "$DIR_PATH/temp"
             
         # Проверяем предусмотрены-ли для образа дополнительные алиасы
-            if [ -s "$C9_PATH/$IMAGE_RUN/alias" ]; then
+            if [ -s "$DIR_PATH/$IMAGE_RUN/alias" ]; then
             # Добавляем алиасы в bash-профиль
-                cat "$C9_PATH/$IMAGE_RUN/alias" >> "$C9_PATH/temp/bash_profile"
+                cat "$DIR_PATH/$IMAGE_RUN/alias" >> "$DIR_PATH/temp/bash_profile"
             fi
             
         # Создаем новый образ
@@ -309,16 +314,16 @@ esac
                 --build-arg "views=$IMAGE_RUN/views/" \
                 --build-arg "entrypoints=$IMAGE_RUN/entrypoints/" \
                 --build-arg "entrypoint=$IMAGE_RUN/Entrypoint.sh" \
-                -f "$C9_PATH/$IMAGE_RUN/Dockerfile" \
+                -f "$DIR_PATH/$IMAGE_RUN/Dockerfile" \
                 -t "$IMAGE_RUN" \
-                "$C9_PATH"
+                "$DIR_PATH"
                 
         # Сохраняем результат
             res=$?
             
         # Удаляем временные файлы
             status 10 'Удаление временных файлов...'
-            rm -vr "$C9_PATH/temp" # Временный каталог
+            rm -vr "$DIR_PATH/temp" # Временный каталог
             
         # Выводим сообщение об ошибке и завершаем процесс
             if (( "$res" != 0 )); then
@@ -328,7 +333,7 @@ esac
         
     # Получаем список свободных портов
         status 11 'Получение свободных портов...'
-        if ! PORTS=$("$C9_PATH/ports.js" getFreePorts 2 2>&1); then
+        if ! PORTS=$("$DIR_PATH/ports.js" getFreePorts 2 2>&1); then
         # Выводим сообщение об ошибке и завершаем процесс
             error "$PORTS"
         fi
@@ -372,8 +377,8 @@ esac
         
     # Привязываем порты к containerID
         status 13 'Сохранение списка портов...'
-        "$C9_PATH/ports.js" add "$containerID" "$PORT1" &> '/dev/null'
-        "$C9_PATH/ports.js" add "$containerID" "$PORT2" &> '/dev/null'
+        "$DIR_PATH/ports.js" add "$containerID" "$PORT1" &> '/dev/null'
+        "$DIR_PATH/ports.js" add "$containerID" "$PORT2" &> '/dev/null'
         
     # Выводим финальное сообщение и завершаем процесс
         complete "Контейнер успешно запущен!" \

@@ -115,10 +115,10 @@ ENV C9_PORT 8000
 #└────────┘
 COPY temp/VERSION /root/VERSION
 
-#┌─────────────────┐
-#│ bash-библиотека │
-#└─────────────────┘
-COPY temp/cli /root/cli
+#┌──────────────┐
+#│ Bash-скрипты │
+#└──────────────┘
+COPY temp/scripts /root/scripts
 
 #┌──────────────┐
 #│ Bash-профиль │

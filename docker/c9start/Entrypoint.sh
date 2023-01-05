@@ -2,14 +2,14 @@
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. $HOME/cli/lib.base.sh
-. $HOME/cli/lib.filesystem.sh
-. $HOME/cli/lib.docker.sh
-. $HOME/cli/lib.stream.sh
-. $HOME/cli/gui.menu.sh
-. $HOME/cli/gui.input.sh
-. $HOME/cli/gui.notice.sh
-. $HOME/cli/mvNotice.sh
+. $HOME/scripts/cli/lib.base.sh
+. $HOME/scripts/cli/lib.filesystem.sh
+. $HOME/scripts/cli/lib.docker.sh
+. $HOME/scripts/cli/lib.stream.sh
+. $HOME/scripts/cli/gui.menu.sh
+. $HOME/scripts/cli/gui.input.sh
+. $HOME/scripts/cli/gui.notice.sh
+. $HOME/scripts/cli/mvNotice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
