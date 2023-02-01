@@ -65,7 +65,6 @@ view:Menu() { case "$1" in
             1) view:Menu 'version1' 1      ;; # Выбран: "Docker + Git"
             2) view:Menu 'version2' 3 "$1" ;; # Выбран: "Docker"
             3) view:Menu 'version2' 2 "$1" ;; # Выбран: "Git"
-            0) menu:Main                   ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -126,7 +125,6 @@ view:Menu() { case "$1" in
         case $? in
             1) view:Menu 'input_git_user'    ;; # Выбран пункт: "Git"
             2) view:Menu 'input_docker_user' ;; # Выбран пункт: "Docker"
-            0) menu:Main                     ;; # Выбран пункт: "Назад"
         esac
     ;;
     

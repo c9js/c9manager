@@ -26,13 +26,10 @@ model:Deploy() { case "$1" in
 #│ Деплой не был завершен │
 #└────────────────────────┘
     'error')
-    # Последняя команда
-        local last_command="$2"
-        
     # Сохраняем информацию о последнем деплое
         if [ -n "$SELECTION" ]; then
         # Обновляем информацию
-            LAST_COMMAND="$last_command" # Последняя команда
+            LAST_COMMAND="$RUNNER_COMMAND" # Последняя команда
             LAST_SELECTION="$SELECTION"  # Последний вариант деплоя
             SELECTION=''                 # Обнуляем выбранный вариант деплоя
             
@@ -44,7 +41,7 @@ model:Deploy() { case "$1" in
         save_file "$PATH_VERSION" "$VERSION"
         
     # Выводим сообщение об ошибке
-        view:Deploy 'error' "$last_command"
+        view:Deploy 'error' "$RUNNER_COMMAND"
         
     # Добавляем задержку для визуального восприятия
         sleep 0.5
@@ -107,13 +104,34 @@ model:Deploy() { case "$1" in
 #│ Выполняет список команд │
 #└─────────────────────────┘
     'run_list')
+    # Очищаем экран
+        reset
+        
+    # Обновляем заголовок
+        view:Deploy 'header'
+        
+    # Переносим строку
+        printf '\n'
+        
+    # Сохраняем позицию курсора
+        printf '\e[s'
+        
+    # Сохраняем общее количество шагов
+        let RUNNER_FULL=$#+1
+        
     # Локальные переменные
         local i
         
     # Проходим по списку команд
         for ((i = 2; i <= $#; i++)); do
+        # Сохраняем текущую команду
+            RUNNER_COMMAND="${!i}"
+            
+        # Сохраняем текущий шаг
+            let RUNNER_NOW=$i-1
+            
         # Выполняем команду
-            if model:Deploy 'run' "${!i}" "$(($i-1))"; then
+            if model:Deploy 'run'; then
             # Команда не была выполнена
                 return 1
             fi
@@ -127,12 +145,8 @@ model:Deploy() { case "$1" in
 #│ Выполняет команду │
 #└───────────────────┘
     'run')
-    # Список аргументов
-        local command="$2" # Текущая команда
-        local now="$3"     # Текущий шаг
-        
     # Проверяем текущую команду
-        if [[ "$command" == "$LAST_COMMAND" ]]; then
+        if [[ "$RUNNER_COMMAND" == "$LAST_COMMAND" ]]; then
         # Обнуляем последнюю команду и выполняем текущую команду
             LAST_COMMAND=''
             
@@ -143,17 +157,17 @@ model:Deploy() { case "$1" in
         fi
         
     # Сохраняем контройльную точку
-        if [[ "$command" == 'no_stop' ]]; then
-            NO_STOP="$command"
+        if [[ "$RUNNER_COMMAND" == 'no_stop' ]]; then
+            NO_STOP="$RUNNER_COMMAND"
         fi
         
-    # Обновляем текущий статус
-        model:Deploy 'status' "$command" "$now"
+    # Обновляем текущее состояние команды
+        model:Deploy 'state'
         
     # Выполняем команду
-        if stream 'runner:Deploy' "$command"; then
+        if stream 'runner:Deploy' "$RUNNER_COMMAND"; then
         # Деплой не был завершен
-            model:Deploy 'error' "$command"
+            model:Deploy 'error'
             
          # Команда не была выполнена
             return 0
@@ -163,42 +177,30 @@ model:Deploy() { case "$1" in
         return 1
     ;;
     
-#┌──────────────────────────┐
-#│ Обновляет текущий статус │
-#└──────────────────────────┘
-    'status')
-    # Список аргументов
-        local command="$2" # Текущая команда
-        local now="$3"     # Текущий шаг
-        local full         # Количество шагов
+#┌─────────────────────────────────────┐
+#│ Обновляет текущее состояние команды │
+#└─────────────────────────────────────┘
+    'state')
+    # Восстанавливаем позицию курсора
+        printf '\e[u'
         
-    # Очищаем экран
-        reset
+    # Перемещаем курсор на следующую строку 
+        printf '\e[E'
         
-    # Обновляем заголовок
-        view:Deploy 'header'
-        
-    # Количество шагов
-        local git_full=${#GIT_LIST[*]}
-        local docker_full=${#DOCKER_LIST[*]}
-        local general_full=${#GENERAL_LIST[*]}
-        
-    # Обновляем общее количество шагов
-        case "$SELECTION" in
-            1) let full=$git_full+$docker_full ;; # Сразу в оба репозитория
-            2) let full=$git_full              ;; # Только в git-репозиторий
-            3) let full=$docker_full           ;; # Только в docker-репозиторий
-            *) let full=$general_full          ;; # Пробуем еще раз
-        esac
-        
-    # Переносим строку
-        printf '\n'
+    # Перемещаем курсор на предыдущую строку 
+        printf '\e[F'
         
     # Обновляем шаг
-        printf '[%d/%d] ' "$now" "$full"
+        printf '[%d/%d] ' "$RUNNER_NOW" "$RUNNER_FULL"
+        
+    # Сохраняем позицию курсора
+        printf '\e[s'
         
     # Обновляем текущее состояние команды
-        view:Deploy 'state' "$command"
+        view:Deploy 'state' "$RUNNER_COMMAND"
+        
+    # Удаляем все после текущей позиции
+        printf '\e[J'
         
     # Переносим строку
         printf '\n'
