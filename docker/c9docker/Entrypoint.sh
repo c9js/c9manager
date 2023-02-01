@@ -19,7 +19,6 @@ chmod 644 /root/.ssh/id_rsa.pub
 #└─────┘
 git config --global user.email 'email@email.email'
 git config --global user.name 'Sergei'
-git config --global merge.conflictStyle 'diff3'
 git config --global rebase.missingCommitsCheck 'error'
 
 #┌─────────────────────────────────────────────────────┐
