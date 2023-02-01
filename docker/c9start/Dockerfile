@@ -46,10 +46,10 @@ ARG models
 ARG views
 ARG entrypoint
 COPY "$controllers" /controllers/
+COPY "$entrypoints" /entrypoints/
 COPY "$runners" /runners/
 COPY "$models" /models/
 COPY "$views" /views/
-COPY "$entrypoints" /entrypoints/
 COPY "$entrypoint" /entrypoint.sh
 RUN chmod 700 /entrypoint.sh
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

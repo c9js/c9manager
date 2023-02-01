@@ -182,7 +182,7 @@ esac
 #│ • Перед началом любой команды,                         │
 #│   мы должны остановить и удалить все старые контейнеры │
 #└────────────────────────────────────────────────────────┘
-# Получаем ID контейнеров
+# Получаем ID-контейнеров
     status 1 'Поиск контейнеров...'
     
 # Контейнеры не найдены
@@ -195,7 +195,7 @@ esac
         
 # Контейнеры найдены
     else
-    # Получаем ID контейнеров
+    # Получаем ID-контейнеров
         containerID=${GLOBAL_ID[*]}
         
     # Останавливаем контейнеры
@@ -229,7 +229,7 @@ esac
 #│ • Все готово для удаления старого образа │
 #└──────────────────────────────────────────┘
     if [[ "$COMMAND" == 'build' || "$COMMAND" == 'remove' ]]; then
-    # Получаем ID образов
+    # Получаем ID-образов
         status 5 'Поиск старого образа...'
         
     # Старый образ не найден
@@ -242,7 +242,7 @@ esac
             
     # Старый образ найден
         else
-        # Получаем ID образов
+        # Получаем ID-образов
             imageID=${GLOBAL_ID[*]}
             
         # Удаляем старый образ
@@ -270,7 +270,7 @@ esac
 #│   мы должны проверить существует-ли образ │
 #└───────────────────────────────────────────┘
     if [[ "$COMMAND" == 'start' ]]; then
-    # Получаем ID образа
+    # Получаем ID-образа
         status 7 'Поиск образа...'
         # Наверно это не очевидно,
         # но мы все же ищем образ ниже во второй части,
@@ -288,16 +288,16 @@ esac
             status 8 'Копирование временных файлов...'
             
         # Создаем временный каталог
-            mkdir -vp "$DIR_PATH/temp/scripts"
+            mkdir -p "$DIR_PATH/temp/scripts"
             
         # Копируем версию
-            cp -vr "$PATH_VERSION" "$DIR_PATH/temp/VERSION"
+            cp -r "$PATH_VERSION" "$DIR_PATH/temp/VERSION"
             
         # Копируем bash-скрипты
-            cp -vr "/$WORKSPACE/scripts/." "$DIR_PATH/temp/scripts"
+            cp -r "/$WORKSPACE/scripts/." "$DIR_PATH/temp/scripts"
             
         # Копируем настройки редактора и bash-профиль 
-            cp -vr "/$WORKSPACE/c9settings/." "$DIR_PATH/temp"
+            cp -r "/$WORKSPACE/c9settings/." "$DIR_PATH/temp"
             
         # Проверяем предусмотрены-ли для образа дополнительные алиасы
             if [ -s "$DIR_PATH/$IMAGE_RUN/alias" ]; then
@@ -309,10 +309,10 @@ esac
             status 9 'Создание нового образа...'
             docker build \
                 --build-arg "controllers=$IMAGE_RUN/controllers/" \
+                --build-arg "entrypoints=$IMAGE_RUN/entrypoints/" \
                 --build-arg "runners=$IMAGE_RUN/runners/" \
                 --build-arg "models=$IMAGE_RUN/models/" \
                 --build-arg "views=$IMAGE_RUN/views/" \
-                --build-arg "entrypoints=$IMAGE_RUN/entrypoints/" \
                 --build-arg "entrypoint=$IMAGE_RUN/Entrypoint.sh" \
                 -f "$DIR_PATH/$IMAGE_RUN/Dockerfile" \
                 -t "$IMAGE_RUN" \
@@ -323,7 +323,7 @@ esac
             
         # Удаляем временные файлы
             status 10 'Удаление временных файлов...'
-            rm -vr "$DIR_PATH/temp" # Временный каталог
+            rm -r "$DIR_PATH/temp" # Временный каталог
             
         # Выводим сообщение об ошибке и завершаем процесс
             if (( "$res" != 0 )); then

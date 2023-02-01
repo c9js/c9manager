@@ -27,15 +27,14 @@ model:Edit() { case "$1" in
         if ! modelView:Runner 'run_list' "${CHECK_LIST[@]}"; then
         # Предлагаем пользователю выбрать коммит
             controller:Menu 'choice' "$PAGE" "0" "$select"
-            
-    # Коммит можно редактировать
-        else
-        # Предлагаем пользователю подтвердить редактирование
-            case "$SELECTION" in
-                1) view:Menu 'confirm_edit' "$commit" "$text" "$select" ;; # Описание коммита
-                2) view:Menu 'confirm_date' "$commit" "$date" "$select" ;; # Дата созданя коммита
-            esac
+            return
         fi
+        
+    # Предлагаем пользователю подтвердить редактирование
+        case "$SELECTION" in
+            1) view:Menu 'confirm_edit' "$commit" "$text" "$select" ;; # Описание коммита
+            2) view:Menu 'confirm_date' "$commit" "$date" "$select" ;; # Дата созданя коммита
+        esac
     ;;
     
 #┌───────────────────────────────────────┐

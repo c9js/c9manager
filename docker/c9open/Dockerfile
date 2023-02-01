@@ -113,7 +113,8 @@ COPY temp/VERSION /root/VERSION
 #┌──────────────┐
 #│ Bash-скрипты │
 #└──────────────┘
-COPY temp/scripts /root/scripts
+COPY temp/scripts/amend /root/scripts/amend
+COPY temp/scripts/cli /root/scripts/cli
 
 #┌──────────────┐
 #│ Bash-профиль │
