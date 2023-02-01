@@ -23,171 +23,63 @@ model:Docker() { local i; case "$1" in
         [ -z "$RUN_IMAGE" ]
     ;;
     
-#┌─────────────────────────────────────────────┐
-#│ Получает список ID-образов и ID-контейнеров │
-#└─────────────────────────────────────────────┘
-    'get_ids')
-    # Получаем список всех ID-образов
-        if [[ "$3" == 'all' ]]; then
-            getImageIDs "$2 1"
-            
-    # Получаем список ID-образов из списка $IMAGES
-        else
-            getImageIDs "$2 1" "${IMAGES[@]}"
-        fi
+#┌───────────────────────────┐
+#│ Запускает новый контейнер │
+#└───────────────────────────┘
+    'run')
+    # Сохраняем выбранный порт
+        PORT1="$2"
         
-    # Получаем список ID-контейнеров
-        getContainerIDs "$2 2" "${imageIDs[@]}"
+    # Сохраняем общее количество шагов для прогресс
+        DOCKER_FULL=${#STOP_LIST[*]}
+        
+    # Поиск образов из списка $IMAGES
+        SEARCH_IMAGES=("${IMAGES[@]}")
+        
+    # Выполняем список команд
+        modelView:Runner 'run_list' "${RUN_LIST[@]}"
     ;;
     
-#┌──────────────────────────┐
-#│ Останавливает контейнеры │
-#└──────────────────────────┘
-    'stop_containers')
-    # Проходим по списку ID-контейнеров
-        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
-        # Обновляем текущий статус
-            $2 \
-                3 'Остановка контейнеров' $i ${#containerIDs[*]}
-                
-        # Останавливаем контейнер
-            docker stop "${containerIDs[$i]}" &> '/dev/null'
-        done
-    ;;
-    
-#┌────────────────────┐
-#│ Удаляет контейнеры │
-#└────────────────────┘
-    'remove_containers')
-    # Проходим по списку ID-контейнеров
-        for ((i = 0; i < ${#containerIDs[*]}; i++)); do
-        # Обновляем текущий статус
-            $2 \
-                4 'Удаление контейнеров' $i ${#containerIDs[*]}
-                
-        # Удаляем контейнер
-            docker rm "${containerIDs[$i]}" &> '/dev/null'
-        done
-    ;;
-    
-#┌────────────────┐
-#│ Удаляет образы │
-#└────────────────┘
-    'remove_images')
-    # Удаляем все образы
-        for ((i = 0; i < ${#imageIDs[*]}; i++)); do
-        # Обновляем текущий статус
-            $2 \
-                5 'Удаление образов' $i ${#imageIDs[*]}
-                
-        # Удаляем образ
-            docker rmi "${imageIDs[$i]}" -f &> '/dev/null'
-        done
-    ;;
-    
-#┌──────────────────────────────────────────────────────┐
-#│ Останавливает и удаляет контейнеры из списка $IMAGES │
-#└──────────────────────────────────────────────────────┘
+#┌──────────────────────────────────────┐
+#│ Удаляет контейнеры из списка $IMAGES │
+#└──────────────────────────────────────┘
     'stop')
-    # Получаем список ID-контейнеров
-        model:Docker 'get_ids' "$2"
+    # Поиск образов из списка $IMAGES
+        SEARCH_IMAGES=("${IMAGES[@]}")
         
-    # Останавливаем контейнеры
-        model:Docker 'stop_containers' "$2"
+    # Сохраняем общее количество шагов для прогресс
+        DOCKER_FULL=${#STOP_LIST[*]}
         
-    # Удаляем контейнеры
-        model:Docker 'remove_containers' "$2"
+    # Выполняем список команд
+        modelView:Runner 'run_list' "${STOP_LIST[@]}"
     ;;
     
-#┌────────────────────────────────────────┐
-#│ Останавливает и удаляет все контейнеры │
-#└────────────────────────────────────────┘
+#┌────────────────────────┐
+#│ Удаляет все контейнеры │
+#└────────────────────────┘
     'stop_all')
-    # Получаем список всех ID-контейнеров
-        model:Docker 'get_ids' "$2" 'all'
+    # Поиск всех образов
+        SEARCH_IMAGES=('')
         
-    # Останавливаем все контейнеры
-        model:Docker 'stop_containers' "$2"
+    # Сохраняем общее количество шагов для прогресс
+        DOCKER_FULL=${#STOP_LIST[*]}
         
-    # Удаляем все контейнеры
-        model:Docker 'remove_containers' "$2"
+    # Выполняем список команд
+        modelView:Runner 'run_list' "${STOP_LIST[@]}"
     ;;
     
 #┌────────────────────┐
 #│ Удаляет все образы │
 #└────────────────────┘
     'remove_all')
-    # Получаем список ID-образов и ID-контейнеров
-        model:Docker 'get_ids' "$2" 'all'
+    # Поиск всех образов
+        SEARCH_IMAGES=('')
         
-    # Останавливаем все контейнеры
-        model:Docker 'stop_containers' "$2"
+    # Сохраняем общее количество шагов для прогресс
+        DOCKER_FULL=${#REMOVE_LIST[*]}
         
-    # Удаляем все контейнеры
-        model:Docker 'remove_containers' "$2"
-        
-    # Удаляем все образы
-        model:Docker 'remove_images' "$2"
-    ;;
-    
-#┌─────────────────┐
-#│ Скачивает образ │
-#└─────────────────┘
-    'download')
-    # Образ не найден
-        if ! is_image "$IMAGE_RUN:$VERSION"; then
-        # Скачиваем образ
-            if ! docker pull "$IMAGE_RUN:$VERSION"; then
-            # Образ не был скачан
-                return 1
-            fi
-        fi
-    ;;
-    
-#┌───────────────────────────┐
-#│ Запускает новый контейнер │
-#└───────────────────────────┘
-    'start')
-    # Локальные переменные
-        local PORT1="$2"
-        local PORT2=$(($2+1))
-        local error_msg
-        
-    # Запускаем контейнер
-        if ! error_msg=$(docker run \
-            --name "$WORKSPACE" \
-            --hostname "$WORKSPACE" \
-            -p "$PORT1:$PORT1" \
-            -p "$PORT2:$PORT2" \
-            -e "C9_PORT=$PORT1" \
-            -e "PORT=$PORT2" \
-            -e "VERSION=$VERSION" \
-            -e "PATH_VERSION=/$WORKSPACE/$PATH_VERSION" \
-            -e "PATH_GIT_USER=/$WORKSPACE/$PATH_GIT_USER" \
-            -e "PATH_GIT_REPO=/$WORKSPACE/$PATH_GIT_REPO" \
-            -e "PATH_DOCKER_USER=/$WORKSPACE/$PATH_DOCKER_USER" \
-            -e "PATH_DOCKER_PASS=/$WORKSPACE/$PATH_DOCKER_PASS" \
-            -e "PATH_BAD_DEPLOY=/$WORKSPACE/$PATH_BAD_DEPLOY" \
-            -e "GIT_URL=$GIT_URL" \
-            -e "GIT_USER=$GIT_USER" \
-            -e "GIT_REPO=$GIT_REPO" \
-            -e "WORKSPACE=$WORKSPACE" \
-            -e "DOCKER_USER=$DOCKER_USER" \
-            -e "DOCKER_PWD=$DOCKER_PWD" \
-            -v "$DOCKER_PWD:/$WORKSPACE" \
-            -v "$DOCKER_PWD/ssh:/root/.sshsource" \
-            -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
-            --restart unless-stopped \
-            --detach -it \
-            "$IMAGE_RUN:$VERSION" 2>&1
-        ); then
-        # Выводим сообщение об ошибке
-            echo "$error_msg"
-            return 1
-        fi
-        
-    # Контейнер успешно запущен
-        return 0
+    # Выполняем список команд
+        modelView:Runner 'run_list' "${REMOVE_LIST[@]}"
     ;;
 esac
 }
