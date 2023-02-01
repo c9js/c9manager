@@ -102,7 +102,9 @@
                 "command": "toggleconsole",
                 "keys": {
                     "win": [
-                        "Numpad2"
+                        "F1",
+                        "Numpad2",
+                        "Ctrl+Space"
                     ]
                 }
             },
@@ -222,7 +224,7 @@
                 "command": "expandToMatching",
                 "keys": {
                     "win": [
-                        "F1"
+                        "F3"
                     ]
                 }
             },
@@ -390,8 +392,9 @@
                 "command": "runlast",
                 "keys": {
                     "win": [
-                        "Numpad0",
-                        "Ctrl+Space"
+                        "F2",
+                        "Ctrl+B",
+                        "Numpad0"
                     ]
                 }
             },
@@ -413,6 +416,14 @@
             },
             {
                 "command": "emmet_toggle_comment",
+                "keys": {
+                    "win": [
+                        ""
+                    ]
+                }
+            },
+            {
+                "command": "build",
                 "keys": {
                     "win": [
                         ""
