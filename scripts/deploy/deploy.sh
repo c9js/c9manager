@@ -18,6 +18,14 @@ DIR_PATH="$(dirname $0)"
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
+# Entrypoints
+. $DIR_PATH/entrypoints/entrypointMenu.sh
+
+# Controllers
+. $DIR_PATH/controllers/controllerDeploy.sh
+. $DIR_PATH/controllers/controllerSettings.sh
+. $DIR_PATH/controllers/controllerUpdate.sh
+
 # Models
 . $DIR_PATH/models/modelDeploy.sh
 . $DIR_PATH/models/modelSettings.sh
@@ -26,14 +34,6 @@ DIR_PATH="$(dirname $0)"
 # Runners
 . $DIR_PATH/runners/runnerDeploy.sh
 . $DIR_PATH/runners/runnerNotice.sh
-
-# Entrypoints
-. $DIR_PATH/entrypoints/entrypointMenu.sh
-
-# Controllers
-. $DIR_PATH/controllers/controllerDeploy.sh
-. $DIR_PATH/controllers/controllerSettings.sh
-. $DIR_PATH/controllers/controllerUpdate.sh
 
 # Views
 . $DIR_PATH/views/view.sh

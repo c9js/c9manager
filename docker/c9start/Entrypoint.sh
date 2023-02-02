@@ -15,6 +15,15 @@
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
+# Entrypoints
+. /entrypoints/entrypointMenu.sh
+. /entrypoints/entrypointProxy.sh
+
+# Controllers
+. /controllers/controllerGit.sh
+. /controllers/controllerSSH.sh
+. /controllers/controllerDocker.sh
+
 # Models
 . /models/modelGit.sh
 . /models/modelSSH.sh
@@ -25,15 +34,6 @@
 . /runners/runnerSSH.sh
 . /runners/runnerNotice.sh
 . /runners/runnerDocker.sh
-
-# Entrypoints
-. /entrypoints/entrypointMenu.sh
-. /entrypoints/entrypointProxy.sh
-
-# Controllers
-. /controllers/controllerGit.sh
-. /controllers/controllerSSH.sh
-. /controllers/controllerDocker.sh
 
 # Views
 . /views/view.sh
