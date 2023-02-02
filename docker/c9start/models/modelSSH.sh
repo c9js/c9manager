@@ -16,10 +16,10 @@ model:SSH() { case "$1" in
         NEW_SSH_KEY="$file_name"
         
     # Сохраняем путь к SSH-каталогу вне docker-а
-        CD_SSH_DIR="${CD}${SEP}$SSH_DIR"
+        P_SSH_DIR="${P}${SEP}$SSH_DIR"
         
     # Сохраняем путь к SSH-файлу вне docker-а
-        CD_SSH_FILE="${CD}${SEP}${SSH_DIR}${SEP}$NEW_SSH_KEY"
+        P_SSH_FILE="${P}${SEP}${SSH_DIR}${SEP}$NEW_SSH_KEY"
         
     # Выполняем список команд
         runner "${SSH_LIST[@]}"

@@ -3,7 +3,7 @@
 2. Перейдите в пустой каталог.
 3. Ведите команду:
 ```
-docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"CD=%CD%" --privileged --rm c9js/c9start:latest
+docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"P=%CD%" --privileged --rm c9js/c9start
 ```
 
 
@@ -12,7 +12,7 @@ docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"CD=%CD%" --privil
 2. Перейдите в пустой каталог.
 3. Ведите команду:
 ```
-docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"CD=$(PWD)" --privileged --rm c9js/c9start:latest
+docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"P=$(PWD)" --privileged --rm c9js/c9start
 ```
 
 ## TODO

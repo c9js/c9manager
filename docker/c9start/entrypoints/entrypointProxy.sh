@@ -16,7 +16,7 @@ entrypoint:Proxy() {
 #│ 3. Добавляем в начало "/", (если его там нет) │
 #│ 4. Удаляем ":"                                │
 #└───────────────────────────────────────────────┘
-    DOCKER_PWD=$(echo "$CD" | sed \
+    DOCKER_PWD=$(echo "$P" | sed \
         -e 's/[A-Z]/\L&/' \
         -e 's-\\-\/-g' \
         -e '/^\//!s-^-/-' \
@@ -24,7 +24,7 @@ entrypoint:Proxy() {
     )
     
 # Определяем разделитель
-    [[ "${CD/\\}" != "$CD" ]] && SEP='\' || SEP='/'
+    [[ "${P/\\}" != "$P" ]] && SEP='\' || SEP='/'
     
 # Получаем ID-образа
     IMAGE_ID="$(docker ps --filter "id=$HOSTNAME" --format='{{.Image}}')"
@@ -33,7 +33,7 @@ entrypoint:Proxy() {
 #│ Переход в прокси контейнер │
 #└────────────────────────────┘
     docker run \
-        -e "CD=$CD" \
+        -e "P=$P" \
         -e "SEP=$SEP" \
         -e "DOCKER_PWD=$DOCKER_PWD" \
         -e "PARENT_HOSTNAME=$HOSTNAME" \
