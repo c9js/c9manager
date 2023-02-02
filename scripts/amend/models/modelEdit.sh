@@ -24,7 +24,7 @@ model:Edit() { case "$1" in
         local date="${COMMITS_DATE[$commit]}" # Текущая дата создания коммита
         
     # Коммит нельзя редактировать
-        if ! modelView:Runner 'run_list' "${CHECK_LIST[@]}"; then
+        if ! runner "${CHECK_LIST[@]}"; then
         # Предлагаем пользователю выбрать коммит
             controller:Menu 'choice' "$PAGE" "0" "$select"
             return
@@ -53,14 +53,14 @@ model:Edit() { case "$1" in
         
     # Сохраняем один из выбранных вариантов
         case "$SELECTION" in
-            1) modelView:Runner 'run_list' "${EDIT_LIST[@]}" ;; # Описание коммита
-            2) modelView:Runner 'run_list' "${DATE_LIST[@]}" ;; # Дата созданя коммита
+            1) runner "${EDIT_LIST[@]}" ;; # Описание коммита
+            2) runner "${DATE_LIST[@]}" ;; # Дата созданя коммита
         esac
         
     # Редактирование не было завершено
         if [[ $? != 0 ]]; then
         # Отменяем все изменения
-            modelView:Runner 'run_list' "${BACKUP_LIST[@]}"
+            runner "${BACKUP_LIST[@]}"
         fi
         
     # Предлагаем пользователю выбрать коммит

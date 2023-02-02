@@ -10,7 +10,7 @@ model:Git() { case "$1" in
 #└───────────────────────┘
     'gitclone')
     # Выполняем список команд
-        modelView:Runner 'run_list' "${GIT_LIST[@]}"
+        runner "${GIT_LIST[@]}"
     ;;
 esac
 }

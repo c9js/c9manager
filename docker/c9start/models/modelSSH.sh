@@ -22,7 +22,7 @@ model:SSH() { case "$1" in
         CD_SSH_FILE="${CD}${SEP}${SSH_DIR}${SEP}$NEW_SSH_KEY"
         
     # Выполняем список команд
-        modelView:Runner 'run_list' "${SSH_LIST[@]}"
+        runner "${SSH_LIST[@]}"
         
     # Возвращаемся в меню
         menu:Back

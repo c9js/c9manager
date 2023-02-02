@@ -37,7 +37,7 @@ model:Docker() { local i; case "$1" in
         SEARCH_IMAGES=("${IMAGES[@]}")
         
     # Выполняем список команд
-        modelView:Runner 'run_list' "${RUN_LIST[@]}"
+        runner "${RUN_LIST[@]}"
     ;;
     
 #┌──────────────────────────────────────┐
@@ -51,7 +51,7 @@ model:Docker() { local i; case "$1" in
         DOCKER_FULL=${#STOP_LIST[*]}
         
     # Выполняем список команд
-        modelView:Runner 'run_list' "${STOP_LIST[@]}"
+        runner "${STOP_LIST[@]}"
     ;;
     
 #┌────────────────────────┐
@@ -65,7 +65,7 @@ model:Docker() { local i; case "$1" in
         DOCKER_FULL=${#STOP_LIST[*]}
         
     # Выполняем список команд
-        modelView:Runner 'run_list' "${STOP_LIST[@]}"
+        runner "${STOP_LIST[@]}"
     ;;
     
 #┌────────────────────┐
@@ -79,7 +79,7 @@ model:Docker() { local i; case "$1" in
         DOCKER_FULL=${#REMOVE_LIST[*]}
         
     # Выполняем список команд
-        modelView:Runner 'run_list' "${REMOVE_LIST[@]}"
+        runner "${REMOVE_LIST[@]}"
     ;;
 esac
 }
