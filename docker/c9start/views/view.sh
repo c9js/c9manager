@@ -13,7 +13,7 @@ view() { case "$1" in
         view:Menu 'header'
         
     # Получает информацию о запущенном контейнере
-        getContainerInfo "$WORKSPACE"
+        docker:containerInfo "$WORKSPACE"
         
     # Проверяем список всех уведомлений
         modelView:Notice 'check'

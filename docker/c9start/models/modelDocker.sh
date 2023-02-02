@@ -9,7 +9,7 @@ model:Docker() { local i; case "$1" in
 #│ Проверяет существует-ли образ │
 #└───────────────────────────────┘
     'no_image')
-        ! is_image "$IMAGE_RUN"
+        ! docker:is_image "$IMAGE_RUN"
     ;;
     
 #┌───────────────────────────────────┐
@@ -17,7 +17,7 @@ model:Docker() { local i; case "$1" in
 #└───────────────────────────────────┘
     'no_container')
     # Получает информацию о запущенном контейнере
-        getContainerInfo "$WORKSPACE"
+        docker:containerInfo "$WORKSPACE"
         
     # Контейнер не найден
         [ -z "$RUN_IMAGE" ]

@@ -1,4 +1,4 @@
-#▄──────────▄1.0.2
+#▄──────────▄1.0.3
 #█          █
 #█  Docker  █
 #█          █
@@ -6,9 +6,9 @@
 #┌─────────────────────────────────────────────────┐
 #│ Проверяет существуют-ли образы,                 │
 #│ далее добавляет найденые ID в массив $GLOBAL_ID │
-#│ is_image "$IMAGE_RUN"                           │
+#│ docker:is_image "$IMAGE_RUN"                    │
 #└─────────────────────────────────────────────────┘
-is_image() {
+docker:is_image() {
 # Получаем ID-образов
     GLOBAL_ID=$(docker images -aq "$1" 2>&1)
     
@@ -38,10 +38,10 @@ is_image() {
 #┌─────────────────────────────────────────────────┐
 #│ Проверяет существуют-ли контейнеры,             │
 #│ далее добавляет найденые ID в массив $GLOBAL_ID │
-#│ is_container "ancestor=$IMAGE_RUN"              │
-#│ is_container "name=$IMAGE_RUN"                  │
+#│ docker:is_container "ancestor=$IMAGE_RUN"       │
+#│ docker:is_container "name=$IMAGE_RUN"           │
 #└─────────────────────────────────────────────────┘
-is_container() {
+docker:is_container() {
 # Локальные переменные
     local ids
     local id
@@ -76,9 +76,9 @@ is_container() {
 
 #┌─────────────────────────────────────────────┐
 #│ Получает информацию о запущенном контейнере │
-#│ getContainerInfo "$WORKSPACE"               │
+#│ docker:containerInfo "$WORKSPACE"           │
 #└─────────────────────────────────────────────┘
-getContainerInfo() {
+docker:containerInfo() {
 # Получаем информацию по имени контейнера
     local res="$(docker ps --filter "name=$1" --format='{{.Image}}={{.Ports}}')"
     
