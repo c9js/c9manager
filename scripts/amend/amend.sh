@@ -2,46 +2,46 @@
 #┌────────────────────────────────────────────┐
 #│ Путь к каталогу где расположен этот скрипт │
 #└────────────────────────────────────────────┘
-DIR_PATH="$(dirname $0)"
+PATH_DIR="$(dirname $0)"
 
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. $DIR_PATH/../cli/lib.base.sh
-. $DIR_PATH/../cli/lib.stream.sh
-. $DIR_PATH/../cli/gui.menu.sh
-. $DIR_PATH/../cli/gui.input.sh
-. $DIR_PATH/../cli/gui.notice.sh
-. $DIR_PATH/../cli/mvNotice.sh
-. $DIR_PATH/../cli/mvRunner.sh
+. $PATH_DIR/../cli/lib.base.sh
+. $PATH_DIR/../cli/lib.stream.sh
+. $PATH_DIR/../cli/gui.menu.sh
+. $PATH_DIR/../cli/gui.input.sh
+. $PATH_DIR/../cli/gui.notice.sh
+. $PATH_DIR/../cli/mvNotice.sh
+. $PATH_DIR/../cli/mvRunner.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
 # Entrypoints
-. $DIR_PATH/entrypoints/entrypointMenu.sh
+. $PATH_DIR/entrypoints/entrypointMenu.sh
 
 # Controllers
-. $DIR_PATH/controllers/controllerCheck.sh
-. $DIR_PATH/controllers/controllerEdit.sh
-. $DIR_PATH/controllers/controllerLoad.sh
-. $DIR_PATH/controllers/controllerMenu.sh
+. $PATH_DIR/controllers/controllerCheck.sh
+. $PATH_DIR/controllers/controllerEdit.sh
+. $PATH_DIR/controllers/controllerLoad.sh
+. $PATH_DIR/controllers/controllerMenu.sh
 
 # Models
-. $DIR_PATH/models/modelCheck.sh
-. $DIR_PATH/models/modelEdit.sh
-. $DIR_PATH/models/modelLoad.sh
-. $DIR_PATH/models/modelMenu.sh
+. $PATH_DIR/models/modelCheck.sh
+. $PATH_DIR/models/modelEdit.sh
+. $PATH_DIR/models/modelLoad.sh
+. $PATH_DIR/models/modelMenu.sh
 
 # Runners
-. $DIR_PATH/runners/runnerEdit.sh
-. $DIR_PATH/runners/runnerNotice.sh
+. $PATH_DIR/runners/runnerEdit.sh
+. $PATH_DIR/runners/runnerNotice.sh
 
 # Views
-. $DIR_PATH/views/view.sh
-. $DIR_PATH/views/viewEdit.sh
-. $DIR_PATH/views/viewMenu.sh
-. $DIR_PATH/views/viewNotice.sh
+. $PATH_DIR/views/view.sh
+. $PATH_DIR/views/viewEdit.sh
+. $PATH_DIR/views/viewMenu.sh
+. $PATH_DIR/views/viewNotice.sh
 
 #┌───────────────────┐
 #│ Список переменных │

@@ -2,45 +2,45 @@
 #┌────────────────────────────────────────────┐
 #│ Путь к каталогу где расположен этот скрипт │
 #└────────────────────────────────────────────┘
-DIR_PATH="$(dirname $0)"
+PATH_DIR="$(dirname $0)"
 
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. $DIR_PATH/../cli/lib.base.sh
-. $DIR_PATH/../cli/lib.filesystem.sh
-. $DIR_PATH/../cli/lib.stream.sh
-. $DIR_PATH/../cli/gui.menu.sh
-. $DIR_PATH/../cli/gui.input.sh
-. $DIR_PATH/../cli/gui.notice.sh
-. $DIR_PATH/../cli/mvNotice.sh
+. $PATH_DIR/../cli/lib.base.sh
+. $PATH_DIR/../cli/lib.filesystem.sh
+. $PATH_DIR/../cli/lib.stream.sh
+. $PATH_DIR/../cli/gui.menu.sh
+. $PATH_DIR/../cli/gui.input.sh
+. $PATH_DIR/../cli/gui.notice.sh
+. $PATH_DIR/../cli/mvNotice.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
 # Entrypoints
-. $DIR_PATH/entrypoints/entrypointMenu.sh
+. $PATH_DIR/entrypoints/entrypointMenu.sh
 
 # Controllers
-. $DIR_PATH/controllers/controllerDeploy.sh
-. $DIR_PATH/controllers/controllerSettings.sh
-. $DIR_PATH/controllers/controllerUpdate.sh
+. $PATH_DIR/controllers/controllerDeploy.sh
+. $PATH_DIR/controllers/controllerSettings.sh
+. $PATH_DIR/controllers/controllerUpdate.sh
 
 # Models
-. $DIR_PATH/models/modelDeploy.sh
-. $DIR_PATH/models/modelSettings.sh
-. $DIR_PATH/models/modelUpdate.sh
+. $PATH_DIR/models/modelDeploy.sh
+. $PATH_DIR/models/modelSettings.sh
+. $PATH_DIR/models/modelUpdate.sh
 
 # Runners
-. $DIR_PATH/runners/runnerDeploy.sh
-. $DIR_PATH/runners/runnerNotice.sh
+. $PATH_DIR/runners/runnerDeploy.sh
+. $PATH_DIR/runners/runnerNotice.sh
 
 # Views
-. $DIR_PATH/views/view.sh
-. $DIR_PATH/views/viewDeploy.sh
-. $DIR_PATH/views/viewMenu.sh
-. $DIR_PATH/views/viewNotice.sh
-. $DIR_PATH/views/viewSettings.sh
+. $PATH_DIR/views/view.sh
+. $PATH_DIR/views/viewDeploy.sh
+. $PATH_DIR/views/viewMenu.sh
+. $PATH_DIR/views/viewNotice.sh
+. $PATH_DIR/views/viewSettings.sh
 
 #┌───────────────────────────────┐
 #│ Версии: Micro / Minor / Major │

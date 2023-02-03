@@ -7,7 +7,7 @@
 #┌────────────────────────────────────────────┐
 #│ Путь к каталогу где расположен этот скрипт │
 #└────────────────────────────────────────────┘
-DIR_PATH="$(dirname $0)"
+PATH_DIR="$(dirname $0)"
 
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
@@ -210,7 +210,7 @@ esac
         status 4 'Удаление портов из списка...'
         for ID in $containerID; do
         # Удаляем порты из списка
-            "$DIR_PATH/ports.js" remove "$ID" &> '/dev/null'
+            "$PATH_DIR/ports.js" remove "$ID" &> '/dev/null'
         done
         
     # Выводим финальное сообщение и завершаем процесс
@@ -288,21 +288,21 @@ esac
             status 8 'Копирование временных файлов...'
             
         # Создаем временный каталог
-            mkdir -p "$DIR_PATH/temp/scripts"
+            mkdir -p "$PATH_DIR/temp/scripts"
             
         # Копируем версию
-            cp -r "$PATH_VERSION" "$DIR_PATH/temp/VERSION"
+            cp -r "$PATH_VERSION" "$PATH_DIR/temp/VERSION"
             
         # Копируем bash-скрипты
-            cp -r "/$WORKSPACE/scripts/." "$DIR_PATH/temp/scripts"
+            cp -r "/$WORKSPACE/scripts/." "$PATH_DIR/temp/scripts"
             
         # Копируем настройки редактора и bash-профиль 
-            cp -r "/$WORKSPACE/c9settings/." "$DIR_PATH/temp"
+            cp -r "/$WORKSPACE/c9settings/." "$PATH_DIR/temp"
             
         # Проверяем предусмотрены-ли для образа дополнительные алиасы
-            if [ -s "$DIR_PATH/$IMAGE_RUN/alias" ]; then
+            if [ -s "$PATH_DIR/$IMAGE_RUN/alias" ]; then
             # Добавляем алиасы в bash-профиль
-                cat "$DIR_PATH/$IMAGE_RUN/alias" >> "$DIR_PATH/temp/bash_profile"
+                cat "$PATH_DIR/$IMAGE_RUN/alias" >> "$PATH_DIR/temp/bash_profile"
             fi
             
         # Создаем новый образ
@@ -314,16 +314,16 @@ esac
                 --build-arg "models=$IMAGE_RUN/models/" \
                 --build-arg "views=$IMAGE_RUN/views/" \
                 --build-arg "entrypoint=$IMAGE_RUN/Entrypoint.sh" \
-                -f "$DIR_PATH/$IMAGE_RUN/Dockerfile" \
+                -f "$PATH_DIR/$IMAGE_RUN/Dockerfile" \
                 -t "$IMAGE_RUN" \
-                "$DIR_PATH"
+                "$PATH_DIR"
                 
         # Сохраняем результат
             res=$?
             
         # Удаляем временные файлы
             status 10 'Удаление временных файлов...'
-            rm -r "$DIR_PATH/temp" # Временный каталог
+            rm -r "$PATH_DIR/temp" # Временный каталог
             
         # Выводим сообщение об ошибке и завершаем процесс
             if (( "$res" != 0 )); then
@@ -333,7 +333,7 @@ esac
         
     # Получаем список свободных портов
         status 11 'Получение свободных портов...'
-        if ! PORTS=$("$DIR_PATH/ports.js" getFreePorts 2 2>&1); then
+        if ! PORTS=$("$PATH_DIR/ports.js" getFreePorts 2 2>&1); then
         # Выводим сообщение об ошибке и завершаем процесс
             error "$PORTS"
         fi
@@ -377,8 +377,8 @@ esac
         
     # Привязываем порты к containerID
         status 13 'Сохранение списка портов...'
-        "$DIR_PATH/ports.js" add "$containerID" "$PORT1" &> '/dev/null'
-        "$DIR_PATH/ports.js" add "$containerID" "$PORT2" &> '/dev/null'
+        "$PATH_DIR/ports.js" add "$containerID" "$PORT1" &> '/dev/null'
+        "$PATH_DIR/ports.js" add "$containerID" "$PORT2" &> '/dev/null'
         
     # Выводим финальное сообщение и завершаем процесс
         complete "Контейнер успешно запущен!" \
