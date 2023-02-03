@@ -1,47 +1,52 @@
 #!/bin/bash
+#┌────────────────────────────────────────────┐
+#│ Путь к каталогу где расположен этот скрипт │
+#└────────────────────────────────────────────┘
+PATH_DIR="$(dirname $0)"
+
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. $HOME/scripts/cli/lib.base.sh
-. $HOME/scripts/cli/lib.filesystem.sh
-. $HOME/scripts/cli/lib.docker.sh
-. $HOME/scripts/cli/lib.stream.sh
-. $HOME/scripts/cli/gui.menu.sh
-. $HOME/scripts/cli/gui.input.sh
-. $HOME/scripts/cli/gui.notice.sh
-. $HOME/scripts/cli/mvNotice.sh
-. $HOME/scripts/cli/mvRunner.sh
+. $PATH_DIR/../cli/lib.base.sh
+. $PATH_DIR/../cli/lib.filesystem.sh
+. $PATH_DIR/../cli/lib.docker.sh
+. $PATH_DIR/../cli/lib.stream.sh
+. $PATH_DIR/../cli/gui.menu.sh
+. $PATH_DIR/../cli/gui.input.sh
+. $PATH_DIR/../cli/gui.notice.sh
+. $PATH_DIR/../cli/mvNotice.sh
+. $PATH_DIR/../cli/mvRunner.sh
 
 #┌───────────────┐
 #│ Загружаем MVC │
 #└───────────────┘
 # Entrypoints
-. /entrypoints/entrypointMenu.sh
-. /entrypoints/entrypointProxy.sh
+. $PATH_DIR/entrypoints/entrypointMenu.sh
+. $PATH_DIR/entrypoints/entrypointProxy.sh
 
 # Controllers
-. /controllers/controllerGit.sh
-. /controllers/controllerSSH.sh
-. /controllers/controllerDocker.sh
+. $PATH_DIR/controllers/controllerGit.sh
+. $PATH_DIR/controllers/controllerSSH.sh
+. $PATH_DIR/controllers/controllerDocker.sh
 
 # Models
-. /models/modelGit.sh
-. /models/modelSSH.sh
-. /models/modelDocker.sh
+. $PATH_DIR/models/modelGit.sh
+. $PATH_DIR/models/modelSSH.sh
+. $PATH_DIR/models/modelDocker.sh
 
 # Runners
-. /runners/runnerGit.sh
-. /runners/runnerSSH.sh
-. /runners/runnerNotice.sh
-. /runners/runnerDocker.sh
+. $PATH_DIR/runners/runnerGit.sh
+. $PATH_DIR/runners/runnerSSH.sh
+. $PATH_DIR/runners/runnerNotice.sh
+. $PATH_DIR/runners/runnerDocker.sh
 
 # Views
-. /views/view.sh
-. /views/viewGit.sh
-. /views/viewSSH.sh
-. /views/viewMenu.sh
-. /views/viewNotice.sh
-. /views/viewDocker.sh
+. $PATH_DIR/views/view.sh
+. $PATH_DIR/views/viewGit.sh
+. $PATH_DIR/views/viewSSH.sh
+. $PATH_DIR/views/viewMenu.sh
+. $PATH_DIR/views/viewNotice.sh
+. $PATH_DIR/views/viewDocker.sh
 
 #┌───────────────────┐
 #│ Режим разаработки │

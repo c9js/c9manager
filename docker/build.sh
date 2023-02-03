@@ -308,12 +308,7 @@ esac
         # Создаем новый образ
             status 9 'Создание нового образа...'
             docker build \
-                --build-arg "controllers=$IMAGE_RUN/controllers/" \
-                --build-arg "entrypoints=$IMAGE_RUN/entrypoints/" \
-                --build-arg "runners=$IMAGE_RUN/runners/" \
-                --build-arg "models=$IMAGE_RUN/models/" \
-                --build-arg "views=$IMAGE_RUN/views/" \
-                --build-arg "entrypoint=$IMAGE_RUN/Entrypoint.sh" \
+                --build-arg "entrypoint=$IMAGE_RUN" \
                 -f "$PATH_DIR/$IMAGE_RUN/Dockerfile" \
                 -t "$IMAGE_RUN" \
                 "$PATH_DIR"

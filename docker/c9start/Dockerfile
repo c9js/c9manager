@@ -34,22 +34,11 @@ COPY temp/VERSION /root/VERSION
 #┌──────────────┐
 #│ Bash-скрипты │
 #└──────────────┘
-COPY temp/scripts /root/scripts
+COPY temp/scripts/cli /root/scripts/cli
 
 #┌─────────────┐
 #│ Точка входа │
 #└─────────────┘
-ARG controllers
-ARG entrypoints
-ARG runners
-ARG models
-ARG views
 ARG entrypoint
-COPY "$controllers" /controllers/
-COPY "$entrypoints" /entrypoints/
-COPY "$runners" /runners/
-COPY "$models" /models/
-COPY "$views" /views/
-COPY "$entrypoint" /entrypoint.sh
-RUN chmod 700 /entrypoint.sh
-ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
+COPY temp/scripts/$entrypoint /root/scripts/entrypoint
+ENTRYPOINT ["/bin/bash", "/root/scripts/entrypoint/entrypoint.sh"]
