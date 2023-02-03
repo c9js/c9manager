@@ -61,29 +61,29 @@ DOCKER_LIST=(
     'docker_login'   # Проходит авторизацию в docker-репозиторий
     
 # Создание образов
-    'build:c9open'   # Создает новый образ
-    'build:c9start'  # Создает новый образ
     'build:c9docker' # Создает новый образ
+    'build:c9start'  # Создает новый образ
+    'build:c9open'   # Создает новый образ
     
 # Контройльная точка
     'no_stop'        # После этого момента деплой уже не отменить
 )
 PUSH_LIST=(
 # Создание тегов
-    'tag1:c9open'    # Создает тег для новой версии
-    'tag1:c9start'   # Создает тег для новой версии
     'tag1:c9docker'  # Создает тег для новой версии
-    'tag2:c9open'    # Создает тег для последней версии
-    'tag2:c9start'   # Создает тег для последней версии
+    'tag1:c9start'   # Создает тег для новой версии
+    'tag1:c9open'    # Создает тег для новой версии
     'tag2:c9docker'  # Создает тег для последней версии
+    'tag2:c9start'   # Создает тег для последней версии
+    'tag2:c9open'    # Создает тег для последней версии
     
 # Загрузка в репозиторий
-    'push1:c9open'   # Загружает новую версию в docker-репозиторий
-    'push1:c9start'  # Загружает новую версию в docker-репозиторий
     'push1:c9docker' # Загружает новую версию в docker-репозиторий
-    'push2:c9open'   # Загружает последнюю версию в docker-репозиторий
-    'push2:c9start'  # Загружает последнюю версию в docker-репозиторий
+    'push1:c9start'  # Загружает новую версию в docker-репозиторий
+    'push1:c9open'   # Загружает новую версию в docker-репозиторий
     'push2:c9docker' # Загружает последнюю версию в docker-репозиторий
+    'push2:c9start'  # Загружает последнюю версию в docker-репозиторий
+    'push2:c9open'   # Загружает последнюю версию в docker-репозиторий
 )
 
 #▄──────────────────────────▄
@@ -159,25 +159,25 @@ view:Deploy() { case "$1" in
         'docker_login')   printf 'Авторизация в docker-репозиторий...'                 ;;
         
     # Создание образов
-        'build:c9open')   printf "Создаем образ '${2/*:}'"                             ;;
-        'build:c9start')  printf "Создаем образ '${2/*:}'"                             ;;
         'build:c9docker') printf "Создаем образ '${2/*:}'"                             ;;
+        'build:c9start')  printf "Создаем образ '${2/*:}'"                             ;;
+        'build:c9open')   printf "Создаем образ '${2/*:}'"                             ;;
         
     # Создание тегов
-        'tag1:c9open')    printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
-        'tag1:c9start')   printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
         'tag1:c9docker')  printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
-        'tag2:c9open')    printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
-        'tag2:c9start')   printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
+        'tag1:c9start')   printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
+        'tag1:c9open')    printf "Создаем тег '$DOCKER_USER/${2/*:}:$NEW_VERSION'"     ;;
         'tag2:c9docker')  printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
+        'tag2:c9start')   printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
+        'tag2:c9open')    printf "Создаем тег '$DOCKER_USER/${2/*:}:latest'"           ;;
         
     # Загрузка в репозиторий
-        'push1:c9open')   printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
-        'push1:c9start')  printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
         'push1:c9docker') printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
-        'push2:c9open')   printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
-        'push2:c9start')  printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
+        'push1:c9start')  printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
+        'push1:c9open')   printf "Загружаем образ '$DOCKER_USER/${2/*:}:$NEW_VERSION'" ;;
         'push2:c9docker') printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
+        'push2:c9start')  printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
+        'push2:c9open')   printf "Загружаем образ '$DOCKER_USER/${2/*:}:latest'"       ;;
     esac
     ;;
     
@@ -215,25 +215,25 @@ view:Deploy() { case "$1" in
         'docker_login')   error 'Авторизация не была пройдена!'              ;;
         
     # Создание образов
-        'build:c9open')   error "Образ '${2/*:}' не был создан!"             ;;
-        'build:c9start')  error "Образ '${2/*:}' не был создан!"             ;;
         'build:c9docker') error "Образ '${2/*:}' не был создан!"             ;;
+        'build:c9start')  error "Образ '${2/*:}' не был создан!"             ;;
+        'build:c9open')   error "Образ '${2/*:}' не был создан!"             ;;
         
     # Создание тегов
-        'tag1:c9open')    error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
-        'tag1:c9start')   error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
         'tag1:c9docker')  error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
-        'tag2:c9open')    error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
-        'tag2:c9start')   error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
+        'tag1:c9start')   error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
+        'tag1:c9open')    error "Тег '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был создан!"     ;;
         'tag2:c9docker')  error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
+        'tag2:c9start')   error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
+        'tag2:c9open')    error "Тег '$DOCKER_USER/${2/*:}:latest' не был создан!"           ;;
         
     # Загрузка в репозиторий
-        'push1:c9open')   error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
-        'push1:c9start')  error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
         'push1:c9docker') error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
-        'push2:c9open')   error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
-        'push2:c9start')  error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
+        'push1:c9start')  error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
+        'push1:c9open')   error "Образ '$DOCKER_USER/${2/*:}:$NEW_VERSION' не был загружен!" ;;
         'push2:c9docker') error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
+        'push2:c9start')  error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
+        'push2:c9open')   error "Образ '$DOCKER_USER/${2/*:}:latest' не был загружен!"       ;;
     esac
     ;;
     

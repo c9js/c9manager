@@ -132,28 +132,28 @@ runner:Deploy() { case "$1" in
 #┌──────────────────┐
 #│ Создание образов │
 #└──────────────────┘
-    'build:c9open')   "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
-    'build:c9start')  "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
     'build:c9docker') "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9start')  "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9open')   "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
     
 #┌────────────────┐
 #│ Создание тегов │
 #└────────────────┘
-    'tag1:c9open')    docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
-    'tag1:c9start')   docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'tag1:c9docker')  docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
-    'tag2:c9open')    docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
-    'tag2:c9start')   docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
+    'tag1:c9start')   docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
+    'tag1:c9open')    docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'tag2:c9docker')  docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
+    'tag2:c9start')   docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
+    'tag2:c9open')    docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
     
 #┌───────────────────────────────────────┐
 #│ Загрузка образов в docker-репозиторий │
 #└───────────────────────────────────────┘
-    'push1:c9open')   docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
-    'push1:c9start')  docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'push1:c9docker') docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
-    'push2:c9open')   docker push "$DOCKER_USER/${1/*:}:latest"       ;;
-    'push2:c9start')  docker push "$DOCKER_USER/${1/*:}:latest"       ;;
+    'push1:c9start')  docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
+    'push1:c9open')   docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'push2:c9docker') docker push "$DOCKER_USER/${1/*:}:latest"       ;;
+    'push2:c9start')  docker push "$DOCKER_USER/${1/*:}:latest"       ;;
+    'push2:c9open')   docker push "$DOCKER_USER/${1/*:}:latest"       ;;
 esac
 }
