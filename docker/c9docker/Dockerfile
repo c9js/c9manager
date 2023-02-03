@@ -100,9 +100,9 @@ RUN cd /root/.c9 \
 && rm -rf /var/tmp/* \
 && rm -rf /tmp/*
 
-#┌──────────────────────────────────┐
-#│ Рабочая дирректория по умолчанию │
-#└──────────────────────────────────┘
+#┌──────────────────────────────┐
+#│ Рабочий каталог по умолчанию │
+#└──────────────────────────────┘
 ENV WORKSPACE "/workspace"
 
 #┌───────────────────┐
@@ -116,11 +116,6 @@ ENV C9_PORT 8000
 COPY temp/VERSION /root/VERSION
 
 #┌──────────────┐
-#│ Bash-скрипты │
-#└──────────────┘
-COPY temp/scripts /root/scripts
-
-#┌──────────────┐
 #│ Bash-профиль │
 #└──────────────┘
 COPY temp/bash_profile /root/.bash_profile
@@ -130,10 +125,16 @@ COPY temp/bash_profile /root/.bash_profile
 #└─────────────────────┘
 COPY temp/user.settings /root/.c9/user.settings
 
+#┌──────────────┐
+#│ Bash-скрипты │
+#└──────────────┘
+COPY temp/scripts/cli /root/scripts/cli
+COPY temp/scripts/amend /root/scripts/amend
+COPY temp/scripts/deploy /root/scripts/deploy
+
 #┌─────────────┐
 #│ Точка входа │
 #└─────────────┘
 ARG entrypoint
-COPY "$entrypoint" /usr/local/bin/entrypoint.sh
-RUN chmod 700 /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
+COPY temp/scripts/$entrypoint /root/scripts/entrypoint
+ENTRYPOINT ["/bin/bash", "/root/scripts/entrypoint/entrypoint.sh"]
