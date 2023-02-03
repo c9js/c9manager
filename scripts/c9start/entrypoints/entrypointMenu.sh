@@ -13,7 +13,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────┐
 #│ Каталог ".git" не найден │
 #└──────────────────────────┘
-    if modelView:Notice 'error' 'dir_error'; then
+    if notice 'error' 'dir_error'; then
     # Предлагаем пользователю выбрать пустой каталог
         view:Menu 'dir_error'
         continue
@@ -49,7 +49,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌──────────────────────────┐
 #│ Запущен старый контейнер │
 #└──────────────────────────┘
-    if modelView:Notice 'warning' 'run_old'; then
+    if notice 'warning' 'run_old'; then
     # Предлагаем пользователю обновить контейнер
         view:Menu 'update'
         continue

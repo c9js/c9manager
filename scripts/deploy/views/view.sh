@@ -19,7 +19,7 @@ view() { case "$1" in
         controller:Update 'repo_version' # Обновляем версию репозитория
         
     # Проверяем список всех уведомлений
-        modelView:Notice 'check'
+        notice 'check'
     ;;
 esac
 }

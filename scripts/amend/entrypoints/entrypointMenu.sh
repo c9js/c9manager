@@ -8,7 +8,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #┌────────────────────────┐
 #│ Уведомления об ошибках │
 #└────────────────────────┘
-    if modelView:Notice 'error'; then
+    if notice 'error'; then
     # Предлагаем пользователю исправить ошибку
         view:Menu 'error'
         

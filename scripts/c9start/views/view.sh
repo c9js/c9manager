@@ -16,7 +16,7 @@ view() { case "$1" in
         docker:containerInfo "$WORKSPACE"
         
     # Проверяем список всех уведомлений
-        modelView:Notice 'check'
+        notice 'check'
     ;;
 esac
 }

@@ -4,20 +4,14 @@
 #└────────────────────────────────────────────┘
 PATH_DIR="$(dirname $0)"
 
-#┌──────────────────────┐
-#│ Загружаем библиотеки │
-#└──────────────────────┘
-. $PATH_DIR/../cli/lib.base.sh
-. $PATH_DIR/../cli/lib.stream.sh
-. $PATH_DIR/../cli/gui.menu.sh
-. $PATH_DIR/../cli/gui.input.sh
-. $PATH_DIR/../cli/gui.notice.sh
-. $PATH_DIR/../cli/mvNotice.sh
-. $PATH_DIR/../cli/mvRunner.sh
+#┌──────┐
+#│ Ядро │
+#└──────┘
+. $PATH_DIR/../core/core.sh
 
-#┌───────────────┐
-#│ Загружаем MVC │
-#└───────────────┘
+#┌─────┐
+#│ MVC │
+#└─────┘
 # Entrypoints
 . $PATH_DIR/entrypoints/entrypointMenu.sh
 

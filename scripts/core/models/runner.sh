@@ -1,10 +1,10 @@
-#▄────────────────────────────────────────────▄1.0.2
-#█                                            █
-#█  ModelView: Runner                         █
-#█  • Запуск команд (управление интерфейсом)  █
-#█                                            █
-#▀────────────────────────────────────────────▀
-modelView:Runner() { case "$1" in
+#▄──────────────────────────▄1.0.0
+#█                          █
+#█  Core: Runner            █
+#█  • Запуск команд (ядро)  █
+#█                          █
+#▀──────────────────────────▀
+core:Runner() { case "$1" in
 #┌─────────────────────────┐
 #│ Выполняет список команд │
 #└─────────────────────────┘
@@ -39,7 +39,7 @@ modelView:Runner() { case "$1" in
             let RUNNER_NOW=$i-1
             
         # Выполняем команду
-            if modelView:Runner 'run'; then
+            if core:Runner 'run'; then
             # Команда не была выполнена
                 return 1
             fi
@@ -67,7 +67,7 @@ modelView:Runner() { case "$1" in
         fi
         
     # Обновляем текущее состояние команды
-        modelView:Runner 'state'
+        core:Runner 'state'
         
     # Выполняем команду
         if "$stream" "runner:$RUNNER_CLASS" "$RUNNER_COMMAND"; then
@@ -150,7 +150,7 @@ modelView:Runner() { case "$1" in
                 printf '\e[u'
                 
             # Обновляем текущее состояние команды
-                modelView:Runner 'message' "${@:2}"
+                core:Runner 'message' "${@:2}"
                 
             # Удаляем все после текущей позиции
                 printf '\e[J'
@@ -165,18 +165,9 @@ modelView:Runner() { case "$1" in
                 printf '\e[F\e[F'
                 
             # Обновляем текущее состояние команды
-                modelView:Runner 'message' "${@:2}"
+                core:Runner 'message' "${@:2}"
             ;;
         esac
     ;;
 esac
 }
-
-#▄──────────────▄
-#█              █
-#█  Namespaces  █
-#█              █
-#▀──────────────▀
-runner()   { modelView:Runner 'run_list' "$@"; } # Выполняет список команд
-progress() { modelView:Runner 'progress' "$@"; } # Обновляет текущий прогресс
-log()      { modelView:Runner 'log'      "$@"; } # Сохраняет сообщение в лог

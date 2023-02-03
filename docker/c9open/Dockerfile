@@ -123,7 +123,7 @@ COPY temp/user.settings /root/.c9/user.settings
 #┌──────────────┐
 #│ Bash-скрипты │
 #└──────────────┘
-COPY temp/scripts/cli /root/scripts/cli
+COPY temp/scripts/core /root/scripts/core
 COPY temp/scripts/amend /root/scripts/amend
 
 #┌─────────────┐

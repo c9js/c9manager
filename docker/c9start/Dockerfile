@@ -34,7 +34,7 @@ COPY temp/VERSION /root/VERSION
 #┌──────────────┐
 #│ Bash-скрипты │
 #└──────────────┘
-COPY temp/scripts/cli /root/scripts/cli
+COPY temp/scripts/core /root/scripts/core
 
 #┌─────────────┐
 #│ Точка входа │
