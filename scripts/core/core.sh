@@ -1,4 +1,4 @@
-#▄───────────────▄1.0.0
+#▄───────────────▄1.0.1
 #█               █
 #█  Core (ядро)  █
 #█               █
@@ -10,10 +10,13 @@
 . $PATH_DIR/../core/models/base.sh
 . $PATH_DIR/../core/models/filesystem.sh
 . $PATH_DIR/../core/models/docker.sh
-. $PATH_DIR/../core/models/notice.sh
-. $PATH_DIR/../core/models/runner.sh
 . $PATH_DIR/../core/models/stream.sh
 . $PATH_DIR/../core/models/valid.sh
+
+# ViewModels
+. $PATH_DIR/../core/viewModels/pages.sh
+. $PATH_DIR/../core/viewModels/notice.sh
+. $PATH_DIR/../core/viewModels/runner.sh
 
 # Views
 . $PATH_DIR/../core/view/card.sh
