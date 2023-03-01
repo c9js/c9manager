@@ -117,7 +117,7 @@ runner:Edit() { case "$1" in
         # Позиция пройдена теперь можно добавлять все следующие коммиты в список коммитов
             if [ -n "$is_edit" ]; then
             # Добавляем коммит в список коммитов
-                COMMITS_EDIT+=($current)
+                COMMITS_EDIT+=("$current")
             fi
         done <<< "$RES"
     ;;
@@ -166,7 +166,7 @@ runner:Edit() { case "$1" in
                 git cherry-pick -n "$current" || return
                 
             # Сохраняем один из выбранных вариантов
-                case "$SELECTION" in
+                case "$PAGES_MENU" in
                     1) git commit -qC "$current"                    || return ;; # Описание из коммита
                     2) git commit -qC "$current" --date="$NEW_DATE" || return ;; # Дата созданя
                 esac

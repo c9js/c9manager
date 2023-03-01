@@ -16,15 +16,11 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/entrypoints/entrypointMenu.sh
 
 # Controllers
-. $PATH_DIR/controllers/controllerMenu.sh
 . $PATH_DIR/controllers/controllerCheck.sh
-. $PATH_DIR/controllers/controllerLoad.sh
 . $PATH_DIR/controllers/controllerEdit.sh
 
 # Models
-. $PATH_DIR/models/modelMenu.sh
 . $PATH_DIR/models/modelCheck.sh
-. $PATH_DIR/models/modelLoad.sh
 . $PATH_DIR/models/modelEdit.sh
 
 # Runners
@@ -45,7 +41,7 @@ DEV_MODE=0
 #┌───────────────────┐
 #│ Список переменных │
 #└───────────────────┘
-MAX_COMMIT=5 # Количество коммитов на странице
+COMMITS_MAX=5 # Количество коммитов на странице
 
 #┌─────────────┐
 #│ Точки входа │
