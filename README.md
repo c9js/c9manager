@@ -14,28 +14,3 @@ docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"P=%CD%" --privile
 ```
 docker run -itv"//var/run/docker.sock:/var/run/docker.sock" -e"P=$(PWD)" --privileged --rm c9js/c9start
 ```
-
-## TODO
-Имя нового workspace не должно быть:
-```
-".c9"
-"apks"
-"bin"
-"dev"
-"etc"
-"home"
-"lib"
-"media"
-"mnt"
-"opt"
-"proc"
-"root"
-"run"
-"sbin"
-"srv"
-"sys"
-"tmp"
-"usr"
-"var"
-".dockerenv"
-```
