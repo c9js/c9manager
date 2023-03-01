@@ -23,14 +23,14 @@ runner:Notice() { case "$1" in
 #│ Проверяет текущий каталог │
 #└───────────────────────────┘
     'dir_empty')
-        is_empty_dir "$CURRENT_PATH"
+        is_empty_dir "$PATH_CURRENT"
     ;;
     
 #┌─────────────────────────────────┐
 #│ Проверяет локальный репозиторий │
 #└─────────────────────────────────┘
     'dir_error')
-        ! is_empty_dir "$CURRENT_PATH" && ! is_dir "$CURRENT_PATH/.git"
+        ! is_empty_dir "$PATH_CURRENT" && ! is_dir "$PATH_CURRENT/.git"
     ;;
     
 #┌─────────────────────────────────────┐

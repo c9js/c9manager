@@ -3,7 +3,7 @@
 #█  Список переменных  █
 #█                     █
 #▀─────────────────────▀
-declare -A IMAGE_IDS # Список ID-образов
+declare -A IMAGES_IDS # Список ID-образов
 
 #▄───────────────────────────▄
 #█                           █
@@ -20,15 +20,15 @@ runner:Docker() { case "$1" in
         progress 0 "$(progressBar 20 $(procent 0 100 $RUNNER_NOW $DOCKER_FULL))"
         
     # Создаем список ID-образов
-        IMAGE_IDS=()
+        IMAGES_IDS=()
         
     # Локальные переменные
         local i
         
     # Проходим по списку выбранных образов
-        for ((i = 0; i < ${#SEARCH_IMAGES[*]}; i++)); do
+        for ((i = 0; i < ${#IMAGES_SEARCH[*]}; i++)); do
         # Получаем список ID-образов
-            RUN docker images -aq "${SEARCH_IMAGES[$i]}" && return 1
+            RUN docker images -aq "${IMAGES_SEARCH[$i]}" && return 1
             
         # ID-образа
             local image_id
@@ -39,17 +39,17 @@ runner:Docker() { case "$1" in
                 (( ${#image_id} != 12 )) && break
                 
             # Проверяем есть-ли в списке образ с таким ID
-                if [ -z "${IMAGE_IDS[$image_id]}" ]; then
+                if [ -z "${IMAGES_IDS[$image_id]}" ]; then
                 # Добавляем ID-образа в список
-                    IMAGE_IDS[$image_id]="$image_id"
+                    IMAGES_IDS[$image_id]="$image_id"
                 fi
             done <<< "$RES"
             
         # Вычисляем процент
-            local procent="$(procent $(($i+1)) ${#SEARCH_IMAGES[*]} $RUNNER_NOW $DOCKER_FULL)"
+            local procent="$(procent $(($i+1)) ${#IMAGES_SEARCH[*]} $RUNNER_NOW $DOCKER_FULL)"
             
         # Обновляем текущий прогресс
-            progress "${#IMAGE_IDS[*]}" "$(progressBar 20 $procent)"
+            progress "${#IMAGES_IDS[*]}" "$(progressBar 20 $procent)"
         done
     ;;
     
@@ -68,7 +68,7 @@ runner:Docker() { case "$1" in
         local i=0      # Порядковый номер образа
         
     # Проходим по списку ID-образов
-        for image_id in "${!IMAGE_IDS[@]}"; do
+        for image_id in "${!IMAGES_IDS[@]}"; do
         # Получаем список ID-контейнеров
             RUN docker ps -aq --filter "ancestor=$image_id" && return 1
             
@@ -94,7 +94,7 @@ runner:Docker() { case "$1" in
             let i++
             
         # Вычисляем процент
-            local procent="$(procent $i ${#IMAGE_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
+            local procent="$(procent $i ${#IMAGES_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
             
         # Обновляем текущий прогресс
             progress "$i" "$(progressBar 20 $procent)"
@@ -128,9 +128,6 @@ runner:Docker() { case "$1" in
             progress 0 "$(progressBar 20 $(procent 100 100 $RUNNER_NOW $DOCKER_FULL))"
         fi
         
-    # Останавливаемся (для красивой анимации)
-        (( $RUNNER_NOW == $RUNNER_FULL )) && sleep 2 || sleep 1
-        
     # Команда выполнена успешно
         return 0
     ;;
@@ -147,7 +144,7 @@ runner:Docker() { case "$1" in
         local i=0      # Порядковый номер образа
         
     # Проходим по списку ID-образов
-        for image_id in "${!IMAGE_IDS[@]}"; do
+        for image_id in "${!IMAGES_IDS[@]}"; do
         # Удаляем образ
             docker rmi --force "$image_id" &> '/dev/null'
             
@@ -155,19 +152,16 @@ runner:Docker() { case "$1" in
             let i++
             
         # Вычисляем процент
-            local procent="$(procent $i ${#IMAGE_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
+            local procent="$(procent $i ${#IMAGES_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
             
         # Обновляем текущий прогресс
             progress "$i" "$(progressBar 20 $procent)"
         done
         
     # Обновляем текущий прогресс
-        if (( ${#IMAGE_IDS[*]} == 0 )); then
+        if (( ${#IMAGES_IDS[*]} == 0 )); then
             progress 0 "$(progressBar 20 $(procent 100 100 $RUNNER_NOW $DOCKER_FULL))"
         fi
-        
-    # Останавливаемся (для красивой анимации)
-        sleep 2
         
     # Команда выполнена успешно
         return 0
@@ -211,19 +205,20 @@ runner:Docker() { case "$1" in
             -e "C9_PORT=$PORT1" \
             -e "PORT=$PORT2" \
             -e "VERSION=$VERSION" \
-            -e "PATH_VERSION=/$WORKSPACE/$PATH_VERSION" \
-            -e "PATH_GIT_USER=/$WORKSPACE/$PATH_GIT_USER" \
-            -e "PATH_GIT_REPO=/$WORKSPACE/$PATH_GIT_REPO" \
-            -e "PATH_DOCKER_USER=/$WORKSPACE/$PATH_DOCKER_USER" \
-            -e "PATH_DOCKER_PASS=/$WORKSPACE/$PATH_DOCKER_PASS" \
-            -e "PATH_BAD_DEPLOY=/$WORKSPACE/$PATH_BAD_DEPLOY" \
+            -e "PATH_WORKSPACE=$PATH_WORKSPACE" \
+            -e "PATH_VERSION=$PATH_WORKSPACE/$PATH_VERSION" \
+            -e "PATH_GIT_USER=$PATH_WORKSPACE/$PATH_GIT_USER" \
+            -e "PATH_GIT_REPO=$PATH_WORKSPACE/$PATH_GIT_REPO" \
+            -e "PATH_DOCKER_USER=$PATH_WORKSPACE/$PATH_DOCKER_USER" \
+            -e "PATH_DOCKER_PASS=$PATH_WORKSPACE/$PATH_DOCKER_PASS" \
+            -e "PATH_BAD_DEPLOY=$PATH_WORKSPACE/$PATH_BAD_DEPLOY" \
             -e "GIT_URL=$GIT_URL" \
             -e "GIT_USER=$GIT_USER" \
             -e "GIT_REPO=$GIT_REPO" \
             -e "WORKSPACE=$WORKSPACE" \
             -e "DOCKER_USER=$DOCKER_USER" \
             -e "DOCKER_PWD=$DOCKER_PWD" \
-            -v "$DOCKER_PWD:/$WORKSPACE" \
+            -v "$DOCKER_PWD:$PATH_WORKSPACE" \
             -v "$DOCKER_PWD/ssh:/root/.sshsource" \
             -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
             --restart unless-stopped \

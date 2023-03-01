@@ -24,11 +24,11 @@ git config --global rebase.missingCommitsCheck 'error'
 #┌─────────────────────────────────────────────────────┐
 #│ Если репозитория нет, то пробуем привязать к Github │
 #└─────────────────────────────────────────────────────┘
-if [ ! -e "/$WORKSPACE/.git" ]; then
-    git clone git@github.com:$GIT_USER/$GIT_REPO.git /$WORKSPACE
+if [ ! -e "$PATH_WORKSPACE/.git" ]; then
+    git clone git@github.com:$GIT_USER/$GIT_REPO.git $PATH_WORKSPACE
 fi
 
 #┌───────────────┐
 #│ Запуск cloud9 │
 #└───────────────┘
-/root/.c9/start -l 0.0.0.0 -p $C9_PORT -w /$WORKSPACE -a $USERNAME:$PASSWORD
+/root/.c9/start -l 0.0.0.0 -p $C9_PORT -w $PATH_WORKSPACE -a $USERNAME:$PASSWORD

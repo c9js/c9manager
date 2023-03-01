@@ -14,7 +14,7 @@ controller:Docker() { case "$1" in
     'restart')    SELECTION=2; model:Docker 'run' "$2" ;; # Перезагружет текущий контейнер
     'update')     SELECTION=3; model:Docker 'run' "$2" ;; # Обновляет контейнер
     'start')      SELECTION=4; model:Docker 'run' "$2" ;; # Запускает новый контейнер
-    'stop')       SELECTION=5; model:Docker "$@"       ;; # Удаляет контейнеры из списка $IMAGES
+    'stop')       SELECTION=5; model:Docker "$@"       ;; # Удаляет только системные контейнеры
     'stop_all')   SELECTION=6; model:Docker "$@"       ;; # Удаляет все контейнеры
     'remove_all') SELECTION=7; model:Docker "$@"       ;; # Удаляет все образы
 esac

@@ -132,9 +132,9 @@ runner:Deploy() { case "$1" in
 #┌──────────────────┐
 #│ Создание образов │
 #└──────────────────┘
-    'build:c9docker') "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
-    'build:c9start')  "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
-    'build:c9open')   "/$WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9docker') "$PATH_WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9start')  "$PATH_WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
+    'build:c9open')   "$PATH_WORKSPACE/docker/build.sh" 'build' "${1/*:}" ;;
     
 #┌────────────────┐
 #│ Создание тегов │

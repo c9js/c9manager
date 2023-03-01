@@ -1,4 +1,4 @@
-alias c9="/$WORKSPACE/docker/build.sh"
+alias c9="$PATH_WORKSPACE/docker/build.sh"
 alias build="c9 build"
 
 alias c9docker="c9 build c9docker"

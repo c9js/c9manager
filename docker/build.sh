@@ -12,14 +12,14 @@ PATH_DIR="$(dirname $0)"
 #┌──────────────────────┐
 #│ Загружаем библиотеки │
 #└──────────────────────┘
-. /$WORKSPACE/scripts/core/models/base.sh
-. /$WORKSPACE/scripts/core/models/docker.sh
-. /$WORKSPACE/scripts/core/view/input.sh
+. $PATH_WORKSPACE/scripts/core/models/base.sh
+. $PATH_WORKSPACE/scripts/core/models/docker.sh
+. $PATH_WORKSPACE/scripts/core/view/input.sh
 
 #┌───────────────────┐
 #│ Пространстов имен │
 #└───────────────────┘
-. /$WORKSPACE/scripts/core/controllers/namespace.sh
+. $PATH_WORKSPACE/scripts/core/controllers/namespace.sh
 
 #┌────────────────────────────┐
 #│ Список аргументов          │
@@ -299,10 +299,10 @@ esac
             cp -r "$PATH_VERSION" "$PATH_DIR/temp/VERSION"
             
         # Копируем bash-скрипты
-            cp -r "/$WORKSPACE/scripts/." "$PATH_DIR/temp/scripts"
+            cp -r "$PATH_WORKSPACE/scripts/." "$PATH_DIR/temp/scripts"
             
         # Копируем настройки редактора и bash-профиль 
-            cp -r "/$WORKSPACE/c9settings/." "$PATH_DIR/temp"
+            cp -r "$PATH_WORKSPACE/c9settings/." "$PATH_DIR/temp"
             
         # Проверяем предусмотрены-ли для образа дополнительные алиасы
             if [ -s "$PATH_DIR/$IMAGE_RUN/alias" ]; then
@@ -352,6 +352,7 @@ esac
             -e "C9_PORT=$PORT1" \
             -e "PORT=$PORT2" \
             -e "VERSION=$VERSION" \
+            -e "PATH_WORKSPACE=/$IMAGE_RUN" \
             -e "PATH_VERSION=$PATH_VERSION" \
             -e "PATH_GIT_USER=$PATH_GIT_USER" \
             -e "PATH_GIT_REPO=$PATH_GIT_REPO" \

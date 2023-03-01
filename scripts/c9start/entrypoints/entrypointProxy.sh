@@ -37,7 +37,7 @@ entrypoint:Proxy() {
         -e "SEP=$SEP" \
         -e "DOCKER_PWD=$DOCKER_PWD" \
         -e "PARENT_HOSTNAME=$HOSTNAME" \
-        -v "$DOCKER_PWD:$CURRENT_PATH" \
+        -v "$DOCKER_PWD:$PATH_CURRENT" \
         -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
         --rm -it \
         "$IMAGE_ID" \
