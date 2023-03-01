@@ -16,16 +16,16 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/entrypoints/entrypointMenu.sh
 
 # Controllers
-. $PATH_DIR/controllers/controllerCheck.sh
-. $PATH_DIR/controllers/controllerEdit.sh
-. $PATH_DIR/controllers/controllerLoad.sh
 . $PATH_DIR/controllers/controllerMenu.sh
+. $PATH_DIR/controllers/controllerCheck.sh
+. $PATH_DIR/controllers/controllerLoad.sh
+. $PATH_DIR/controllers/controllerEdit.sh
 
 # Models
-. $PATH_DIR/models/modelCheck.sh
-. $PATH_DIR/models/modelEdit.sh
-. $PATH_DIR/models/modelLoad.sh
 . $PATH_DIR/models/modelMenu.sh
+. $PATH_DIR/models/modelCheck.sh
+. $PATH_DIR/models/modelLoad.sh
+. $PATH_DIR/models/modelEdit.sh
 
 # Runners
 . $PATH_DIR/runners/runnerEdit.sh
@@ -33,8 +33,8 @@ PATH_DIR="$(dirname $0)"
 
 # Views
 . $PATH_DIR/views/view.sh
-. $PATH_DIR/views/viewEdit.sh
 . $PATH_DIR/views/viewMenu.sh
+. $PATH_DIR/views/viewEdit.sh
 . $PATH_DIR/views/viewNotice.sh
 
 #┌───────────────────┐

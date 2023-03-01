@@ -17,13 +17,13 @@ PATH_DIR="$(dirname $0)"
 
 # Controllers
 . $PATH_DIR/controllers/controllerDeploy.sh
-. $PATH_DIR/controllers/controllerSettings.sh
 . $PATH_DIR/controllers/controllerUpdate.sh
+. $PATH_DIR/controllers/controllerSettings.sh
 
 # Models
 . $PATH_DIR/models/modelDeploy.sh
-. $PATH_DIR/models/modelSettings.sh
 . $PATH_DIR/models/modelUpdate.sh
+. $PATH_DIR/models/modelSettings.sh
 
 # Runners
 . $PATH_DIR/runners/runnerDeploy.sh
@@ -31,10 +31,10 @@ PATH_DIR="$(dirname $0)"
 
 # Views
 . $PATH_DIR/views/view.sh
-. $PATH_DIR/views/viewDeploy.sh
 . $PATH_DIR/views/viewMenu.sh
-. $PATH_DIR/views/viewNotice.sh
+. $PATH_DIR/views/viewDeploy.sh
 . $PATH_DIR/views/viewSettings.sh
+. $PATH_DIR/views/viewNotice.sh
 
 #┌───────────────────────────────┐
 #│ Версии: Micro / Minor / Major │

@@ -29,16 +29,16 @@ PATH_DIR="$(dirname $0)"
 # Runners
 . $PATH_DIR/runners/runnerGit.sh
 . $PATH_DIR/runners/runnerSSH.sh
-. $PATH_DIR/runners/runnerNotice.sh
 . $PATH_DIR/runners/runnerDocker.sh
+. $PATH_DIR/runners/runnerNotice.sh
 
 # Views
 . $PATH_DIR/views/view.sh
+. $PATH_DIR/views/viewMenu.sh
 . $PATH_DIR/views/viewGit.sh
 . $PATH_DIR/views/viewSSH.sh
-. $PATH_DIR/views/viewMenu.sh
-. $PATH_DIR/views/viewNotice.sh
 . $PATH_DIR/views/viewDocker.sh
+. $PATH_DIR/views/viewNotice.sh
 
 #┌───────────────────┐
 #│ Режим разаработки │
