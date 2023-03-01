@@ -60,7 +60,7 @@ view:Menu() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            0)       view:Menu 'main'      ;; # Выбран: "Вернуться"
+            0)       menu:Main             ;; # Выбран: "Вернуться"
             *) controller:Menu 'select' $? ;; # Выбран: "Другой пункт"
         esac
     ;;

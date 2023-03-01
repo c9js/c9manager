@@ -16,7 +16,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #│ Ошибок не найдено │
 #└───────────────────┘
     else
-        view:Menu 'main' # Выводим меню на экран
+        menu:Main # Выводим меню на экран
     fi
 done
 }
