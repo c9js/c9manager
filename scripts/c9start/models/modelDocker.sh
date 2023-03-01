@@ -9,7 +9,7 @@ model:Docker() { case "$1" in
 #│ Проверяет существует-ли образ │
 #└───────────────────────────────┘
     'no_image')
-        ! docker:is_image "$IMAGE_RUN"
+        ! docker:isImage "$IMAGE_RUN"
     ;;
     
 #┌───────────────────────────────────┐

@@ -191,7 +191,7 @@ esac
     status 1 'Поиск контейнеров...'
     
 # Контейнеры не найдены
-    if ! docker:is_container "name=$IMAGE_RUN"; then
+    if ! docker:isContainer "name=^${IMAGE_RUN}$"; then
     # Выводим финальное сообщение и завершаем процесс
     # Но только если это команда "Stop"
         if [[ "$COMMAND" == 'stop' ]]; then
@@ -238,7 +238,7 @@ esac
         status 5 'Поиск старого образа...'
         
     # Старый образ не найден
-        if ! docker:is_image "$IMAGE_RUN"; then
+        if ! docker:isImage "$IMAGE_RUN"; then
         # Выводим финальное сообщение и завершаем процесс
         # Но только если это команда "Remove"
             if [[ "$COMMAND" == 'remove' ]]; then
@@ -279,7 +279,7 @@ esac
         status 7 'Поиск образа...'
         # Наверно это не очевидно,
         # но мы все же ищем образ ниже во второй части,
-        # прямо в условии в if-е, вот тут [ ! docker:is_image "$IMAGE_RUN" ]
+        # прямо в условии в if-е, вот тут [ ! docker:isImage "$IMAGE_RUN" ]
     fi
     
 #┌─────────────────────────────────────────┐
@@ -288,7 +288,7 @@ esac
 #└─────────────────────────────────────────┘
     if [[ "$COMMAND" == 'build' || "$COMMAND" == 'start' ]]; then
     # Старый образ не найден
-        if [[ "$COMMAND" == 'build' ]] ||  ! docker:is_image "$IMAGE_RUN"; then
+        if [[ "$COMMAND" == 'build' ]] ||  ! docker:isImage "$IMAGE_RUN"; then
         # Копируем временные файлы
             status 8 'Копирование временных файлов...'
             

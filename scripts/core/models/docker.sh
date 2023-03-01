@@ -1,4 +1,4 @@
-#▄──────────────────▄1.0.0
+#▄──────────────────▄1.0.1
 #█                  █
 #█  Core: Docker    █
 #█  • Докер (ядро)  █
@@ -8,30 +8,31 @@ core:Docker() { case "$1" in
 #┌─────────────────────────────────────────────────┐
 #│ Проверяет существуют-ли образы,                 │
 #│ далее добавляет найденые ID в массив $GLOBAL_ID │
-#│ docker:is_image "$IMAGE_RUN"                    │
+#│ docker:isImage "$IMAGE_RUN"                     │
 #└─────────────────────────────────────────────────┘
-    'is_image')
-    # Получаем ID-образов
-        GLOBAL_ID=$(docker images -aq "$2" 2>&1)
+    'isImage')
+    # Создаем список ID-образов
+        GLOBAL_ID=()
         
-    # Переводим в массив
-        GLOBAL_ID=($GLOBAL_ID)
+    # Получаем список ID-образов
+        local ids=$(docker images -aq "$2" 2>&1)
         
-    # Массив пуст
+    # ID-образа
+        local image_id
+        
+    # Проходим по списку ID-образов
+        while read -r image_id; do
+        # Проверяем длину ID-образа
+            (( ${#image_id} != 12 )) && return 1
+            
+        # Добавляем ID-образа в список
+            GLOBAL_ID+=("$image_id")
+        done <<< "$ids"
+        
+    # Список пуст
         if (( ${#GLOBAL_ID[*]} == 0 )); then
             return 1
         fi
-        
-    # Локальные переменные
-        local id
-        
-    # Проходим по списку ID-образов
-        for id in "${GLOBAL_ID[@]}"; do
-        # Проверяем длину ID
-            if (( ${#id} != 12 )); then
-                return 1
-            fi
-        done
         
     # Образы существуют
         return 0
@@ -40,34 +41,32 @@ core:Docker() { case "$1" in
 #┌─────────────────────────────────────────────────┐
 #│ Проверяет существуют-ли контейнеры,             │
 #│ далее добавляет найденые ID в массив $GLOBAL_ID │
-#│ docker:is_container "ancestor=$IMAGE_RUN"       │
-#│ docker:is_container "name=$IMAGE_RUN"           │
+#│ docker:isContainer "ancestor=$IMAGE_RUN"        │
+#│ docker:isContainer "name=^${IMAGE_RUN}$"        │
 #└─────────────────────────────────────────────────┘
-    'is_container')
-    # Локальные переменные
-        local ids
-        local id
-        
-    # Создаем массив
+    'isContainer')
+    # Создаем список ID-контейнеров
         GLOBAL_ID=()
         
-    # Получаем ID-контейнеров
-        ids=$(docker ps -aq --filter "$2" 2>&1)
+    # Получаем список ID-контейнеров
+        local ids=$(docker ps -aq --filter "$2" 2>&1)
         
-    # Переводим в массив
-        for id in $ids; do
+    # ID-контейнера
+        local container_id
+        
+    # Проходим по списку ID-контейнеров
+        while read -r container_id; do
         # Проверяем длину ID
-            if (( ${#id} != 12 )); then
-                return 1
-            fi
+            (( ${#container_id} != 12 )) && return 1
             
         # Нельзя останавливать текущий контейнер
-            if [[ "$HOSTNAME" != "$id" ]]; then
-                GLOBAL_ID+=("$id")
-            fi
-        done
+            [[ "$HOSTNAME" == "$container_id" ]] && continue
+            
+        # Добавляем ID-контейнера в список
+            GLOBAL_ID+=("$container_id")
+        done <<< "$ids"
         
-    # Массив пуст
+    # Список пуст
         if (( ${#GLOBAL_ID[*]} == 0 )); then
             return 1
         fi
@@ -81,8 +80,14 @@ core:Docker() { case "$1" in
 #│ docker:containerInfo "$WORKSPACE"           │
 #└─────────────────────────────────────────────┘
     'containerInfo')
+    # Список аргументов
+        local name="$2" # Имя контейнера
+        
     # Получаем информацию по имени контейнера
-        local res="$(docker ps --filter "name=$2" --format='{{.Image}}={{.Ports}}')"
+        local res="$(docker ps               \
+            --filter "name=^${name}$"        \
+            --format='{{.Image}}={{.Ports}}' \
+        )"
         
     # Получаем имя образа
         RUN_IMAGE="${res/=*}"
@@ -101,6 +106,32 @@ core:Docker() { case "$1" in
         
     # Удаляем все символы справа от порта
         RUN_PORT="${RUN_PORT/-*}"
+    ;;
+    
+#┌─────────────────────────────────────┐
+#│ Получает внешний порт               │
+#│ docker:getPort "$WORKSPACE" "$PORT" │
+#└─────────────────────────────────────┘
+    'getPort')
+    # Список аргументов
+        local name="$2" # Имя контейнера
+        local port="$3" # Внутренний порт
+        
+    # Получаем информацию о внешних портах
+        port="$(docker port \
+            "$name"         \
+            "$port"         \
+            2> '/dev/null'
+        )"
+        
+    # Получаем порт
+        port="${port##*:}"
+        
+    # Возвращаем внешний порт
+        echo "$port"
+        
+    # Внешний порт существуют
+        [ -n "$port" ]
     ;;
 esac
 }
