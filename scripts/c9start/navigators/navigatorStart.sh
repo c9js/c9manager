@@ -109,7 +109,7 @@ navigator:Start() { case "$1" in
 #┌─────────────────────────────────────────────┐
 #│ Предлагает пользователю запустить контейнер │
 #└─────────────────────────────────────────────┘
-    'start')
+    'start_c9start')
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
@@ -139,10 +139,10 @@ navigator:Start() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1)        nav:Next 'choice_port' "$1" ;; # Выбран: "Restart"
-            2) controller:Docker 'stop'           ;; # Выбран: "Stop"
-            3)        nav:Next 'settings'         ;; # Выбран: "Настройки"
-            0)        nav:Exit                    ;; # Выбран: "Exit"
+            1)        nav:Next   'choice_port' "$1" ;; # Выбран: "Restart"
+            2) controller:Docker 'stop_c9start'     ;; # Выбран: "Stop"
+            3)        nav:Next   'settings'         ;; # Выбран: "Настройки"
+            0)        nav:Exit                      ;; # Выбран: "Exit"
         esac
     ;;
     

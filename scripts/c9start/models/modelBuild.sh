@@ -16,7 +16,7 @@ model:Build() { case "$1" in
         local count="$(pages:Count $IMAGES_MAX)"
         
     # Получаем список образов
-        IMAGES_LIST=(
+        IMAGES=(
             "${IMAGES_BUILD[@]:$skip:$count}" # Список образов для сборки
         )
         
@@ -25,11 +25,11 @@ model:Build() { case "$1" in
         local image    # Информация об образе
         
     # Проходим по списку образов
-        for image in "${IMAGES_LIST[@]}"; do
+        for image in "${IMAGES[@]}"; do
         # Добавляем пункт с информацией (для выбранного меню)
             case "$PAGES_MENU" in
-                1) items+=("$image") ;; # Создать новый образ
-                2) items+=("$image") ;; # Удалить старый образ
+                1) items+=("{i}. $image") ;; # Создать новый образ
+                2) items+=("{i}. $image") ;; # Удалить старый образ
             esac
         done
         
@@ -43,8 +43,8 @@ model:Build() { case "$1" in
     'pages:Pick')
     # Выполняем список команд (для выбранного меню)
         case "$PAGES_MENU" in
-            1) controller:Docker 'create' "${IMAGES_LIST[$PAGES_ID]}" ;; # Создать новый образ
-            2) controller:Docker 'remove' "${IMAGES_LIST[$PAGES_ID]}" ;; # Удалить старый образ
+            1) controller:Docker 'create' "${IMAGES[$PAGES_ID]}" ;; # Создать новый образ
+            2) controller:Docker 'remove' "${IMAGES[$PAGES_ID]}" ;; # Удалить старый образ
         esac
         
     # Возвращаем пользователя обратно в меню

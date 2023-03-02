@@ -86,7 +86,7 @@ model:Check() { case "$1" in
                     done
                     
                 # Коммита нет в списке
-                    if [[ -z "$is_edit" ]]; then
+                    if [ -z "$is_edit" ]; then
                     # У коммита есть дети (кроме текущей ветки)
                         return 0
                     fi
