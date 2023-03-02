@@ -13,7 +13,7 @@ PATH_DIR="$(dirname $0)"
 #│ MVC │
 #└─────┘
 # Entrypoints
-. $PATH_DIR/entrypoints/entrypointMenu.sh
+. $PATH_DIR/entrypoints/entrypointDeploy.sh
 
 # Controllers
 . $PATH_DIR/controllers/controllerDeploy.sh
@@ -29,9 +29,10 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/runners/runnerDeploy.sh
 . $PATH_DIR/runners/runnerNotice.sh
 
+# Navigators
+. $PATH_DIR/navigators/navigatorDeploy.sh
+
 # Views
-. $PATH_DIR/views/view.sh
-. $PATH_DIR/views/viewMenu.sh
 . $PATH_DIR/views/viewDeploy.sh
 . $PATH_DIR/views/viewSettings.sh
 . $PATH_DIR/views/viewNotice.sh
@@ -56,4 +57,4 @@ cd "$PATH_WORKSPACE"
 #┌─────────────┐
 #│ Точки входа │
 #└─────────────┘
-entrypoint:Menu # Меню
+entrypoint:Deploy

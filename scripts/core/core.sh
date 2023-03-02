@@ -1,4 +1,4 @@
-#▄───────────────▄1.0.1
+#▄───────────────▄1.0.2
 #█               █
 #█  Core (ядро)  █
 #█               █
@@ -14,6 +14,7 @@
 . $PATH_DIR/../core/models/valid.sh
 
 # ViewModels
+. $PATH_DIR/../core/viewModels/navigator.sh
 . $PATH_DIR/../core/viewModels/pages.sh
 . $PATH_DIR/../core/viewModels/notice.sh
 . $PATH_DIR/../core/viewModels/runner.sh

@@ -13,7 +13,7 @@ PATH_DIR="$(dirname $0)"
 #│ MVC │
 #└─────┘
 # Entrypoints
-. $PATH_DIR/entrypoints/entrypointMenu.sh
+. $PATH_DIR/entrypoints/entrypointEdit.sh
 
 # Controllers
 . $PATH_DIR/controllers/controllerCheck.sh
@@ -27,9 +27,10 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/runners/runnerEdit.sh
 . $PATH_DIR/runners/runnerNotice.sh
 
+# Navigators
+. $PATH_DIR/navigators/navigatorEdit.sh
+
 # Views
-. $PATH_DIR/views/view.sh
-. $PATH_DIR/views/viewMenu.sh
 . $PATH_DIR/views/viewEdit.sh
 . $PATH_DIR/views/viewNotice.sh
 
@@ -46,4 +47,4 @@ COMMITS_MAX=5 # Количество коммитов на странице
 #┌─────────────┐
 #│ Точки входа │
 #└─────────────┘
-entrypoint:Menu
+entrypoint:Edit

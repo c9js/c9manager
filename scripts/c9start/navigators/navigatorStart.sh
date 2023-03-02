@@ -1,14 +1,17 @@
-#▄──────────────────────▄
-#█                      █
-#█  View: Menu          █
-#█  • Меню (интерфейс)  █
-#█                      █
-#▀──────────────────────▀
-view:Menu() { menu:Save "$1"; case "$1" in
-#┌────────────────────────┐
-#│ Создает заголовок меню │
-#└────────────────────────┘
-    'header') HEADER='Выберите команду:' ;;
+#▄──────────────────────────────▄
+#█                              █
+#█  Navigator: Start            █
+#█  • Первый старт (навигатор)  █
+#█                              █
+#▀──────────────────────────────▀
+navigator:Start() { case "$1" in
+#┌───────────────┐
+#│ Инициализация │
+#└───────────────┘
+    'init')
+    # Создаем заголовок меню
+        HEADER='Выберите команду:'
+    ;;
     
 #┌────────────────────────────────────────────────┐
 #│ Предлагает пользователю выбрать пустой каталог │
@@ -23,7 +26,7 @@ view:Menu() { menu:Save "$1"; case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) controller:Git 'gitclone' ;; # Выбран: "Обновить"
-            0)       menu:Exit           ;; # Выбран: "Exit"
+            0)        nav:Exit           ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -40,7 +43,7 @@ view:Menu() { menu:Save "$1"; case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) controller:Git 'gitclone' ;; # Выбран: "Git clone"
-            0)       menu:Exit           ;; # Выбран: "Exit"
+            0)        nav:Exit           ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -61,8 +64,8 @@ view:Menu() { menu:Save "$1"; case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) controller:Docker "$command" "$PORT_DEFAULT" ;; # Выбран: "По умолчанию"
-            2)       menu:Next 'input_port' "$command"      ;; # Выбран: "Редактировать"
-            0)       menu:Back                              ;; # Выбран: "Отмена"
+            2)        nav:Next 'input_port' "$command"      ;; # Выбран: "Редактировать"
+            0)        nav:Back                              ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -98,8 +101,8 @@ view:Menu() { menu:Save "$1"; case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) menu:Next 'choice_port' "$1" ;; # Выбран: "Install"
-            0) menu:Exit                    ;; # Выбран: "Exit"
+            1) nav:Next 'choice_port' "$1" ;; # Выбран: "Install"
+            0) nav:Exit                    ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -116,9 +119,9 @@ view:Menu() { menu:Save "$1"; case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) menu:Next 'choice_port' "$1" ;; # Выбран: "Start"
-            2) menu:Next 'settings'         ;; # Выбран: "Настройки"
-            0) menu:Exit                    ;; # Выбран: "Exit"
+            1) nav:Next 'choice_port' "$1" ;; # Выбран: "Start"
+            2) nav:Next 'settings'         ;; # Выбран: "Настройки"
+            0) nav:Exit                    ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -136,10 +139,10 @@ view:Menu() { menu:Save "$1"; case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1)       menu:Next 'choice_port' "$1" ;; # Выбран: "Restart"
+            1)        nav:Next 'choice_port' "$1" ;; # Выбран: "Restart"
             2) controller:Docker 'stop'           ;; # Выбран: "Stop"
-            3)       menu:Next 'settings'         ;; # Выбран: "Настройки"
-            0)       menu:Exit                    ;; # Выбран: "Exit"
+            3)        nav:Next 'settings'         ;; # Выбран: "Настройки"
+            0)        nav:Exit                    ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -157,10 +160,10 @@ view:Menu() { menu:Save "$1"; case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1)       menu:Next 'choice_port' "$1" ;; # Выбран: "Update"
+            1)        nav:Next 'choice_port' "$1" ;; # Выбран: "Update"
             2) controller:Docker 'remove_all'     ;; # Выбран: "Uninstall"
-            3)       menu:Next 'settings'         ;; # Выбран: "Настройки"
-            0)       menu:Exit                    ;; # Выбран: "Exit"
+            3)        nav:Next 'settings'         ;; # Выбран: "Настройки"
+            0)        nav:Exit                    ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -177,9 +180,9 @@ view:Menu() { menu:Save "$1"; case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) menu:Next 'ssh_keygen' ;; # Выбран: "SSH-Keygen"
-            2) menu:Next 'uninstall'  ;; # Выбран: "Uninstall"
-            0) menu:Back              ;; # Выбран: "Назад"
+            1) nav:Next 'ssh_keygen' ;; # Выбран: "SSH-Keygen"
+            2) nav:Next 'uninstall'  ;; # Выбран: "Uninstall"
+            0) nav:Back              ;; # Выбран: "Назад"
         esac
     ;;
     
@@ -198,7 +201,7 @@ view:Menu() { menu:Save "$1"; case "$1" in
         case $? in
             1) controller:Docker 'stop_all'   ;; # Выбран: "Stop"
             2) controller:Docker 'remove_all' ;; # Выбран: "Remove"
-            0)       menu:Back                ;; # Выбран: "Назад"
+            0)        nav:Back                ;; # Выбран: "Назад"
         esac
     ;;
     
@@ -214,8 +217,8 @@ view:Menu() { menu:Save "$1"; case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) menu:Next 'input_ssh' ;; # Выбран: "Создать"
-            0) menu:Back             ;; # Выбран: "Назад"
+            1) nav:Next 'input_ssh' ;; # Выбран: "Создать"
+            0) nav:Back             ;; # Выбран: "Назад"
         esac
     ;;
     

@@ -13,7 +13,7 @@ PATH_DIR="$(dirname $0)"
 #│ MVC │
 #└─────┘
 # Entrypoints
-. $PATH_DIR/entrypoints/entrypointMenu.sh
+. $PATH_DIR/entrypoints/entrypointStart.sh
 . $PATH_DIR/entrypoints/entrypointProxy.sh
 
 # Controllers
@@ -32,9 +32,10 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/runners/runnerDocker.sh
 . $PATH_DIR/runners/runnerNotice.sh
 
+# Navigators
+. $PATH_DIR/navigators/navigatorStart.sh
+
 # Views
-. $PATH_DIR/views/view.sh
-. $PATH_DIR/views/viewMenu.sh
 . $PATH_DIR/views/viewGit.sh
 . $PATH_DIR/views/viewSSH.sh
 . $PATH_DIR/views/viewDocker.sh
@@ -97,6 +98,6 @@ VERSION="$(get_file "$HOME/$PATH_VERSION")"
 #│ Точки входа │
 #└─────────────┘
 case "$1" in
-    'MENU') entrypoint:Menu       ;; # Меню
-    *)      entrypoint:Proxy "$@" ;; # Прокси контейнер
+    'start') entrypoint:Start      ;; # Первый старт
+    *)       entrypoint:Proxy "$@" ;; # Прокси контейнер
 esac

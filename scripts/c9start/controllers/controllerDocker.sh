@@ -9,7 +9,7 @@ controller:Docker() { case "$1" in
     'no_image')     model:Docker "$@" ;; # Проверяет существует-ли образ
     'no_container') model:Docker "$@" ;; # Проверяет существует-ли контейнер
     
-# Список команд
+# Первый старт
     'install')    SELECTION=1; model:Docker 'run' "$2" ;; # Скачивает образ и запускает новый контейнер
     'restart')    SELECTION=2; model:Docker 'run' "$2" ;; # Перезагружет текущий контейнер
     'update')     SELECTION=3; model:Docker 'run' "$2" ;; # Обновляет контейнер

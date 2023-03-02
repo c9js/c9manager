@@ -83,8 +83,8 @@ model:Edit() { case "$1" in
         
     # Предлагаем пользователю подтвердить редактирование (для выбранного меню)
         case "$PAGES_MENU" in
-            1) view:Menu 'confirm_edit' ;; # Описание коммита
-            2) view:Menu 'confirm_date' ;; # Дата созданя коммита
+            1) navigator 'confirm_edit' ;; # Описание коммита
+            2) navigator 'confirm_date' ;; # Дата созданя коммита
         esac
     ;;
     

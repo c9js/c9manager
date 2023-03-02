@@ -25,7 +25,7 @@ model:SSH() { case "$1" in
         runner "${SSH_LIST[@]}"
         
     # Возвращаемся в меню
-        menu:Back
+        navigator 'ssh_keygen'
     ;;
 esac
 }

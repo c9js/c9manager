@@ -1,4 +1,4 @@
-#▄───────────────────────────▄1.0.0
+#▄───────────────────────────▄1.0.1
 #█                           █
 #█  Core: Pages              █
 #█  • Список страниц (ядро)  █
@@ -141,10 +141,10 @@ core:Pages() { case "$1" in
         reset:Menu
         
     # Обновляем заголовок меню (для выбранного меню)
-        view:Menu "$PAGES_METHOD:Header" "${items[@]}"
+        navigator "$PAGES_METHOD:Header" "${items[@]}"
         
     # Выводим список пунктов (для выбранного меню)
-        view:Menu "$PAGES_METHOD:Menu" "${items[@]}"
+        navigator "$PAGES_METHOD:Menu" "${items[@]}"
     ;;
     
 #┌────────────────────────────────────────────────┐

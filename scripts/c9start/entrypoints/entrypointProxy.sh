@@ -29,9 +29,7 @@ entrypoint:Proxy() {
 # Получаем ID-образа
     IMAGE_ID="$(docker ps --filter "id=$HOSTNAME" --format='{{.Image}}')"
     
-#┌────────────────────────────┐
-#│ Переход в прокси контейнер │
-#└────────────────────────────┘
+# Переходим в прокси контейнер
     docker run \
         -e "P=$P" \
         -e "SEP=$SEP" \
@@ -41,6 +39,6 @@ entrypoint:Proxy() {
         -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
         --rm -it \
         "$IMAGE_ID" \
-        'MENU' \
+        'start' \
         "$@" 2>&1
 }

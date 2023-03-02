@@ -1,14 +1,26 @@
-#▄──────────────────────▄
-#█                      █
-#█  View: Menu          █
-#█  • Меню (интерфейс)  █
-#█                      █
-#▀──────────────────────▀
-view:Menu() { case "$1" in
-#┌────────────────────────┐
-#│ Создает заголовок меню │
-#└────────────────────────┘
-    'header') HEADER='Выберите команду:' ;;
+#▄────────────────────────▄
+#█                        █
+#█  Navigator: Deploy     █
+#█  • Деплой (навигатор)  █
+#█                        █
+#▀────────────────────────▀
+navigator:Deploy() { case "$1" in
+#┌───────────────┐
+#│ Инициализация │
+#└───────────────┘
+    'init')
+    # Создаем заголовок меню
+        HEADER='Выберите команду:'
+        
+    # Обновляем данные
+        controller:Update 'git'          # Обновляем настройки git-репозитория
+        controller:Update 'docker'       # Обновляем настройки docker-репозитория
+        controller:Update 'bad_deploy'   # Обновляем информацию о последнем деплое
+        controller:Update 'repo_version' # Обновляем версию репозитория
+        
+    # Проверяем список всех уведомлений
+        notice 'check'
+    ;;
     
 #┌─────────────────────────────────────────────┐
 #│ Предлагает пользователю попробовать еще раз │
@@ -24,7 +36,7 @@ view:Menu() { case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) controller:Deploy 'continue' ;; # Выбран: "Continue"
-            2)       view:Menu   'settings' ;; # Выбран: "Настройки"
+            2)        nav:Next   'settings' ;; # Выбран: "Настройки"
             0) controller:Deploy 'stop'     ;; # Выбран: "Отмена"
         esac
     ;;
@@ -42,9 +54,9 @@ view:Menu() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) view:Menu 'deploy'   ;; # Выбран: "Deploy"
-            2) view:Menu 'settings' ;; # Выбран: "Настройки"
-            0) menu:Exit            ;; # Выбран: "Exit"
+            1) nav:Next 'deploy'   ;; # Выбран: "Deploy"
+            2) nav:Next 'settings' ;; # Выбран: "Настройки"
+            0) nav:Exit            ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -62,9 +74,9 @@ view:Menu() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) view:Menu 'version1' 1      ;; # Выбран: "Docker + Git"
-            2) view:Menu 'version2' 3 "$1" ;; # Выбран: "Docker"
-            3) view:Menu 'version2' 2 "$1" ;; # Выбран: "Git"
+            1) nav:Next 'version1' 1      ;; # Выбран: "Docker + Git"
+            2) nav:Next 'version2' 3 "$1" ;; # Выбран: "Docker"
+            3) nav:Next 'version2' 2 "$1" ;; # Выбран: "Git"
         esac
     ;;
     
@@ -82,8 +94,8 @@ view:Menu() { case "$1" in
     # Проходим по пунктам меню
         case $? in
             1) controller:Deploy 'start' "$2" "$MICRO" ;; # Выбран: "Micro"
-            2)       view:Menu   'version2' "$2" "$1"  ;; # Выбран: "Изменить версию"
-            0)       view:Menu   'deploy'              ;; # Выбран: "Отмена"
+            2)        nav:Next   'version2' "$2" "$1"  ;; # Выбран: "Изменить версию"
+            0)        nav:Next   'deploy'              ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -106,7 +118,7 @@ view:Menu() { case "$1" in
             2) controller:Deploy 'start' "$2" "$MICRO"   ;; # Выбран: "Micro"
             3) controller:Deploy 'start' "$2" "$MINOR"   ;; # Выбран: "Minor"
             4) controller:Deploy 'start' "$2" "$MAJOR"   ;; # Выбран: "Major"
-            0)       view:Menu "$3" "$2"                 ;; # Выбран: "Отмена"
+            0)        nav:Next "$3" "$2"                 ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -123,8 +135,8 @@ view:Menu() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) view:Menu 'input_git_user'    ;; # Выбран: "Git"
-            2) view:Menu 'input_docker_user' ;; # Выбран: "Docker"
+            1) nav:Next 'input_git_user'    ;; # Выбран: "Git"
+            2) nav:Next 'input_docker_user' ;; # Выбран: "Docker"
         esac
     ;;
     
@@ -142,7 +154,7 @@ view:Menu() { case "$1" in
         input "$GIT_USER" 'git:isValidUser' "Имя '%s' указано не верно!"
         
     # Предлагаем пользователю указать имя git-репозитория
-        view:Menu 'input_git_repo' "$REPLY"
+        nav:Next 'input_git_repo' "$REPLY"
     ;;
     
 #┌─────────────────────────────────────────────────────┐
@@ -176,7 +188,7 @@ view:Menu() { case "$1" in
         input "$DOCKER_USER" 'docker:isValidUser' "Логин '%s' указано не верно!"
         
     # Предлагаем пользователю указать пароль от docker-репозитория
-        view:Menu 'input_docker_pass' "$REPLY"
+        nav:Next 'input_docker_pass' "$REPLY"
     ;;
     
 #┌──────────────────────────────────────────────────────────────┐

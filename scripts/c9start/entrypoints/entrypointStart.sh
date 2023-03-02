@@ -1,13 +1,17 @@
-#▄────────────────────────▄
-#█                        █
-#█  Entrypoint: Menu      █
-#█  • Меню (точка входа)  █
-#█                        █
-#▀────────────────────────▀
-entrypoint:Menu() { view 'init'; while :; do
-#┌─────────────────────────────────────────────┐
-#│ Обнуляем сохраненные состояния пунктов меню │
-#└─────────────────────────────────────────────┘
+#▄────────────────────────────────▄
+#█                                █
+#█  Entrypoint: Start             █
+#█  • Первый старт (точка входа)  █
+#█                                █
+#▀────────────────────────────────▀
+entrypoint:Start() { nav:Init; while :; do
+# Получаем информацию о запущенном контейнере
+    docker:containerInfo "$WORKSPACE"
+    
+# Проверяем список всех уведомлений
+    notice 'check'
+    
+# Обнуляем сохраненные состояния пунктов меню
     reset:Menu
     
 #┌──────────────────────────┐
@@ -15,7 +19,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #└──────────────────────────┘
     if notice 'error' 'dir_error'; then
     # Предлагаем пользователю выбрать пустой каталог
-        view:Menu 'dir_error'
+        navigator 'dir_error'
         continue
     fi
     
@@ -24,7 +28,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #└──────────────────────┘
     if runner:Notice 'dir_empty'; then
     # Предлагаем пользователю склонировать репозиторий
-        view:Menu 'gitclone'
+        navigator 'gitclone'
         continue
     fi
     
@@ -33,7 +37,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #└─────────────────┘
     if controller:Docker 'no_image'; then
     # Предлагаем пользователю установить образ
-        view:Menu 'install'
+        navigator 'install'
         continue
     fi
     
@@ -42,7 +46,7 @@ entrypoint:Menu() { view 'init'; while :; do
 #└─────────────────────┘
     if controller:Docker 'no_container'; then
     # Предлагаем пользователю запустить контейнер
-        view:Menu 'start'
+        navigator 'start'
         continue
     fi
     
@@ -51,13 +55,13 @@ entrypoint:Menu() { view 'init'; while :; do
 #└──────────────────────────┘
     if notice 'warning' 'run_old'; then
     # Предлагаем пользователю обновить контейнер
-        view:Menu 'update'
+        navigator 'update'
         continue
     fi
     
 #┌───────────────────┐
 #│ Контейнер запущен │
 #└───────────────────┘
-    view:Menu 'restart' # Выводим меню на экран
+    navigator 'restart' # Выводим меню на экран
 done
 }
