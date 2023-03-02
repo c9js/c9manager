@@ -1,4 +1,4 @@
-#▄───────────────▄1.0.4
+#▄───────────────▄1.0.5
 #█               █
 #█  Core (ядро)  █
 #█               █
@@ -8,6 +8,7 @@
 
 # Models
 . $PATH_DIR/../core/models/base.sh
+. $PATH_DIR/../core/models/cli.sh
 . $PATH_DIR/../core/models/opts.sh
 . $PATH_DIR/../core/models/array.sh
 . $PATH_DIR/../core/models/filesystem.sh
