@@ -88,7 +88,7 @@ runner:Edit() { case "$1" in
     # Проходим по списку коммитов
         while IFS=':' read -ra commit; do
         # Обновляем информацию о коммите
-            COMMITS_ALL["${commit[0]}"]="${commit[1]}"
+            COMMITS_ALL[${commit[0]}]="${commit[1]}"
         done <<< "$RES"
     ;;
     

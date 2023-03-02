@@ -95,7 +95,7 @@ core:Runner() { case "$1" in
     # Обновляем текущее состояние команды
         "view:$RUNNER_CLASS" "$RUNNER_VIEW" "$RUNNER_COMMAND"
         
-    # Режим разаработки
+    # Режим разработки
         if [[ "$DEV_MODE" == 1 ]]; then
             read
         fi

@@ -71,7 +71,7 @@ model:Deploy() { case "$1" in
         model:Deploy 'run_list' "${CONTINUE_LIST[@]}"
         
     # Проверка прошла успешно
-        if [[ $? == 0 ]]; then
+        if [ $? == 0 ]; then
         # Пробуем еще раз продолжить деплой
             model:Deploy 'start' "$LAST_SELECTION" "$NEW_VERSION"
         fi
@@ -95,7 +95,7 @@ model:Deploy() { case "$1" in
         esac
         
     # Деплой прошел успешно
-        if [[ $? == 0 ]]; then
+        if [ $? == 0 ]; then
              model:Deploy 'success'
         fi
     ;;

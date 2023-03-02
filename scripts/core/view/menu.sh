@@ -1,4 +1,4 @@
-#▄─────────────────────▄1.0.1
+#▄─────────────────────▄1.0.2
 #█                     █
 #█  Список переменных  █
 #█                     █
@@ -145,7 +145,7 @@ core:Menu() { case "$1" in
     # Переводим строку в число
         selection=$(number "$2")
         
-    # Выбран пункт: "Exit"
+    # Выбран пункт "Exit"
         if (( $selection <= 0 || $selection > $count )); then
             selection=$count
         fi
@@ -231,7 +231,7 @@ core:Menu() { case "$1" in
         # Exit
             "$keyESC" | '`' | 'q' | 'ё' | 'й' | 0)
             # Эмуляция двойного нажатия
-                if [[ $selection == $count ]]; then
+                if [[ "$selection" == "$count" ]]; then
                     REPLY=$count
                     return
                 fi
@@ -260,7 +260,7 @@ core:Menu() { case "$1" in
             [1-9])
                 if (( $count > $key )); then
                 # Эмуляция двойного нажатия
-                    if [[ $selection == $key ]]; then
+                    if [[ "$selection" == "$key" ]]; then
                         REPLY=$key
                         return
                     fi

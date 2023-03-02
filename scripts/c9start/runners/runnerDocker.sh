@@ -128,7 +128,7 @@ runner:Docker() { case "$1" in
             progress 0 "$(progressBar 20 $(procent 100 100 $RUNNER_NOW $DOCKER_FULL))"
         fi
         
-    # Команда выполнена успешно
+    # Команда успешно выполнена
         return 0
     ;;
     
@@ -163,7 +163,7 @@ runner:Docker() { case "$1" in
             progress 0 "$(progressBar 20 $(procent 100 100 $RUNNER_NOW $DOCKER_FULL))"
         fi
         
-    # Команда выполнена успешно
+    # Команда успешно выполнена
         return 0
     ;;
     

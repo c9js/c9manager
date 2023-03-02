@@ -9,10 +9,10 @@ function color_my_prompt {
   local BRANCH=$BLUE_LIGHT         # Цвет ветки (по умолчанию светло синий)
   local CLEAR="\[\e[0m\]"          # Сброс цвета
   
-  if   [[ $(__git_ps1) =~ "*" ]]; then BRANCH=$RED    # Modified
-  elif [[ $(__git_ps1) =~ "$" ]]; then BRANCH=$YELLOW # Add stash
-  elif [[ $(__git_ps1) =~ "%" ]]; then BRANCH=$VIOLET # Untracked files
-  elif [[ $(__git_ps1) =~ "+" ]]; then BRANCH=$GREEN  # Add stage
+  if   [[ "$(__git_ps1)" =~ "*" ]]; then BRANCH=$RED    # Modified
+  elif [[ "$(__git_ps1)" =~ "$" ]]; then BRANCH=$YELLOW # Add stash
+  elif [[ "$(__git_ps1)" =~ "%" ]]; then BRANCH=$VIOLET # Untracked files
+  elif [[ "$(__git_ps1)" =~ "+" ]]; then BRANCH=$GREEN  # Add stage
   fi
   
   PS1="$GREEN_LIGHT\u$CLEAR:$BLUE\w$BRANCH$(__git_ps1 " (%s) ")$CLEAR$ "
@@ -20,7 +20,7 @@ function color_my_prompt {
 
 export PROMPT_COMMAND=color_my_prompt
 
-if [ -f /root/.git-prompt.sh ]; then
+if [ -f "/root/.git-prompt.sh" ]; then
   GIT_PS1_SHOWDIRTYSTATE=true
   GIT_PS1_SHOWSTASHSTATE=true
   GIT_PS1_SHOWUNTRACKEDFILES=true

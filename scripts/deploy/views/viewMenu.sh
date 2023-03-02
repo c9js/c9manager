@@ -123,8 +123,8 @@ view:Menu() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) view:Menu 'input_git_user'    ;; # Выбран пункт: "Git"
-            2) view:Menu 'input_docker_user' ;; # Выбран пункт: "Docker"
+            1) view:Menu 'input_git_user'    ;; # Выбран: "Git"
+            2) view:Menu 'input_docker_user' ;; # Выбран: "Docker"
         esac
     ;;
     

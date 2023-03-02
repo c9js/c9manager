@@ -105,7 +105,7 @@ model:Edit() { case "$1" in
         esac
         
     # Редактирование не было завершено
-        if [[ $? != 0 ]]; then
+        if [ $? != 0 ]; then
         # Отменяем все изменения
             runner "${BACKUP_LIST[@]}"
         fi

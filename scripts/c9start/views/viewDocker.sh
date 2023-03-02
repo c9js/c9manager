@@ -47,8 +47,8 @@ view:Docker() { case "$1" in
         3) printf "Обновление контейнера до '%s'" "$IMAGE_RUN:$VERSION"     ;;
         4) printf "Запуск контейнера '%s'"        "$IMAGE_RUN:$VERSION"     ;;
         5) printf "Удаление контейнеров '%s'"     "$RUN_IMAGE:$RUN_VERSION" ;;
-        6) printf 'Удаление всех контейнеров'                                      ;;
-        7) printf 'Удаление всех образов'                                          ;;
+        6) printf 'Удаление всех контейнеров'                               ;;
+        7) printf 'Удаление всех образов'                                   ;;
     esac
     ;;
     
