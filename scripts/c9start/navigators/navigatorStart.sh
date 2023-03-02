@@ -57,15 +57,15 @@ navigator:Start() { case "$1" in
     # Выводим меню на экран
         menu 'Выберите порт:' 1
         #   Цвет      Строка
-            Green "1. $PORT_DEFAULT (по умолчанию)"
+            Green "1. $PORT_PUBLIC (по умолчанию)"
             Green '2. Редактировать'
              Exit '0. Отмена'
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Docker "$command" "$PORT_DEFAULT" ;; # Выбран: "По умолчанию"
-            2)        nav:Next 'input_port' "$command"      ;; # Выбран: "Редактировать"
-            0)        nav:Back                              ;; # Выбран: "Отмена"
+            1) controller:Docker "$command" "$PORT_PUBLIC" ;; # Выбран: "По умолчанию"
+            2)        nav:Next 'input_port' "$command"     ;; # Выбран: "Редактировать"
+            0)        nav:Back                             ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -83,7 +83,7 @@ navigator:Start() { case "$1" in
         echo 'Введите порт:'
         
     # Предлагаем указать порт
-        input "$PORT_DEFAULT" 'isValidPort' "Порт '%s' указан не верно!"
+        input "$PORT_PUBLIC" 'isValidPort' "Порт '%s' указан не верно!"
         
     # Запускаем новый контейнер
         controller:Docker "$command" "$REPLY"
@@ -96,7 +96,7 @@ navigator:Start() { case "$1" in
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Install  Установить '$IMAGE_RUN:$VERSION'"
+            Green "1. Install  Установить '$IMAGE_START:$VERSION'"
              Exit '0. Exit'
              
     # Проходим по пунктам меню
@@ -113,7 +113,7 @@ navigator:Start() { case "$1" in
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Start      Запустить '$IMAGE_RUN:$VERSION'"
+            Green "1. Start      Запустить '$IMAGE_START:$VERSION'"
             Green '2. Настройки  Перейти в раздел'
              Exit '0. Exit'
              
@@ -132,8 +132,8 @@ navigator:Start() { case "$1" in
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Restart    Перезагрузить '$IMAGE_RUN:$VERSION'"
-            Green "2. Stop       Остановить '$IMAGE_RUN:$VERSION'"
+            Green "1. Restart    Перезагрузить '$IMAGE_START:$VERSION'"
+            Green "2. Stop       Остановить '$IMAGE_START:$VERSION'"
             Green '3. Настройки  Перейти в раздел'
              Exit '0. Exit'
              
@@ -153,7 +153,7 @@ navigator:Start() { case "$1" in
     # Выводим меню на экран
         menu "$HEADER" 1
         #   Цвет      Строка
-            Green "1. Update     Обновить до '$IMAGE_RUN:$VERSION'"
+            Green "1. Update     Обновить до '$IMAGE_START:$VERSION'"
               Red '2. Uninstall  Удалить все образы'
             Green '3. Настройки  Перейти в раздел'
              Exit '0. Exit'

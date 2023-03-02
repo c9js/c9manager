@@ -1,4 +1,29 @@
 #!/bin/bash
+#┌────────────────────────────────────────────┐
+#│ Путь к каталогу где расположен этот скрипт │
+#└────────────────────────────────────────────┘
+PATH_DIR="$(dirname $0)"
+
+#┌──────┐
+#│ Ядро │
+#└──────┘
+. $PATH_DIR/../core/core.sh
+
+#┌────────────────────────┐
+#│ Получаем список портов │
+#└────────────────────────┘
+while :; do
+# Получаем список внешних портов
+    PORTS="$(get_file "${PATH_WORKSPACE}${PATH_PORTS}")"
+    
+# Сохраняем первый внешний порт
+    PORT_PUBLIC="${PORTS#*,}"
+    PORT_PUBLIC="${PORT_PUBLIC%%:*}"
+    
+# Проверяем список внешних портов
+    [ -z "$PORTS" ] && sleep 1 || break
+done
+
 #┌─────┐
 #│ SSH │
 #└─────┘
@@ -31,4 +56,4 @@ fi
 #┌───────────────┐
 #│ Запуск cloud9 │
 #└───────────────┘
-/root/.c9/start -l 0.0.0.0 -p $C9_PORT -w $PATH_WORKSPACE -a $USERNAME:$PASSWORD
+/root/.c9/start -l 0.0.0.0 -p $PORT_BASIC -w $PATH_WORKSPACE -a $USERNAME:$PASSWORD

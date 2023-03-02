@@ -10,12 +10,12 @@ controller:Docker() { case "$1" in
     'no_container') model:Docker "$@" ;; # Проверяет существует-ли контейнер
     
 # Первый старт
-    'install')    SELECTION=1; model:Docker 'run' "$2" ;; # Скачивает образ и запускает новый контейнер
-    'restart')    SELECTION=2; model:Docker 'run' "$2" ;; # Перезагружет текущий контейнер
-    'update')     SELECTION=3; model:Docker 'run' "$2" ;; # Обновляет контейнер
-    'start')      SELECTION=4; model:Docker 'run' "$2" ;; # Запускает новый контейнер
-    'stop')       SELECTION=5; model:Docker "$@"       ;; # Удаляет только системные контейнеры
-    'stop_all')   SELECTION=6; model:Docker "$@"       ;; # Удаляет все контейнеры
-    'remove_all') SELECTION=7; model:Docker "$@"       ;; # Удаляет все образы
+    'install')    model:Docker 'run_c9start'  4 "${@:2}" ;; # Скачивает образ и запускает новый контейнер
+    'restart')    model:Docker 'run_c9start'  5 "${@:2}" ;; # Перезагружет текущий контейнер
+    'update')     model:Docker 'run_c9start'  6 "${@:2}" ;; # Обновляет контейнер
+    'start')      model:Docker 'run_c9start'  7 "${@:2}" ;; # Запускает новый контейнер
+    'stop')       model:Docker 'stop_c9start' 8          ;; # Удаляет старый контейнер
+    'stop_all')   model:Docker 'stop_all'     9          ;; # Удаляет все контейнеры
+    'remove_all') model:Docker 'remove_all'  10          ;; # Удаляет все образы
 esac
 }

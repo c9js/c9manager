@@ -56,7 +56,7 @@ runner:Docker() { case "$1" in
 #┌──────────────────────┐
 #│ Поиск ID-контейнеров │
 #└──────────────────────┘
-    'void:check_images')
+    'void:search_containers')
     # Обновляем текущий прогресс
         progress 0 "$(progressBar 20 $(procent 0 100 $RUNNER_NOW $DOCKER_FULL))"
         
@@ -101,6 +101,32 @@ runner:Docker() { case "$1" in
         done
     ;;
     
+#┌─────────────────────┐
+#│ Поиск ID-контейнера │
+#└─────────────────────┘
+    'void:search_container')
+    # Обновляем текущий прогресс
+        progress 0 "$(progressBar 20 $(procent 0 100 $RUNNER_NOW $DOCKER_FULL))"
+        
+    # Создаем список ID-контейнеров
+        CONTAINER_IDS=()
+        
+    # Получаем ID-контейнера
+        RUN docker ps -aq --filter "name=^${PROJECT_NAME}$" && return 1
+        
+    # Добавляем ID-контейнера в список
+        [ -n "$RES" ] && CONTAINER_IDS+=("$RES")
+        
+    # Вычисляем процент
+        local procent="$(procent 100 100 $RUNNER_NOW $DOCKER_FULL)"
+        
+    # Обновляем текущий прогресс
+        progress ${#CONTAINER_IDS[*]} "$(progressBar 20 $procent)"
+        
+    # Команда успешно выполнена
+        return 0
+    ;;
+    
 #┌────────────────────┐
 #│ Удаляет контейнеры │
 #└────────────────────┘
@@ -113,14 +139,14 @@ runner:Docker() { case "$1" in
         
     # Проходим по списку ID-контейнеров
         for ((i = 0; i < ${#CONTAINER_IDS[*]}; i++)); do
-        # Удаляем контейнер
-            docker rm --force "${CONTAINER_IDS[$i]}" &> '/dev/null'
-            
         # Вычисляем процент
             local procent="$(procent $(($i+1)) ${#CONTAINER_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
             
         # Обновляем текущий прогресс
             progress "$(($i+1))" "$(progressBar 20 $procent)"
+            
+        # Удаляем контейнер
+            docker rm --force "${CONTAINER_IDS[$i]}" &> '/dev/null'
         done
         
     # Обновляем текущий прогресс
@@ -145,9 +171,6 @@ runner:Docker() { case "$1" in
         
     # Проходим по списку ID-образов
         for image_id in "${!IMAGES_IDS[@]}"; do
-        # Удаляем образ
-            docker rmi --force "$image_id" &> '/dev/null'
-            
         # Увеличиваем порядковый номер
             let i++
             
@@ -156,6 +179,9 @@ runner:Docker() { case "$1" in
             
         # Обновляем текущий прогресс
             progress "$i" "$(progressBar 20 $procent)"
+            
+        # Удаляем образ
+            docker rmi --force "$image_id" &> '/dev/null'
         done
         
     # Обновляем текущий прогресс
@@ -167,12 +193,12 @@ runner:Docker() { case "$1" in
         return 0
     ;;
     
-#┌──────────────┐
-#│ Поиск образа │
-#└──────────────┘
+#┌─────────────────┐
+#│ Поиск ID-образа │
+#└─────────────────┘
     'void:search_image')
     # Получаем ID-образа
-        RUN docker images -aq "$IMAGE_RUN:$VERSION" && return 1
+        RUN docker images -aq "$IMAGE_RUN" && return 1
         
     # Сохраняем результат
         IS_IMAGE="$RES"
@@ -186,44 +212,84 @@ runner:Docker() { case "$1" in
         [ -n "$IS_IMAGE" ] && return 0
         
     # Скачиваем образ
-        docker pull "$IMAGE_RUN:$VERSION"
+        docker pull "$IMAGE_RUN"
     ;;
     
 #┌───────────────────────────┐
 #│ Запускает новый контейнер │
 #└───────────────────────────┘
     'run')
-    # Локальные переменные
-        local PORT2=$(($PORT1+1))
-        
     # Запускаем контейнер
         docker run \
-            --name "$WORKSPACE" \
-            --hostname "$WORKSPACE" \
-            -p "$PORT1:$PORT1" \
-            -p "$PORT2:$PORT2" \
-            -e "C9_PORT=$PORT1" \
-            -e "PORT=$PORT2" \
-            -e "VERSION=$VERSION" \
-            -e "PATH_WORKSPACE=$PATH_WORKSPACE" \
-            -e "PATH_VERSION=$PATH_WORKSPACE/$PATH_VERSION" \
-            -e "PATH_GIT_USER=$PATH_WORKSPACE/$PATH_GIT_USER" \
-            -e "PATH_GIT_REPO=$PATH_WORKSPACE/$PATH_GIT_REPO" \
-            -e "PATH_DOCKER_USER=$PATH_WORKSPACE/$PATH_DOCKER_USER" \
-            -e "PATH_DOCKER_PASS=$PATH_WORKSPACE/$PATH_DOCKER_PASS" \
-            -e "PATH_BAD_DEPLOY=$PATH_WORKSPACE/$PATH_BAD_DEPLOY" \
-            -e "GIT_URL=$GIT_URL" \
-            -e "GIT_USER=$GIT_USER" \
-            -e "GIT_REPO=$GIT_REPO" \
-            -e "WORKSPACE=$WORKSPACE" \
-            -e "DOCKER_USER=$DOCKER_USER" \
-            -e "DOCKER_PWD=$DOCKER_PWD" \
-            -v "$DOCKER_PWD:$PATH_WORKSPACE" \
-            -v "$DOCKER_PWD/ssh:/root/.sshsource" \
-            -v '//var/run/docker.sock:/var/run/docker.sock' --privileged \
-            --restart unless-stopped \
-            --detach -it \
-            "$IMAGE_RUN:$VERSION" 1> '/dev/null'
+            -p "${RUN_PORTS[@]}"                            \
+            -e "PORT=$PORT_EXTRA"                           \
+            -e "PORT_BASIC=$PORT_BASIC"                     \
+            -e "VERSION=$VERSION"                           \
+            -e "GIT_URL=$GIT_URL"                           \
+            -e "GIT_USER=$GIT_USER"                         \
+            -e "GIT_REPO=$GIT_REPO"                         \
+            -e "WORKSPACE=$PROJECT_NAME"                    \
+            -e "DOCKER_USER=$DOCKER_USER"                   \
+            -e "DOCKER_PWD=$DOCKER_PWD"                     \
+            -e "PATH_PORTS=$PATH_PORTS"                     \
+            -e "PATH_VERSION=$PATH_VERSION"                 \
+            -e "PATH_WORKSPACE=$PATH_PROJECT"               \
+            -e "PATH_GIT_USER=$PATH_GIT_USER"               \
+            -e "PATH_GIT_REPO=$PATH_GIT_REPO"               \
+            -e "PATH_DOCKER_USER=$PATH_DOCKER_USER"         \
+            -e "PATH_DOCKER_PASS=$PATH_DOCKER_PASS"         \
+            -e "PATH_BAD_DEPLOY=$PATH_BAD_DEPLOY"           \
+            -v "$PATH_PROJECT_PWD:$PATH_PROJECT"            \
+            -v "$DOCKER_PWD/$SSH_DIR:/root/.sshsource"      \
+            -v '//var/run/docker.sock:/var/run/docker.sock' \
+            --detach -it --privileged                       \
+            --restart unless-stopped                        \
+            --name "$PROJECT_NAME"                          \
+            "$IMAGE_RUN" 1> '/dev/null'
+    ;;
+    
+#┌─────────────────────────┐
+#│ Удаляет порты из списка │
+#└─────────────────────────┘
+    'remove_ports')
+        save_file "$PATH_PROJECT_PORTS"
+    ;;
+    
+#┌────────────────────────┐
+#│ Получает список портов │
+#└────────────────────────┘
+    'void:get_ports')
+    # Получаем основной порт
+        RUN docker:getPort "$PROJECT_NAME" "$PORT_BASIC" && return 1
+        
+    # Сохраняем основной порт
+        PORT="$RES"
+        
+    # Добавлям основной порт в список портов
+        PORTS="$PORT:$PORT_BASIC"
+        
+    # Локальные переменные
+        local port # Внутренний порт
+        local i
+        
+    # Проходим по списку внутренних портов
+        for ((i = 0; i < $PORTS_COUNT; i++)); do
+        # Получаем внутренний порт
+            let port=$PORT_EXTRA+$i
+            
+        # Получаем внешний порт
+            RUN docker:getPort "$PROJECT_NAME" "$port" && return 1
+            
+        # Добавлям внешний порт в список портов
+            PORTS="$PORTS,$RES:$port"
+        done
+    ;;
+    
+#┌─────────────────────────┐
+#│ Сохраняет список портов │
+#└─────────────────────────┘
+    'save_ports')
+        save_file "$PATH_PROJECT_PORTS" "$PORTS"
     ;;
 esac
 }

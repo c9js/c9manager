@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const _PORT = Number(process.env.PORT);
-const _C9_PORT = Number(process.env.C9_PORT);
+const _PORT_BASIC = Number(process.env.PORT_BASIC);
 
 /*▄─────────────────────────────────────▄
   █                                     █
@@ -83,10 +83,10 @@ class Ports {
         this._list = Ports.getJson(str);
         
     // Проверяем стартовый порт
-        if (!_C9_PORT || _C9_PORT < 1) {
+        if (!_PORT_BASIC || _PORT_BASIC < 1) {
         // Возвращаем сообщение об ошибке
             process.stderr.write('Порт не найден!\n');
-            process.stderr.write("C9_PORT: '"+_C9_PORT+"'\n");
+            process.stderr.write("PORT_BASIC: '"+_PORT_BASIC+"'\n");
             
         // Выходим с ошибкой
             process.exit(1);
@@ -104,7 +104,7 @@ class Ports {
             };
             
         // Добавляем новые порты в список портов
-            Ports.add('host_container', _C9_PORT);
+            Ports.add('host_container', _PORT_BASIC);
             Ports.add('host_container', _PORT);
         }
     }
@@ -158,7 +158,7 @@ class Ports {
         let freePorts = [];
         
     // Проходим по списку портов
-        for (let port = _C9_PORT; port <= _C9_PORT + 999; port++) {
+        for (let port = _PORT_BASIC; port <= _PORT_BASIC + 999; port++) {
         // Если порт свободен,
         // то добавляем его в список
             if (!this._list.ports[port]) {

@@ -349,7 +349,7 @@ esac
             --hostname "$IMAGE_RUN" \
             -p "$PORT1:$PORT1" \
             -p "$PORT2:$PORT2" \
-            -e "C9_PORT=$PORT1" \
+            -e "PORT_BASIC=$PORT1" \
             -e "PORT=$PORT2" \
             -e "VERSION=$VERSION" \
             -e "PATH_WORKSPACE=/$IMAGE_RUN" \

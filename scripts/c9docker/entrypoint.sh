@@ -31,4 +31,4 @@ fi
 #┌───────────────┐
 #│ Запуск cloud9 │
 #└───────────────┘
-/root/.c9/start -l 0.0.0.0 -p $C9_PORT -w $PATH_WORKSPACE -a $USERNAME:$PASSWORD
+/root/.c9/start -l 0.0.0.0 -p $PORT_BASIC -w $PATH_WORKSPACE -a $USERNAME:$PASSWORD

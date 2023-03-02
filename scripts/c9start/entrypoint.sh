@@ -46,25 +46,46 @@ PATH_DIR="$(dirname $0)"
 #└──────────────────┘
 DEV_MODE=0
 
+#┌─────────────────────────┐
+#│ Загружаем версию образа │
+#└─────────────────────────┘
+VERSION="$(get_file "$HOME/VERSION")"
+
+#┌───────────────────────┐
+#│ Имя рабочего каталога │
+#└───────────────────────┘
+WORKSPACE='c9manager'
+
+#┌──────────────┐
+#│ Список путей │
+#└──────────────┘
+PATH_PORTS='/.c9/ports'                                   # Список внешних портов
+PATH_WORKSPACE="/$WORKSPACE"                              # Рабочий каталог
+PATH_VERSION="$PATH_WORKSPACE/VERSION"                    # Номер версии
+PATH_GIT_USER="$PATH_WORKSPACE/.c9/deploy/git_user"       # Имя git-юзера
+PATH_GIT_REPO="$PATH_WORKSPACE/.c9/deploy/git_repo"       # Имя git-репозитория
+PATH_DOCKER_USER="$PATH_WORKSPACE/.c9/deploy/docker_user" # Логин от docker-репозитория
+PATH_DOCKER_PASS="$PATH_WORKSPACE/.c9/deploy/docker_pass" # Пароль от docker-репозитория
+PATH_BAD_DEPLOY="$PATH_WORKSPACE/.c9/deploy/bad_deploy"   # Информация о последнем деплое
+
+#┌───────────────┐
+#│ Список портов │
+#└───────────────┘
+PORT_BASIC=80    # Внутренний порт (основной)
+PORT_EXTRA=8080  # Внутренний порт (дополнительный)
+PORT_PUBLIC=8000 # Внешний порт (по умолчанию)
+
 #┌───────────────────┐
 #│ Список переменных │
 #└───────────────────┘
-PATH_VERSION='VERSION'                    # Путь к файлу где хранится номер версии
-PATH_GIT_USER='.c9/deploy/git_user'       # Путь к файлу где хранится имя git-юзера
-PATH_GIT_REPO='.c9/deploy/git_repo'       # Путь к файлу где хранится имя git-репозитория
-PATH_DOCKER_USER='.c9/deploy/docker_user' # Путь к файлу где хранится логин от docker-репозитория
-PATH_DOCKER_PASS='.c9/deploy/docker_pass' # Путь к файлу где хранится пароль от docker-репозитория
-PATH_BAD_DEPLOY='.c9/deploy/bad_deploy'   # Путь к файлу где хранится информация о последнем деплое
-
-SSH_DIR='ssh'             # Имя каталога где хранятся SSH-ключи
-PATH_CURRENT='/root/repo' # Путь к текущему каталогу из docker-а
-GIT_URL='github.com'      # URL git-репозитория
-PORT_DEFAULT='8000'       # (по умолчанию) Порт
-DOCKER_USER='c9js'        # (по умолчанию) Логин от docker-репозитория
-GIT_USER='c9js'           # (по умолчанию) Имя git-юзера
-GIT_REPO='c9manager'      # (по умолчанию) Имя git-репозитория
-WORKSPACE='c9manager'     # (по умолчанию) Имя рабочего каталога
-IMAGE_RUN='c9js/c9docker' # Имя образа который запускаем
+SSH_DIR='ssh'               # Имя каталога где хранятся SSH-ключи
+PATH_CURRENT='/root/repo'   # Путь к текущему каталогу из docker-а
+PATH_PROJECTS='/projects'   # Путь к списку проектов
+GIT_URL='github.com'        # URL git-репозитория
+DOCKER_USER='c9js'          # (по умолчанию) Логин от docker-репозитория
+GIT_USER='c9js'             # (по умолчанию) Имя git-юзера
+GIT_REPO='c9manager'        # (по умолчанию) Имя git-репозитория
+IMAGE_START='c9js/c9docker' # Образ для работы с другими образами (для первого старта)
 
 #┌───────────────────────────┐
 #│ Список образов для сборки │
@@ -83,16 +104,6 @@ IMAGES_HUB=(
     'c9js/c9start'        # Образ для первого старта
     'c9js/c9open'         # Базовый образ
 )
-
-#┌──────────────────────────┐
-#│ Путь к рабочему каталогу │
-#└──────────────────────────┘
-PATH_WORKSPACE="/$WORKSPACE"
-
-#┌─────────────────────────┐
-#│ Загружаем версию образа │
-#└─────────────────────────┘
-VERSION="$(get_file "$HOME/$PATH_VERSION")"
 
 #┌─────────────┐
 #│ Точки входа │
