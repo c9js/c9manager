@@ -90,6 +90,42 @@ model:Docker() { case "$1" in
         DOCKER_FULL="${#CONTAINER_REMOVE[*]}"
     ;;
     
+#┌─────────────────────┐
+#│ Создает новый образ │
+#└─────────────────────┘
+    'build')
+    # Список аргументов
+        local selection="$2"  # Выбранный вариант
+        local image_name="$3" # Имя образа
+        
+    # Локальные переменные
+        local project_name="$image_name" # Имя проекта
+        
+    # Сохраняет список аргументов
+        model:Docker 'run_args' "$selection" "$image_name" "$project_name"
+        
+    # Сохраняем имя образа (для запуска)
+        IMAGE_RUN="$IMAGE_NAME"
+        
+    # Сохраняем общее количество шагов для прогресс
+        DOCKER_FULL="${#DELETE_LIST[*]}"
+        
+    # Удаляем старый образ
+        if [ $SELECTION == 3 ]; then
+            runner "${DELETE_LIST[@]}"
+            return
+        fi
+        
+    # Запускаем новый контейнер (после сборки)
+        if array:includes "$IMAGE_NAME" "${IMAGES_RUN[@]}"; then
+            runner "${RUN_BUILD[@]}"
+            return
+        fi
+        
+    # Создаем новый образ
+        runner "${CREATE_LIST[@]}"
+    ;;
+    
 #┌────────────────────────────────────────────────┐
 #│ Запускает новый контейнер (для первого старта) │
 #└────────────────────────────────────────────────┘

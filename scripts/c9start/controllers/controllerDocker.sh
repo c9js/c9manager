@@ -9,6 +9,10 @@ controller:Docker() { case "$1" in
     'no_image')     model:Docker "$@" ;; # Проверяет существует-ли образ
     'no_container') model:Docker "$@" ;; # Проверяет существует-ли контейнер
     
+# Сборка образа
+    'create')     model:Docker 'build'        2 "${@:2}" ;; # Создает новый образ
+    'remove')     model:Docker 'build'        3 "${@:2}" ;; # Удаляет старый образ
+    
 # Первый старт
     'install')    model:Docker 'run_c9start'  4 "${@:2}" ;; # Скачивает образ и запускает новый контейнер
     'restart')    model:Docker 'run_c9start'  5 "${@:2}" ;; # Перезагружет текущий контейнер

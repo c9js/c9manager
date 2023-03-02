@@ -13,8 +13,14 @@ PATH_DIR="$(dirname $0)"
 #│ MVC │
 #└─────┘
 # Entrypoints
+. $PATH_DIR/entrypoints/entrypointCli.sh
+. $PATH_DIR/entrypoints/entrypointBuild.sh
 . $PATH_DIR/entrypoints/entrypointStart.sh
 . $PATH_DIR/entrypoints/entrypointProxy.sh
+
+# Navigators
+. $PATH_DIR/navigators/navigatorBuild.sh
+. $PATH_DIR/navigators/navigatorStart.sh
 
 # Controllers
 . $PATH_DIR/controllers/controllerGit.sh
@@ -22,6 +28,7 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/controllers/controllerDocker.sh
 
 # Models
+. $PATH_DIR/models/modelBuild.sh
 . $PATH_DIR/models/modelGit.sh
 . $PATH_DIR/models/modelSSH.sh
 . $PATH_DIR/models/modelDocker.sh
@@ -32,14 +39,15 @@ PATH_DIR="$(dirname $0)"
 . $PATH_DIR/runners/runnerDocker.sh
 . $PATH_DIR/runners/runnerNotice.sh
 
-# Navigators
-. $PATH_DIR/navigators/navigatorStart.sh
-
 # Views
+. $PATH_DIR/views/viewCli.sh
 . $PATH_DIR/views/viewGit.sh
 . $PATH_DIR/views/viewSSH.sh
 . $PATH_DIR/views/viewDocker.sh
 . $PATH_DIR/views/viewNotice.sh
+
+# Cli
+. $PATH_DIR/cli/cliBuild.sh
 
 #┌──────────────────┐
 #│ Режим разработки │
@@ -86,6 +94,15 @@ DOCKER_USER='c9js'          # (по умолчанию) Логин от docker-�
 GIT_USER='c9js'             # (по умолчанию) Имя git-юзера
 GIT_REPO='c9manager'        # (по умолчанию) Имя git-репозитория
 IMAGE_START='c9js/c9docker' # Образ для работы с другими образами (для первого старта)
+IMAGES_MAX=3                # Количество образов на странице
+
+#┌───────────────────────────────────────────────────────────┐
+#│ Список образов которые требуется запустить (после сборки) │
+#└───────────────────────────────────────────────────────────┘
+IMAGES_RUN=(
+    'c9docker'            # Образ для работы с другими образами
+    'c9open'              # Базовый образ
+)
 
 #┌───────────────────────────┐
 #│ Список образов для сборки │
@@ -108,7 +125,18 @@ IMAGES_HUB=(
 #┌─────────────┐
 #│ Точки входа │
 #└─────────────┘
-case "$1" in
-    'start') entrypoint:Start      ;; # Первый старт
-    *)       entrypoint:Proxy "$@" ;; # Прокси контейнер
+case "$#" in
+# Прокси контейнер
+    0) entrypoint:Proxy "$@" ;;
+    
+# Графические интерфейсы
+    1) case "$1" in
+        'build') entrypoint:Build "$@" ;; # Сборка образа
+        'start') entrypoint:Start "$@" ;; # Первый старт
+        *)       entrypoint:Cli   "$@" ;; # Интерфейс командной строки
+    esac
+    ;;
+    
+# Интерфейс командной строки
+    *) entrypoint:Cli "$@" ;;
 esac

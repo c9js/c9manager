@@ -12,6 +12,13 @@ declare -A IMAGES_IDS # Список ID-образов
 #█                           █
 #▀───────────────────────────▀
 runner:Docker() { case "$1" in
+#┌──────────────────────┐
+#│ Проверяет имя образа │
+#└──────────────────────┘
+    'check_image')
+        array:includes "$IMAGE_NAME" "${IMAGES_BUILD[@]}"
+    ;;
+    
 #┌──────────────────┐
 #│ Поиск ID-образов │
 #└──────────────────┘
@@ -191,6 +198,47 @@ runner:Docker() { case "$1" in
         
     # Команда успешно выполнена
         return 0
+    ;;
+    
+#┌──────────────────────────┐
+#│ Копирует временные файлы │
+#└──────────────────────────┘
+    'copy_temp_files')
+    # Создаем временный каталог
+        mkdir -p "$PATH_WORKSPACE/docker/temp/scripts"
+        
+    # Копируем версию
+        cp -r "$PATH_VERSION" "$PATH_WORKSPACE/docker/temp/VERSION"
+        
+    # Копируем bash-скрипты
+        cp -r "$PATH_WORKSPACE/scripts/." "$PATH_WORKSPACE/docker/temp/scripts"
+        
+    # Копируем настройки редактора и bash-профиль 
+        cp -r "$PATH_WORKSPACE/c9settings/." "$PATH_WORKSPACE/docker/temp"
+        
+    # Проверяем предусмотрены-ли для образа дополнительные алиасы
+        if [ -s "$PATH_WORKSPACE/docker/$IMAGE_NAME/alias" ]; then
+        # Добавляем алиасы в bash-профиль
+            cat "$PATH_WORKSPACE/docker/$IMAGE_NAME/alias" >> "$PATH_WORKSPACE/docker/temp/bash_profile"
+        fi
+    ;;
+    
+#┌─────────────────────────┐
+#│ Удаляет временные файлы │
+#└─────────────────────────┘
+    'remove_temp_files')
+        rm -r "$PATH_WORKSPACE/docker/temp"
+    ;;
+    
+#┌─────────────────────┐
+#│ Создает новый образ │
+#└─────────────────────┘
+    'build')
+        docker build \
+            --build-arg "entrypoint=$IMAGE_NAME" \
+            -f "$PATH_WORKSPACE/docker/$IMAGE_NAME/Dockerfile" \
+            -t "$IMAGE_NAME" \
+            "$PATH_WORKSPACE/docker"
     ;;
     
 #┌─────────────────┐
