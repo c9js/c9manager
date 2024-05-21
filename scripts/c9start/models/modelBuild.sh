@@ -28,8 +28,8 @@ model:Build() { case "$1" in
         for image in "${IMAGES_LIST[@]}"; do
         # Добавляем пункт с информацией (для выбранного меню)
             case "$PAGES_MENU" in
-                1) items+=("$image") ;; # Создать новый образ
-                2) items+=("$image") ;; # Удалить старый образ
+                1) items+=("{i}. $image") ;; # Создать новый образ
+                2) items+=("{i}. $image") ;; # Удалить старый образ
             esac
         done
         
