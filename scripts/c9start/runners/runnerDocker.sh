@@ -339,5 +339,19 @@ runner:Docker() { case "$1" in
     'save_ports')
         save_file "$PATH_PROJECT_PORTS" "$PORTS"
     ;;
+    
+#┌────────────────────────────────────────────┐
+#│ Сохраняет количество дополнительных портов │
+#└────────────────────────────────────────────┘
+    'save_ports_count')
+        save_file "$PATH_PROJECT_PORTS_COUNT" "$PORTS_COUNT"
+    ;;
+    
+#┌─────────────────────────┐
+#│ Сохраняет текущий образ │
+#└─────────────────────────┘
+    'save_image')
+        save_file "$PATH_PROJECT_IMAGE" "$IMAGE_RUN"
+    ;;
 esac
 }

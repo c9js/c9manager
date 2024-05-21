@@ -67,7 +67,9 @@ WORKSPACE='c9manager'
 #┌──────────────┐
 #│ Список путей │
 #└──────────────┘
+PATH_IMAGE='/.c9/image'                                   # Имя образа
 PATH_PORTS='/.c9/ports'                                   # Список внешних портов
+PATH_PORTS_COUNT='/.c9/ports_count'                       # Количество дополнительных портов
 PATH_WORKSPACE="/$WORKSPACE"                              # Рабочий каталог
 PATH_VERSION="$PATH_WORKSPACE/VERSION"                    # Номер версии
 PATH_GIT_USER="$PATH_WORKSPACE/.c9/deploy/git_user"       # Имя git-юзера

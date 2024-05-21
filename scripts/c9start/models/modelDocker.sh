@@ -74,8 +74,14 @@ model:Docker() { case "$1" in
     # Сохраняем путь к рабочему каталогу (вне docker-а)
         PATH_PROJECT_PWD="${DOCKER_PWD}${PATH_PROJECTS}${PATH_PROJECT}"
         
+    # Сохраняем путь к текущему образа
+        PATH_PROJECT_IMAGE="${PATH_WORKSPACE}${PATH_PROJECTS}${PATH_PROJECT}${PATH_IMAGE}"
+        
     # Сохраняем путь к списоку внешних портов
         PATH_PROJECT_PORTS="${PATH_WORKSPACE}${PATH_PROJECTS}${PATH_PROJECT}${PATH_PORTS}"
+        
+    # Сохраняем путь к количеству дополнительных портов
+        PATH_PROJECT_PORTS_COUNT="${PATH_WORKSPACE}${PATH_PROJECTS}${PATH_PROJECT}${PATH_PORTS_COUNT}"
         
     # Поиск только выбранного образа
         IMAGES_SEARCH=(
@@ -84,6 +90,41 @@ model:Docker() { case "$1" in
         
     # Сохраняем общее количество шагов для прогресс
         DOCKER_FULL=${#CONTAINER_REMOVE[*]}
+    ;;
+    
+#┌───────────────────────────┐
+#│ Запускает новый контейнер │
+#└───────────────────────────┘
+    'run')
+    # Сохраняет список аргументов
+        model:Docker 'run_args' "${@:2}"
+        
+    # Выполняем список команд
+        runner "${RUN_LIST[@]}"
+    ;;
+    
+#┌───────────────────────────┐
+#│ Запускает новый контейнер │
+#└───────────────────────────┘
+    'start')
+    # Список аргументов
+        local selection="$2"     # Выбранный вариант
+        local image_name="$3"    # Имя образа
+        local project_name="$4"  # Имя проекта
+        local image_version="$5" # Версия образа
+        local ports_count="$6"   # Количество дополнительных портов
+        
+    # Сохраняет список аргументов
+        model:Docker 'run_args' "$selection" "$image_name" "$project_name"
+        
+    # Сохраняем список портов
+        model:Docker 'run_ports' "$ports_count" "$port"
+        
+    # Сохраняем имя образа (для запуска)
+        IMAGE_RUN="$IMAGE_NAME:$image_version"
+        
+    # Выполняем список команд
+        runner "${RUN_LIST[@]}"
     ;;
     
 #┌─────────────────────┐
@@ -101,13 +142,13 @@ model:Docker() { case "$1" in
         model:Docker 'run_args' "$selection" "$image_name" "$project_name"
         
     # Сохраняем имя образа (для запуска)
-        IMAGE_RUN="$IMAGE_NAME"
+        IMAGE_RUN="$IMAGE_NAME:latest"
         
     # Сохраняем общее количество шагов для прогресс
         DOCKER_FULL=${#DELETE_LIST[*]}
         
     # Удаляем старый образ
-        if [ $SELECTION == 3 ]; then
+        if [ $SELECTION == 5 ]; then
             runner "${DELETE_LIST[@]}"
             return
         fi
@@ -159,6 +200,21 @@ model:Docker() { case "$1" in
         
     # Сохраняем имя проекта
         PROJECT_NAME="$WORKSPACE"
+        
+    # Сохраняем общее количество шагов для прогресс
+        DOCKER_FULL=${#CONTAINER_REMOVE[*]}
+        
+    # Выполняем список команд
+        runner "${CONTAINER_REMOVE[@]}"
+    ;;
+    
+#┌──────────────────────────┐
+#│ Удаляет старый контейнер │
+#└──────────────────────────┘
+    'stop')
+    # Глобальные переменные
+        SELECTION="$2"    # Выбранный вариант
+        PROJECT_NAME="$3" # Имя проекта
         
     # Сохраняем общее количество шагов для прогресс
         DOCKER_FULL=${#CONTAINER_REMOVE[*]}
