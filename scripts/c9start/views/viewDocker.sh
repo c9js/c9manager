@@ -96,7 +96,7 @@ view:Docker() { case "$1" in
          5) printf "Перезагрузка контейнера '%s'"  "$IMAGE_RUN"              ;;
          6) printf "Обновление контейнера до '%s'" "$IMAGE_RUN"              ;;
          7) printf "Запуск контейнера '%s'"        "$IMAGE_RUN"              ;;
-         8) printf "Удаление контейнеров '%s'"     "$RUN_IMAGE:$RUN_VERSION" ;;
+         8) printf "Удаление контейнера '%s'"      "$RUN_IMAGE:$RUN_VERSION" ;;
          9) printf 'Удаление всех контейнеров'                               ;;
         10) printf 'Удаление всех образов'                                   ;;
     esac
@@ -157,15 +157,15 @@ view:Docker() { case "$1" in
 #│ Выводит сообщение об успешном завершении │
 #└──────────────────────────────────────────┘
     'success') case "$SELECTION" in
-         2) view:Docker "Образ '$IMAGE_NAME' успешно создан!"                   ;;
-         3) success     "Образ '$IMAGE_NAME' успешно удален!"                   ;;
-         4) view:Docker "Контейнер '$IMAGE_RUN' успешно запущен!"               ;;
-         5) view:Docker "Контейнер '$IMAGE_RUN' успешно перезагружен!"          ;;
-         6) view:Docker "Контейнер '$IMAGE_RUN' успешно обновлен!"              ;;
-         7) view:Docker "Контейнер '$IMAGE_RUN' успешно запущен!"               ;;
-         8) success     "Контейнеры '$RUN_IMAGE:$RUN_VERSION' успешно удалены!" ;;
-         9) success     'Все контейнеры успешно удалены!'                       ;;
-        10) success     'Все образы успешно удалены!'                           ;;
+         2) view:Docker "Образ '$IMAGE_NAME' успешно создан!"                 ;;
+         3) success     "Образ '$IMAGE_NAME' успешно удален!"                 ;;
+         4) view:Docker "Контейнер '$IMAGE_RUN' успешно запущен!"             ;;
+         5) view:Docker "Контейнер '$IMAGE_RUN' успешно перезагружен!"        ;;
+         6) view:Docker "Контейнер '$IMAGE_RUN' успешно обновлен!"            ;;
+         7) view:Docker "Контейнер '$IMAGE_RUN' успешно запущен!"             ;;
+         8) success     "Контейнер '$RUN_IMAGE:$RUN_VERSION' успешно удален!" ;;
+         9) success     'Все контейнеры успешно удалены!'                     ;;
+        10) success     'Все образы успешно удалены!'                         ;;
     esac
     ;;
     

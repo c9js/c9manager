@@ -1,4 +1,4 @@
-#▄──────────────────▄1.0.1
+#▄──────────────────▄1.0.2
 #█                  █
 #█  Core: Docker    █
 #█  • Докер (ядро)  █
@@ -23,14 +23,14 @@ core:Docker() { case "$1" in
     # Проходим по списку ID-образов
         while read -r image_id; do
         # Проверяем длину ID-образа
-            (( ${#image_id} != 12 )) && return 1
+            [ ${#image_id} != 12 ] && return 1
             
         # Добавляем ID-образа в список
             GLOBAL_ID+=("$image_id")
         done <<< "$ids"
         
     # Список пуст
-        if (( ${#GLOBAL_ID[*]} == 0 )); then
+        if [ ${#GLOBAL_ID[*]} == 0 ]; then
             return 1
         fi
         
@@ -57,17 +57,17 @@ core:Docker() { case "$1" in
     # Проходим по списку ID-контейнеров
         while read -r container_id; do
         # Проверяем длину ID
-            (( ${#container_id} != 12 )) && return 1
+            [ ${#container_id} != 12 ] && return 1
             
         # Нельзя останавливать текущий контейнер
-            [[ "$HOSTNAME" == "$container_id" ]] && continue
+            [ "$HOSTNAME" == "$container_id" ] && continue
             
         # Добавляем ID-контейнера в список
             GLOBAL_ID+=("$container_id")
         done <<< "$ids"
         
     # Список пуст
-        if (( ${#GLOBAL_ID[*]} == 0 )); then
+        if [ ${#GLOBAL_ID[*]} == 0 ]; then
             return 1
         fi
         

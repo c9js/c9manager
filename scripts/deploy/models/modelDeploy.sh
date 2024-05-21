@@ -146,18 +146,18 @@ model:Deploy() { case "$1" in
 #└───────────────────┘
     'run')
     # Проверяем текущую команду
-        if [[ "$RUNNER_COMMAND" == "$LAST_COMMAND" ]]; then
+        if [ "$RUNNER_COMMAND" == "$LAST_COMMAND" ]; then
         # Обнуляем последнюю команду и выполняем текущую команду
             LAST_COMMAND=''
             
     # Проверяем последнюю команду
-        elif [[ "$SELECTION" != '' && "$LAST_COMMAND" != '' ]]; then
+        elif [[ -n "$SELECTION" && -n "$LAST_COMMAND" ]]; then
         # Пропускаем текущую команду
             return 1
         fi
         
     # Сохраняем контройльную точку
-        if [[ "$RUNNER_COMMAND" == 'no_stop' ]]; then
+        if [ "$RUNNER_COMMAND" == 'no_stop' ]; then
             NO_STOP="$RUNNER_COMMAND"
         fi
         

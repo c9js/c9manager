@@ -1,4 +1,4 @@
-#▄─────────────────────▄1.0.0
+#▄─────────────────────▄1.0.1
 #█                     █
 #█  Core: Card         █
 #█  • Открытка (ядро)  █
@@ -17,7 +17,7 @@ core:Card() { case "$1" in
     # Вычисляем длину
         for ((i = 2; i <= $#; i++)); do
             msg=$(printf '%s' "${!i}")
-            if (( $length < ${#msg})); then
+            if (( $length < ${#msg} )); then
                 length=${#msg}
             fi
         done

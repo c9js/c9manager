@@ -57,17 +57,13 @@ model:Docker() { case "$1" in
 #│ Сохраняет список аргументов │
 #└─────────────────────────────┘
     'run_args')
+    # Глобальные переменные
+        SELECTION="$2"    # Выбранный вариант
+        IMAGE_NAME="$3"   # Имя образа
+        PROJECT_NAME="$4" # Имя проекта
+        
     # Сохраняем список портов
         model:Docker 'run_ports' 1
-        
-    # Сохраняем выбранный вариант
-        SELECTION="$2"
-        
-    # Сохраняем имя образа
-        IMAGE_NAME="$3"
-        
-    # Сохраняем имя проекта
-        PROJECT_NAME="$4"
         
     # Сохраняем имя образа (для запуска)
         IMAGE_RUN="$IMAGE_NAME:$VERSION"
@@ -87,7 +83,7 @@ model:Docker() { case "$1" in
         )
         
     # Сохраняем общее количество шагов для прогресс
-        DOCKER_FULL="${#CONTAINER_REMOVE[*]}"
+        DOCKER_FULL=${#CONTAINER_REMOVE[*]}
     ;;
     
 #┌─────────────────────┐
@@ -108,7 +104,7 @@ model:Docker() { case "$1" in
         IMAGE_RUN="$IMAGE_NAME"
         
     # Сохраняем общее количество шагов для прогресс
-        DOCKER_FULL="${#DELETE_LIST[*]}"
+        DOCKER_FULL=${#DELETE_LIST[*]}
         
     # Удаляем старый образ
         if [ $SELECTION == 3 ]; then
@@ -135,8 +131,8 @@ model:Docker() { case "$1" in
         local port="$3"      # Выбранный порт
         
     # Локальные переменные
-        local project_name="$WORKSPACE" # Имя проекта
         local image_name="$IMAGE_START" # Имя образа
+        local project_name="$WORKSPACE" # Имя проекта
         
     # Сохраняет список аргументов
         model:Docker 'run_args' "$selection" "$image_name" "$project_name"
@@ -165,7 +161,7 @@ model:Docker() { case "$1" in
         PROJECT_NAME="$WORKSPACE"
         
     # Сохраняем общее количество шагов для прогресс
-        DOCKER_FULL="${#CONTAINER_REMOVE[*]}"
+        DOCKER_FULL=${#CONTAINER_REMOVE[*]}
         
     # Выполняем список команд
         runner "${CONTAINER_REMOVE[@]}"
@@ -182,7 +178,7 @@ model:Docker() { case "$1" in
         IMAGES_SEARCH=('')
         
     # Сохраняем общее количество шагов для прогресс
-        DOCKER_FULL="${#CONTAINERS_REMOVE[*]}"
+        DOCKER_FULL=${#CONTAINERS_REMOVE[*]}
         
     # Выполняем список команд
         runner "${CONTAINERS_REMOVE[@]}"
@@ -199,7 +195,7 @@ model:Docker() { case "$1" in
         IMAGES_SEARCH=('')
         
     # Сохраняем общее количество шагов для прогресс
-        DOCKER_FULL="${#IMAGES_REMOVE[*]}"
+        DOCKER_FULL=${#IMAGES_REMOVE[*]}
         
     # Выполняем список команд
         runner "${IMAGES_REMOVE[@]}"

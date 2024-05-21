@@ -1,15 +1,12 @@
 alias c9="$PATH_WORKSPACE/scripts/c9start/entrypoint.sh"
-alias b="c9 build"
-alias build="b"
+alias build='c9 build'
 
-alias c9docker="b c9docker"
-alias c9start="b c9start"
-alias c9open="b c9open"
+alias c9docker='build c9docker'
+alias c9start='build c9start'
+alias c9open='build c9open'
 
-alias remove="b --remove c9docker"
+alias remove='build --remove c9docker'
 
-alias d="$HOME/scripts/deploy/deploy.sh"
-alias deploy="d"
+alias deploy="$HOME/scripts/deploy/deploy.sh"
 
-alias a="$HOME/scripts/amend/amend.sh"
-alias amend="a"
+alias amend="$HOME/scripts/amend/amend.sh"

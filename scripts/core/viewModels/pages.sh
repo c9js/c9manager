@@ -1,4 +1,4 @@
-#▄───────────────────────────▄1.0.1
+#▄───────────────────────────▄1.0.2
 #█                           █
 #█  Core: Pages              █
 #█  • Список страниц (ядро)  █
@@ -32,24 +32,20 @@ core:Pages() { case "$1" in
 #└────────────────────────────────────────┘
     'back')
     # Возвращаем пользователя обратно в меню
-         core:Pages 'show' "$PAGES_PAGE" '0' "$PAGES_SELECT"
+        core:Pages 'show' "$PAGES_PAGE" 0 "$PAGES_SELECT"
     ;;
     
 #┌──────────────────────────────────────────────┐
 #│ Выводит список пунктов (для выбранного меню) │
 #└──────────────────────────────────────────────┘
     'menu')
-    # Сохраняем имя функции родителя
-        PAGES_CLASS="${FUNCNAME[2]#*:}"
-        
-    # Сохраняем выбранное меню
-        PAGES_MENU="$2"
-        
-    # Сохраняем выбранный метод
-        PAGES_METHOD="$3"
+    # Глобальные переменные
+        PAGES_CLASS="${FUNCNAME[2]#*:}" # Имя функции родителя
+        PAGES_MENU="$2"   # Выбранное меню
+        PAGES_METHOD="$3" # Выбранный метод
         
     # Задаем метод по умолчанию
-        [[ -z "$PAGES_METHOD" ]] && PAGES_METHOD='pages'
+        [ -z "$PAGES_METHOD" ] && PAGES_METHOD='pages'
         
     # Выводим меню на экран
         core:Pages 'show'
@@ -88,7 +84,7 @@ core:Pages() { case "$1" in
         )
         
     # Обнуляем ID-пункта вперед
-        let PAGES_NEXT=-1
+        PAGES_NEXT=-1
         
     # Это не последняя страница
         if (( ${#items[*]}+2 != $# )); then
@@ -102,7 +98,7 @@ core:Pages() { case "$1" in
             PAGES_SELECT=1
             
         # Следующая страница существует
-            if (( $PAGES_NEXT != -1 )); then
+            if [ $PAGES_NEXT != -1 ]; then
             # Обновляем пункт по умолчанию
                 let PAGES_SELECT=$PAGES_NEXT+1
             fi
@@ -111,7 +107,7 @@ core:Pages() { case "$1" in
     # Следующая страница существует
         if (( $PAGES_NEXT != -1 && $PAGES_PAGE == 0 )); then
         # Обновляем пункт по умолчанию
-            let PAGES_SELECT=$PAGES_NEXT
+            PAGES_SELECT=$PAGES_NEXT
         fi
         
     # Проверяем пункт (выбранный ранее)
@@ -120,7 +116,7 @@ core:Pages() { case "$1" in
         fi
         
     # Это не первая страница
-        if (( $PAGES_PAGE != 0 )); then
+        if [ $PAGES_PAGE != 0 ]; then
         # Добавляем кнопку назад
             items=(
                 '←'
@@ -129,7 +125,7 @@ core:Pages() { case "$1" in
         fi
         
     # Это не последняя страница
-        if (( $PAGES_NEXT != -1 )); then
+        if [ $PAGES_NEXT != -1 ]; then
         # Добавляем кнопку вперед
             items=(
                 "${items[@]}"
@@ -163,9 +159,9 @@ core:Pages() { case "$1" in
         PAGES_SELECT="$2"
         
     # Это не первая страница
-        if (( $PAGES_PAGE != 0 )); then
+        if [ $PAGES_PAGE != 0 ]; then
         # Выбран пункт "Назад"
-            if (( $PAGES_SELECT == 1 )); then
+            if [ $PAGES_SELECT == 1 ]; then
             # Уменьшаем номер страницы
                 let PAGES_PAGE--
                 
@@ -178,7 +174,7 @@ core:Pages() { case "$1" in
         fi
         
     # Выбран пункт "Вперед"
-        if (( $PAGES_SELECT == $PAGES_NEXT )); then
+        if [ $PAGES_SELECT == $PAGES_NEXT ]; then
         # Увеличиваем номер страницы
             let PAGES_PAGE++
             
@@ -188,7 +184,7 @@ core:Pages() { case "$1" in
         fi
         
     # Это первая страница
-        if (( "$PAGES_PAGE" == 0 )); then
+        if [ $PAGES_PAGE == 0 ]; then
         # Обновляем ID-массива
             let PAGES_ID=$PAGES_SELECT-1
             

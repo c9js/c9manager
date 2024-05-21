@@ -63,9 +63,9 @@ navigator:Start() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Docker "$command" "$PORT_PUBLIC" ;; # Выбран: "По умолчанию"
-            2)        nav:Next 'input_port' "$command"     ;; # Выбран: "Редактировать"
-            0)        nav:Back                             ;; # Выбран: "Отмена"
+            1) controller:Docker "$command"   "$PORT_PUBLIC" ;; # Выбран: "По умолчанию"
+            2)        nav:Next   'input_port' "$command"     ;; # Выбран: "Редактировать"
+            0)        nav:Back                               ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -139,10 +139,10 @@ navigator:Start() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1)        nav:Next 'choice_port' "$1" ;; # Выбран: "Restart"
-            2) controller:Docker 'stop'           ;; # Выбран: "Stop"
-            3)        nav:Next 'settings'         ;; # Выбран: "Настройки"
-            0)        nav:Exit                    ;; # Выбран: "Exit"
+            1)        nav:Next   'choice_port' "$1" ;; # Выбран: "Restart"
+            2) controller:Docker 'stop'             ;; # Выбран: "Stop"
+            3)        nav:Next   'settings'         ;; # Выбран: "Настройки"
+            0)        nav:Exit                      ;; # Выбран: "Exit"
         esac
     ;;
     
@@ -160,10 +160,10 @@ navigator:Start() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1)        nav:Next 'choice_port' "$1" ;; # Выбран: "Update"
-            2) controller:Docker 'remove_all'     ;; # Выбран: "Uninstall"
-            3)        nav:Next 'settings'         ;; # Выбран: "Настройки"
-            0)        nav:Exit                    ;; # Выбран: "Exit"
+            1)        nav:Next   'choice_port' "$1" ;; # Выбран: "Update"
+            2) controller:Docker 'remove_all'       ;; # Выбран: "Uninstall"
+            3)        nav:Next   'settings'         ;; # Выбран: "Настройки"
+            0)        nav:Exit                      ;; # Выбран: "Exit"
         esac
     ;;
     

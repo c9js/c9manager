@@ -43,7 +43,7 @@ runner:Docker() { case "$1" in
         # Проходим по списку ID-образов
             while read -r image_id; do
             # Проверяем длину ID-образа
-                (( ${#image_id} != 12 )) && break
+                [ ${#image_id} != 12 ] && break
                 
             # Проверяем есть-ли в списке образ с таким ID
                 if [ -z "${IMAGES_IDS[$image_id]}" ]; then
@@ -53,7 +53,7 @@ runner:Docker() { case "$1" in
             done <<< "$RES"
             
         # Вычисляем процент
-            local procent="$(procent $(($i+1)) ${#IMAGES_SEARCH[*]} $RUNNER_NOW $DOCKER_FULL)"
+            local procent="$(procent $(($i + 1)) ${#IMAGES_SEARCH[*]} $RUNNER_NOW $DOCKER_FULL)"
             
         # Обновляем текущий прогресс
             progress "${#IMAGES_IDS[*]}" "$(progressBar 20 $procent)"
@@ -85,13 +85,13 @@ runner:Docker() { case "$1" in
         # Проходим по списку ID-контейнеров
             while read -r container_id; do
             # Проверяем длину ID-контейнера
-                (( ${#container_id} != 12 )) && break
+                [ ${#container_id} != 12 ] && break
                 
             # Нельзя останавливать текущий контейнер
-                [[ "$HOSTNAME" == "$container_id" ]] && continue
+                [ "$HOSTNAME" == "$container_id" ] && continue
                 
             # Нельзя останавливать родительский контейнер
-                [[ "$PARENT_HOSTNAME" == "$container_id" ]] && continue
+                [ "$PARENT_HOSTNAME" == "$container_id" ] && continue
                 
             # Добавляем ID-контейнера в список
                 CONTAINER_IDS+=("$container_id")
@@ -147,17 +147,17 @@ runner:Docker() { case "$1" in
     # Проходим по списку ID-контейнеров
         for ((i = 0; i < ${#CONTAINER_IDS[*]}; i++)); do
         # Вычисляем процент
-            local procent="$(procent $(($i+1)) ${#CONTAINER_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
+            local procent="$(procent $(($i + 1)) ${#CONTAINER_IDS[*]} $RUNNER_NOW $DOCKER_FULL)"
             
         # Обновляем текущий прогресс
-            progress "$(($i+1))" "$(progressBar 20 $procent)"
+            progress "$(($i + 1))" "$(progressBar 20 $procent)"
             
         # Удаляем контейнер
             docker rm --force "${CONTAINER_IDS[$i]}" &> '/dev/null'
         done
         
     # Обновляем текущий прогресс
-        if (( ${#CONTAINER_IDS[*]} == 0 )); then
+        if [ ${#CONTAINER_IDS[*]} == 0 ]; then
             progress 0 "$(progressBar 20 $(procent 100 100 $RUNNER_NOW $DOCKER_FULL))"
         fi
         
@@ -192,7 +192,7 @@ runner:Docker() { case "$1" in
         done
         
     # Обновляем текущий прогресс
-        if (( ${#IMAGES_IDS[*]} == 0 )); then
+        if [ ${#IMAGES_IDS[*]} == 0 ]; then
             progress 0 "$(progressBar 20 $(procent 100 100 $RUNNER_NOW $DOCKER_FULL))"
         fi
         

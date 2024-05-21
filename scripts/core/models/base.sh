@@ -1,4 +1,4 @@
-#▄────────────────────────────▄1.0.1
+#▄────────────────────────────▄1.0.2
 #█                            █
 #█  Core: Base                █
 #█  • Базовые функции (ядро)  █
@@ -53,7 +53,7 @@ core:Base() { case "$1" in
         (( $half > $fill )) && half='▌' || half=' '
         
     # Вычисляем сколько осталось
-        local left="$(($size-$fill-1))"
+        local left="$(($size - $fill - 1))"
         
     # Вычисляем сколько уже заполнено
         fill="$(printf "%${fill}s")"
@@ -65,10 +65,10 @@ core:Base() { case "$1" in
         printf "${fill//[[:space:]]/█}"
         
     # Выводим половину деления
-        (( $procent != 100 )) && printf "$half"
+        [ $procent != 100 ] && printf "$half"
         
     # Выводим сколько осталось
-        (( $procent != 100 )) && printf "%${left}s"
+        [ $procent != 100 ] && printf "%${left}s"
         
     # Сбрасываем цвет
         printf '\e[0m'
@@ -92,7 +92,7 @@ core:Base() { case "$1" in
         fill="$(printf '%d' "$fill" 2> '/dev/null')"
         
     # Вычисляем сколько осталось
-        local left="$(($size-$fill))"
+        local left="$(($size - $fill))"
         
     # Выводим сколько уже заполнено
         printf "\e[47m%${fill}s"
@@ -112,9 +112,9 @@ core:Base() { case "$1" in
 #└─────────────────────┘
     'procent')
     # Проверяем корректно-ли указано второе число
-        if (( "$(printf '%d' "$3" 2> '/dev/null')" == 0 )); then
+        if [ "$(printf '%d' "$3" 2> '/dev/null')" == 0 ]; then
         # Возвращаем "0"
-            echo '0'
+            echo 0
             
         # Выходим с ошибкой
             return 1
@@ -124,7 +124,7 @@ core:Base() { case "$1" in
         local procent
         
     # Вычисляем сложный процент
-        if (( $# == 5 )); then
+        if [ $# == 5 ]; then
             procent="$(printf 'scale=3; (%d-1+%d/%d)/%d*100' "$4" "$2" "$3" "$5" 2> '/dev/null' | bc)"
             
     # Вычисляем простой процент

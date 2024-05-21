@@ -93,9 +93,9 @@ navigator:Deploy() { case "$1" in
              
     # Проходим по пунктам меню
         case $? in
-            1) controller:Deploy 'start' "$2" "$MICRO" ;; # Выбран: "Micro"
-            2)        nav:Next   'version2' "$2" "$1"  ;; # Выбран: "Изменить версию"
-            0)        nav:Next   'deploy'              ;; # Выбран: "Отмена"
+            1) controller:Deploy 'start'    "$2" "$MICRO" ;; # Выбран: "Micro"
+            2)        nav:Next   'version2' "$2" "$1"     ;; # Выбран: "Изменить версию"
+            0)        nav:Next   'deploy'                 ;; # Выбран: "Отмена"
         esac
     ;;
     
@@ -118,7 +118,7 @@ navigator:Deploy() { case "$1" in
             2) controller:Deploy 'start' "$2" "$MICRO"   ;; # Выбран: "Micro"
             3) controller:Deploy 'start' "$2" "$MINOR"   ;; # Выбран: "Minor"
             4) controller:Deploy 'start' "$2" "$MAJOR"   ;; # Выбран: "Major"
-            0)        nav:Next "$3" "$2"                 ;; # Выбран: "Отмена"
+            0)        nav:Next   "$3"    "$2"            ;; # Выбран: "Отмена"
         esac
     ;;
     

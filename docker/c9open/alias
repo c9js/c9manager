@@ -1,2 +1,1 @@
-alias a="$HOME/scripts/amend/amend.sh"
-alias amend="a"
+alias amend="$HOME/scripts/amend/amend.sh"
