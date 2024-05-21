@@ -287,6 +287,7 @@ runner:Docker() { case "$1" in
             -e "PATH_DOCKER_USER=$PATH_DOCKER_USER"         \
             -e "PATH_DOCKER_PASS=$PATH_DOCKER_PASS"         \
             -e "PATH_BAD_DEPLOY=$PATH_BAD_DEPLOY"           \
+            -e "PATH_PROJECT=$PATH_PROJECT_PWD"             \
             -v "$PATH_PROJECT_PWD:$PATH_PROJECT"            \
             -v "$DOCKER_PWD/$SSH_DIR:/root/.sshsource"      \
             -v '//var/run/docker.sock:/var/run/docker.sock' \
