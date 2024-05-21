@@ -1,13 +1,13 @@
 {
     "ace": {
-        "@animatedScroll": true,
-        "@antialiasedfonts": false,
+        "@animatedScroll": false,
+        "@antialiasedfonts": true,
         "@behavioursEnabled": true,
         "@cursorStyle": "ace",
         "@displayIndentGuides": true,
         "@fadeFoldWidgets": true,
         "@fontFamily": "Monaco, Menlo, Ubuntu Mono, Consolas, source-code-pro, monospace",
-        "@fontSize": 18,
+        "@fontSize": 19,
         "@highlightActiveLine": true,
         "@highlightGutterLine": true,
         "@highlightSelectedWord": true,
@@ -30,8 +30,8 @@
         "custom-types": {
             "json()": {
                 "^Untitled": "javascript",
-                "^lib": "sh",
-                "^ports": "javascript",
+                "^alias": "sh",
+                "^bash_profile": "sh",
                 "^searchresults": "c9search",
                 "settings": "javascript"
             }
@@ -52,7 +52,7 @@
     },
     "config": {
         "styles.css": {
-            "json()": ""
+            "json()": ".ace_diff-container > .ace_editor {font-size:19px}"
         }
     },
     "debug": {
@@ -481,7 +481,7 @@
         "@collab": "",
         "@defaultEnvEditor": false,
         "@fontfamily": "Ubuntu Mono, Menlo, Consolas, monospace",
-        "@fontsize": 12,
+        "@fontsize": 19,
         "@foregroundColor": "#FFFFFF",
         "@scrollback": 1000,
         "@selectionColor": "#515D77"

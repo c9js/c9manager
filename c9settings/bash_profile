@@ -1,4 +1,5 @@
 function color_my_prompt {
+# Список цветов
     local RED='\[\e[0;31m\]'         # Красный
     local BLUE='\[\e[1;34m\]'        # Синий (тёмный)
     local GREEN='\[\e[0;32m\]'       # Зеленый (тёмный)
@@ -9,13 +10,26 @@ function color_my_prompt {
     local BRANCH="$BLUE_LIGHT"       # Цвет ветки (по умолчанию светло синий)
     local CLEAR='\[\e[0m\]'          # Сброс цвета
     
-    if   [[ "$(__git_ps1)" =~ '*' ]]; then BRANCH="$RED"    # Modified
-    elif [[ "$(__git_ps1)" =~ '$' ]]; then BRANCH="$YELLOW" # Add stash
-    elif [[ "$(__git_ps1)" =~ '%' ]]; then BRANCH="$VIOLET" # Untracked files
-    elif [[ "$(__git_ps1)" =~ '+' ]]; then BRANCH="$GREEN"  # Add stage
+# Репозиторий не существует
+    if [ -z "$(__git_ps1)" ]; then
+        PS1="$GREEN_LIGHT\u$CLEAR:$BLUE\w$CLEAR$ "
+        
+# Репозиторий существует
+    else
+        if   [[ "$(__git_ps1)" =~ '*' ]]; then BRANCH="$RED"    # Modified
+        elif [[ "$(__git_ps1)" =~ '$' ]]; then BRANCH="$YELLOW" # Add stash
+        elif [[ "$(__git_ps1)" =~ '%' ]]; then BRANCH="$VIOLET" # Untracked files
+        elif [[ "$(__git_ps1)" =~ '+' ]]; then BRANCH="$GREEN"  # Add stage
+        fi
+        
+        local __git_ps1="$(__git_ps1 '%s')"
+        __git_ps1="$(echo "$__git_ps1" | sed \
+            -e 's-(--' \
+            -e 's-)--'
+        )"
+        
+        PS1="$GREEN_LIGHT\u$CLEAR:$BLUE\w$BRANCH (${__git_ps1}${BRANCH}) $CLEAR$ "
     fi
-    
-    PS1="$GREEN_LIGHT\u$CLEAR:$BLUE\w$BRANCH$(__git_ps1 " (%s) ")$CLEAR$ "
 }
 
 export PROMPT_COMMAND=color_my_prompt
@@ -26,7 +40,7 @@ if [ -f '/root/.git-prompt.sh' ]; then
     GIT_PS1_SHOWUNTRACKEDFILES=true
     GIT_PS1_SHOWUPSTREAM='auto'
     GIT_PS1_HIDE_IF_PWD_IGNORED=true
-    GIT_PS1_SHOWCOLORHINTS=true
+    GIT_PS1_SHOWCOLORHINTS=''
     . /root/.git-prompt.sh
 fi
 
