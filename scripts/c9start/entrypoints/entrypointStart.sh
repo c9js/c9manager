@@ -46,7 +46,7 @@ entrypoint:Start() { nav:Init; while :; do
 #└─────────────────────┘
     if controller:Docker 'no_container'; then
     # Предлагаем пользователю запустить контейнер
-        navigator 'start'
+        navigator 'start_c9start'
         continue
     fi
     
