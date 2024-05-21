@@ -29,7 +29,7 @@ RUN apk add tmux -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache 
 #│ Так как запустить cloud9 можно только на версии v8.x.x, │
 #│ нам необходимо иметь на борту сразу две версии          │
 #└─────────────────────────────────────────────────────────┘
-RUN apk add nodejs=16.17.1-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache --allow-untrusted \
+RUN apk add nodejs=16.20.2-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache --allow-untrusted \
 && apk add nodejs=8.14.0-r0  npm=8.14.0-r0 -X http://dl-cdn.alpinelinux.org/alpine/v3.8/main/  --no-cache --allow-untrusted \
 
 #┌────────────────────────────┐
@@ -40,11 +40,11 @@ RUN apk add nodejs=16.17.1-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alp
 && curl http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/nodejs-8.14.0-r0.apk       -o /apks/node/v8/nodejs.apk \
 
 #┌────────────────────────────┐
-#│ 16.17.1 — последняя вресия │
+#│ 16.20.2 — последняя вресия │
 #└────────────────────────────┘
 && mkdir /apks/node/last -p \
 && curl http://dl-cdn.alpinelinux.org/alpine/v3.15/main/x86_64/npm-8.1.3-r0.apk          -o /apks/node/last/npm.apk \
-&& curl http://dl-cdn.alpinelinux.org/alpine/v3.15/main/x86_64/nodejs-16.17.1-r0.apk     -o /apks/node/last/nodejs.apk \
+&& curl http://dl-cdn.alpinelinux.org/alpine/v3.15/main/x86_64/nodejs-16.20.2-r0.apk     -o /apks/node/last/nodejs.apk \
 
 #┌──────────────────────────────────────────────┐
 #│ Зависимости для локального обновления версий │
