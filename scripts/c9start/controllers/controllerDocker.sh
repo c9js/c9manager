@@ -9,6 +9,11 @@ controller:Docker() { case "$1" in
     'no_image')      model:Docker "$@" ;; # Проверяет существует-ли образ
     'no_container')  model:Docker "$@" ;; # Проверяет существует-ли контейнер
     
+# Запуск проектов
+    'run')           model:Docker 'run'           1 "${@:2}" ;; # Запускает новый контейнер
+    'start')         model:Docker 'start'         2 "${@:2}" ;; # Запускает новый контейнер
+    'stop')          model:Docker 'stop'          3 "${@:2}" ;; # Удаляет старый контейнер
+    
 # Сборка образа
     'create')        model:Docker 'build'         4 "${@:2}" ;; # Создает новый образ
     'remove')        model:Docker 'build'         5 "${@:2}" ;; # Удаляет старый образ

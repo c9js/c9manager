@@ -94,6 +94,9 @@ view:Docker() { case "$1" in
 #│ Обновляет заголовок │
 #└─────────────────────┘
     'header') case "$SELECTION" in
+         1) printf "Создание нового проекта '%s'"  "$PROJECT_NAME"           ;;
+         2) printf "Запуск проекта '%s'"           "$PROJECT_NAME"           ;;
+         3) printf "Остановка проекта '%s'"        "$PROJECT_NAME"           ;;
          4) printf "Создание образа '%s'"          "$IMAGE_NAME"             ;;
          5) printf "Удаление образа '%s'"          "$IMAGE_NAME"             ;;
          6) printf "Установка '%s'"                "$IMAGE_RUN"              ;;
@@ -165,6 +168,9 @@ view:Docker() { case "$1" in
 #│ Выводит сообщение об успешном завершении │
 #└──────────────────────────────────────────┘
     'success') case "$SELECTION" in
+         1) view:Docker "Проект '$PROJECT_NAME' успешно создан!"              ;;
+         2) view:Docker "Проект '$PROJECT_NAME' успешно запущен!"             ;;
+         3) success     "Проект '$PROJECT_NAME' успешно остановлен!"          ;;
          4) view:Docker "Образ '$IMAGE_NAME' успешно создан!"                 ;;
          5) success     "Образ '$IMAGE_NAME' успешно удален!"                 ;;
          6) view:Docker "Контейнер '$IMAGE_RUN' успешно запущен!"             ;;

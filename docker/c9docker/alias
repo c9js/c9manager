@@ -1,5 +1,6 @@
 alias c9="$PATH_WORKSPACE/scripts/c9start/entrypoint.sh"
 alias build='c9 build'
+alias manager='c9 manager'
 
 alias c9docker='build c9docker'
 alias c9start='build c9start'
