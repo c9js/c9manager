@@ -15,7 +15,7 @@ model:Edit() { case "$1" in
         COMMITS_DATE=() # Список коммитов (дата создания)
         
     # Получаем длину хеша текущего коммита
-        local len="${#CURRENT_COMMIT}"
+        local len=${#CURRENT_COMMIT}
         
     # Получаем количество пропущенных пунктов
         local skip="$(pages:Skip $COMMITS_MAX)"

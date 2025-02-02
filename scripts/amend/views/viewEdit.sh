@@ -74,7 +74,7 @@ view:Edit() { case "$1" in
 #└─────────────────────┘
     'header') case "$PAGES_MENU" in
         1) printf "Редактирование коммита '%s'" "$NEW_MESSAGE" ;;
-        2) printf "Редактирование коммита '%s'" "$NEW_DATE" ;;
+        2) printf "Редактирование коммита '%s'" "$NEW_DATE"    ;;
     esac
     ;;
     

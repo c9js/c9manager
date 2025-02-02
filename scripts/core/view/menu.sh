@@ -1,4 +1,4 @@
-#▄─────────────────────▄1.0.4
+#▄─────────────────────▄1.0.5
 #█                     █
 #█  Список переменных  █
 #█                     █
@@ -164,7 +164,7 @@ core:Menu() { case "$1" in
 #└───────────────────────┘
     'menu:Update')
     # Локальные переменные
-        local count=$(( ${#MENU_ITEMS[*]} / 2 )) # Количество пунктов
+        local count=$((${#MENU_ITEMS[*]} / 2)) # Количество пунктов
         local selection      # Выбранный пункт
         local length=0       # Длина самого длинного пункта
         local color0='\e[0m' # Сброс цвета
@@ -180,7 +180,7 @@ core:Menu() { case "$1" in
         fi
         
     # Вычисляем длину
-        for ((i = 0; i < ${#MENU_ITEMS[*]}; i += 2)); do
+        for ((i = 0; i < ${#MENU_ITEMS[*]}; i+=2)); do
             if (( $length < ${#MENU_ITEMS[$i+1]})); then
                 length=${#MENU_ITEMS[$i+1]}
             fi
@@ -196,7 +196,7 @@ core:Menu() { case "$1" in
         printf '\n\n'
         
     # Проходим по пунктам меню
-        for ((i = 0; i < ${#MENU_ITEMS[*]}; i += 2)); do
+        for ((i = 0; i < ${#MENU_ITEMS[*]}; i+=2)); do
         # Преобразуем цвет фона в эскейп последовательность
             case "${MENU_ITEMS[$i]}" in
                 'Yellow') color='\e[43m'  ;; # Желтый фон
@@ -220,7 +220,7 @@ core:Menu() { case "$1" in
                 printf ' %b ' "${MENU_ITEMS[$i+1]}"
                 
             # Ширина фона (отступ)
-                printf '%b' "$(char $(( $length - ${#MENU_ITEMS[$i+1]} )) ' ')"
+                printf '%b' "$(char $(($length - ${#MENU_ITEMS[$i+1]})) ' ')"
                 
             # Сброс цвета
                 printf '%b' "$color0"
@@ -260,7 +260,7 @@ core:Menu() { case "$1" in
         # Exit
             "$keyESC" | '`' | 'q' | 'ё' | 'й' | 0)
             # Эмуляция двойного нажатия
-                if [[ "$selection" == "$count" ]]; then
+                if [ "$selection" == "$count" ]; then
                     REPLY=$count
                     return
                 fi
@@ -270,7 +270,7 @@ core:Menu() { case "$1" in
         # Up
             "$keyPageUp")
                 if (( $selection > 1 )); then
-                    let 'selection--'
+                    let selection--
                 else
                     selection=$count
                 fi
@@ -279,7 +279,7 @@ core:Menu() { case "$1" in
         # Down
             "$keyPageDown")
                 if (( $selection < $count )); then
-                    let 'selection++'
+                    let selection++
                 else
                     selection=1
                 fi
@@ -289,7 +289,7 @@ core:Menu() { case "$1" in
             [1-9])
                 if (( $count > $key )); then
                 # Эмуляция двойного нажатия
-                    if [[ "$selection" == "$key" ]]; then
+                    if [ "$selection" == "$key" ]; then
                         REPLY=$key
                         return
                     fi

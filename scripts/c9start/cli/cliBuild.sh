@@ -27,7 +27,7 @@ cli:Build() {
 #│ Передано только имя образа │
 #│ c9 build <имя образа>      │
 #└────────────────────────────┘
-    if [[ ${#ARGS[*]} == 2 && $# == 2 ]]; then
+    if (( ${#ARGS[*]} == 2 && $# == 2 )); then
     # Создаем новый образ
         cli:RUN controller:Docker 'create' "$(arg 1)"
     fi
@@ -38,7 +38,7 @@ cli:Build() {
 #└───────────────────────────────────────┘
     if is:opt 'create'; then
     # Создаем новый образ
-        cli:RUN controller:Docker 'create' "$(opt create)"
+        cli:RUN controller:Docker 'create' "$(opt 'create')"
     fi
     
 #┌───────────────────────────────────────┐
@@ -47,7 +47,7 @@ cli:Build() {
 #└───────────────────────────────────────┘
     if is:opt 'remove'; then
     # Удаляем старый образ
-        cli:RUN controller:Docker 'remove' "$(opt remove)"
+        cli:RUN controller:Docker 'remove' "$(opt 'remove')"
     fi
     
 #┌────────────────────┐

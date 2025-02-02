@@ -38,8 +38,8 @@ view:SSH() { case "$1" in
 #└─────────────────────────────┘
     'error') case "$2" in
         'check_dir')  error 'Каталог не найден!'       "Путь: $P_SSH_DIR"  ;;
-        'check_key')  error "SSH-ключ уже существует!" "Путь: $P_SSH_FILE" ;;
-        'ssh_keygen') error 'SSH-ключ не был создан!'                       ;;
+        'check_key')  error 'SSH-ключ уже существует!' "Путь: $P_SSH_FILE" ;;
+        'ssh_keygen') error 'SSH-ключ не был создан!'                      ;;
     esac
     ;;
     

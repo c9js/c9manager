@@ -1,4 +1,4 @@
-#▄──────────────────────────▄1.0.0
+#▄──────────────────────────▄1.0.1
 #█                          █
 #█  Core: Runner            █
 #█  • Запуск команд (ядро)  █
@@ -96,7 +96,7 @@ core:Runner() { case "$1" in
         "view:$RUNNER_CLASS" "$RUNNER_VIEW" "$RUNNER_COMMAND"
         
     # Режим разработки
-        if [[ "$DEV_MODE" == 1 ]]; then
+        if [ "$DEV_MODE" == 1 ]; then
             read
         fi
     ;;
