@@ -18,7 +18,7 @@
         "@scrollPastEnd": 0.5,
         "@scrollSpeed": 2,
         "@selectionStyle": "line",
-        "@showFoldWidgets": true,
+        "@showFoldWidgets": false,
         "@showGutter": true,
         "@showInvisibles": false,
         "@showLineNumbers": true,
@@ -29,11 +29,12 @@
         "@wrapToView": true,
         "custom-types": {
             "json()": {
-                "^Untitled": "javascript",
+                "^Untitled": "sh",
                 "^lib": "sh",
                 "^ports": "javascript",
                 "^searchresults": "c9search",
-                "settings": "javascript"
+                "settings": "javascript",
+                "vuerc": "json"
             }
         },
         "statusbar": {
@@ -52,7 +53,7 @@
     },
     "config": {
         "styles.css": {
-            "json()": ""
+            "json()": "/* Шрифт в diff-редакторе */\n.ace_diff-container > .ace_editor {font-size:18px}\n\n/* Глобальный объект */\n.ace-app-init .ace_global1 {\n    color:#00440000;\n    background-color:#EE5CA525;\n    border-radius:7px;\n}\n.ace-app-init .ace_global2 {\n    background-color:#EE5CA510;\n    color:#EE5CA5;\n    border-radius:7px;\n}\n/*\n// Список стандартных цветов\n#458C45; // Зеленый\n#D54E53; // Красный\n#7AA6DA; // Синий\n#E78C45; // Оранжевый\n#C397D8; // Фиолетовый\n#EE5CA5; // Розовый\n#EC9076; // Персиковый\n#70C0B1; // Бирюзовый\n#006600; // Зеленый (темный)\nfont-weight:bold;\nfont-style:italic;\ntext-decoration:underline;\noutline-style:ridge;\noutline-color:#70C0B1;\ndotted\ndashed\nsolid\ndouble\ngroove\nridge\ninset\noutset\n*/\n"
         }
     },
     "debug": {
@@ -232,7 +233,8 @@
                 "command": "togglecomment",
                 "keys": {
                     "win": [
-                        "Numpad3"
+                        "Numpad3",
+                        "PageDown"
                     ]
                 }
             },
@@ -256,7 +258,8 @@
                 "command": "toggleBlockComment",
                 "keys": {
                     "win": [
-                        "Numpad1"
+                        "Numpad1",
+                        "PageUp"
                     ]
                 }
             },
@@ -393,7 +396,9 @@
                 "keys": {
                     "win": [
                         "F2",
+                        "F5",
                         "Ctrl+B",
+                        "Ctrl+Enter",
                         "Numpad0"
                     ]
                 }
@@ -429,6 +434,18 @@
                         ""
                     ]
                 }
+            },
+            {
+                "command": "reloadpreview",
+                "keys": {
+                    "win": [
+                        "F2",
+                        "F5",
+                        "Ctrl+B",
+                        "Ctrl+Enter",
+                        "Numpad0"
+                    ]
+                }
             }
         ]
     },
@@ -440,7 +457,7 @@
         "@overrideMultiselectShortcuts": true
     },
     "metadata": {
-        "@undolimit": 100
+        "@undolimit": 500
     },
     "openfiles": {
         "@hidetree": false,
@@ -461,7 +478,7 @@
     "projecttree": {
         "@hiddenFilePattern": "*.pyc, __pycache__, .*, node_modules, package.json, package-lock.json",
         "@scope": false,
-        "@showhidden": false
+        "@showhidden": true
     },
     "runconfig": {
         "@debug": true,
