@@ -18,7 +18,7 @@
         "@scrollPastEnd": 0.5,
         "@scrollSpeed": 2,
         "@selectionStyle": "line",
-        "@showFoldWidgets": false,
+        "@showFoldWidgets": true,
         "@showGutter": true,
         "@showInvisibles": false,
         "@showLineNumbers": true,
@@ -29,8 +29,9 @@
         "@wrapToView": true,
         "custom-types": {
             "json()": {
-                "^Untitled": "sh",
+                "^Untitled": "html",
                 "^lib": "sh",
+                "^plan": "sh",
                 "^ports": "javascript",
                 "^searchresults": "c9search",
                 "settings": "javascript",
@@ -432,6 +433,38 @@
                 "keys": {
                     "win": [
                         ""
+                    ]
+                }
+            },
+            {
+                "command": "restartc9",
+                "keys": {
+                    "win": [
+                        ""
+                    ]
+                }
+            },
+            {
+                "command": "navigate",
+                "keys": {
+                    "win": [
+                        "Ctrl-O"
+                    ]
+                }
+            },
+            {
+                "command": "foldOther",
+                "keys": {
+                    "win": [
+                        "Ctrl-E"
+                    ]
+                }
+            },
+            {
+                "command": "unfoldall",
+                "keys": {
+                    "win": [
+                        "Ctrl-R"
                     ]
                 }
             },
