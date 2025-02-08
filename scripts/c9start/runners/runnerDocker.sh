@@ -207,8 +207,14 @@ runner:Docker() { case "$1" in
     # Создаем временный каталог для скриптов
         mkdir -p "$PATH_WORKSPACE/docker/temp/scripts"
         
+    # Создаем временный каталог для дополнительных файлов
+        mkdir -p "$PATH_WORKSPACE/docker/temp/assets"
+        
     # Копируем версию
         cp -r "$PATH_VERSION" "$PATH_WORKSPACE/docker/temp/VERSION"
+        
+    # Копируем дополнительные файлы
+        cp -r "$PATH_WORKSPACE/docker/$IMAGE_NAME/." "$PATH_WORKSPACE/docker/temp/assets"
         
     # Копируем bash-скрипты
         cp -r "$PATH_WORKSPACE/scripts/." "$PATH_WORKSPACE/docker/temp/scripts"
@@ -287,6 +293,7 @@ runner:Docker() { case "$1" in
             -e "PATH_DOCKER_USER=$PATH_DOCKER_USER"         \
             -e "PATH_DOCKER_PASS=$PATH_DOCKER_PASS"         \
             -e "PATH_BAD_DEPLOY=$PATH_BAD_DEPLOY"           \
+            -e "PATH_PROJECT=$PATH_PROJECT_PWD"             \
             -v "$PATH_PROJECT_PWD:$PATH_PROJECT"            \
             -v "$DOCKER_PWD/$SSH_DIR:/root/.sshsource"      \
             -v '//var/run/docker.sock:/var/run/docker.sock' \
