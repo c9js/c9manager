@@ -5,6 +5,7 @@ alias manager='c9 manager'
 alias c9docker='build c9docker'
 alias c9start='build c9start'
 alias c9open='build c9open'
+alias c9vue='build c9vue'
 
 alias remove='build --remove c9docker'
 

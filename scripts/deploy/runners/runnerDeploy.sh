@@ -135,6 +135,7 @@ runner:Deploy() { case "$1" in
     'build:c9docker') "$PATH_WORKSPACE/scripts/c9start/entrypoint.sh" 'build' "${1/*:}" ;;
     'build:c9start')  "$PATH_WORKSPACE/scripts/c9start/entrypoint.sh" 'build' "${1/*:}" ;;
     'build:c9open')   "$PATH_WORKSPACE/scripts/c9start/entrypoint.sh" 'build' "${1/*:}" ;;
+    'build:c9vue')    "$PATH_WORKSPACE/scripts/c9start/entrypoint.sh" 'build' "${1/*:}" ;;
     
 #┌────────────────┐
 #│ Создание тегов │
@@ -142,9 +143,11 @@ runner:Deploy() { case "$1" in
     'tag1:c9docker')  docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'tag1:c9start')   docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'tag1:c9open')    docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
+    'tag1:c9vue')     docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'tag2:c9docker')  docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
     'tag2:c9start')   docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
     'tag2:c9open')    docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
+    'tag2:c9vue')     docker tag "${1/*:}" "$DOCKER_USER/${1/*:}:latest"       ;;
     
 #┌───────────────────────────────────────┐
 #│ Загрузка образов в docker-репозиторий │
@@ -152,8 +155,10 @@ runner:Deploy() { case "$1" in
     'push1:c9docker') docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'push1:c9start')  docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'push1:c9open')   docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
+    'push1:c9vue')    docker push "$DOCKER_USER/${1/*:}:$NEW_VERSION" ;;
     'push2:c9docker') docker push "$DOCKER_USER/${1/*:}:latest"       ;;
     'push2:c9start')  docker push "$DOCKER_USER/${1/*:}:latest"       ;;
     'push2:c9open')   docker push "$DOCKER_USER/${1/*:}:latest"       ;;
+    'push2:c9vue')    docker push "$DOCKER_USER/${1/*:}:latest"       ;;
 esac
 }
