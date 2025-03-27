@@ -81,16 +81,16 @@ RUN git clone -b master --single-branch https://github.com/c9open/core.git /root
 #┌───────────┐
 #│ Codeintel │
 #└───────────┘
-#&& pip install -U pip \
-#&& pip install -U virtualenv \
-#&& virtualenv --python=python2 /root/.c9/python2 \
-#&& source /root/.c9/python2/bin/activate \
-#&& mkdir /tmp/codeintel \
-#&& pip download codeintel==2.0.0 -d /tmp/codeintel \
-#&& cd /tmp/codeintel \
-#&& tar xf CodeIntel-2.0.0.tar.gz \
-#&& tar czf CodeIntel-2.0.0.tar.gz CodeIntel-2.0.0 \
-#&& pip install -U --no-index --find-links=/tmp/codeintel codeintel \
+&& pip install -U pip \
+&& pip install -U virtualenv \
+&& virtualenv --python=python2 /root/.c9/python2 \
+&& source /root/.c9/python2/bin/activate \
+&& mkdir /tmp/codeintel \
+&& pip download codeintel==2.0.0 -d /tmp/codeintel \
+&& cd /tmp/codeintel \
+&& tar xf CodeIntel-2.0.0.tar.gz \
+&& tar czf CodeIntel-2.0.0.tar.gz CodeIntel-2.0.0 \
+&& pip install -U --no-index --find-links=/tmp/codeintel codeintel \
 
 #┌───────────────────────────┐
 #│ Удаление временных файлов │
