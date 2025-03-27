@@ -60,6 +60,10 @@ if [ ! -e "/$WORKSPACE/.c9/state.settings" ]; then
     cp /root/.c9/state.settings /$WORKSPACE/.c9/state.settings
 fi
 
+if [ ! -e "/$WORKSPACE/.c9/project.settings" ]; then
+    cp /root/.c9/project.settings /$WORKSPACE/.c9/project.settings
+fi
+
 #┌───────────────┐
 #│ Запуск cloud9 │
 #└───────────────┘
