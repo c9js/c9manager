@@ -53,6 +53,13 @@ if [ ! -e "$PATH_WORKSPACE/.git" ]; then
     git clone git@github.com:$GIT_USER/$WORKSPACE.git $PATH_WORKSPACE
 fi
 
+#┌─────────────────────┐
+#│ Настройки редактора │
+#└─────────────────────┘
+if [ ! -e "/$WORKSPACE/.c9/state.settings" ]; then
+    cp /root/.c9/state.settings /$WORKSPACE/.c9/state.settings
+fi
+
 #┌───────────────┐
 #│ Запуск cloud9 │
 #└───────────────┘
