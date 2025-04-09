@@ -122,6 +122,7 @@ COPY temp/bash_profile /root/.bash_profile
 COPY temp/user.settings /root/.c9/user.settings
 COPY temp/state.settings /root/.c9/state.settings
 COPY temp/project.settings /root/.c9/project.settings
+COPY temp/javascript_highlight_rules.js /root/.c9/plugins/node_modules/ace/lib/ace/mode/javascript_highlight_rules.js
 
 #┌──────────────┐
 #│ Bash-скрипты │
