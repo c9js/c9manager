@@ -120,6 +120,7 @@ COPY temp/bash_profile /root/.bash_profile
 #│ Настройки редактора │
 #└─────────────────────┘
 COPY temp/user.settings /root/.c9/user.settings
+COPY temp/state.settings /root/.c9/state.settings
 
 #┌──────────────┐
 #│ Bash-скрипты │
