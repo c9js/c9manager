@@ -6,18 +6,18 @@ FROM alpine:3.11
 #┌────────────────┐
 #│ Базовые пакеты │
 #└────────────────┘
-RUN apk add g++ make python curl sed bash bash-doc bash-completion openssh-client git py-pip python-dev --no-cache
+RUN apk add g++ make python curl sed bash bash-doc bash-completion openssh-client git py-pip python-dev --no-cache \
 
 #┌────────┐
 #│ Docker │
 #└────────┘
-RUN apk add docker --no-cache
+&& apk add docker --no-cache \
 
 #┌──────┐
 #│ Tmux │
 #└──────┘
 #&& apk add tmux=2.4-r0 -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main/ --no-cache \
-RUN apk add tmux -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache \
+&& apk add tmux -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache \
 
 #┌──────┐
 #│ Bash │
@@ -28,13 +28,13 @@ RUN apk add tmux -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache 
 #┌────────────┐
 #│ Git-Prompt │
 #└────────────┘
-&& curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /root/.git-prompt.sh
+&& curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o /root/.git-prompt.sh \
 
 #┌─────────────────────────────────────────────────────────┐
 #│ Так как запустить cloud9 можно только на версии v8.x.x, │
 #│ нам необходимо иметь на борту сразу две версии          │
 #└─────────────────────────────────────────────────────────┘
-RUN apk add nodejs=16.20.2-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache --allow-untrusted \
+&& apk add nodejs=16.20.2-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alpine/v3.15/main/ --no-cache --allow-untrusted \
 && apk add nodejs=8.14.0-r0  npm=8.14.0-r0 -X http://dl-cdn.alpinelinux.org/alpine/v3.8/main/  --no-cache --allow-untrusted \
 
 #┌────────────────────────────┐
@@ -64,8 +64,8 @@ RUN apk add nodejs=16.20.2-r0 npm=8.1.3-r0  -X http://dl-cdn.alpinelinux.org/alp
 #┌────────┐
 #│ Cloud9 │
 #└────────┘
-RUN git clone -b master --single-branch https://github.com/c9open/core.git /root/.c9
-RUN cd /root/.c9 \
+RUN git clone -b master --single-branch https://github.com/c9open/core.git /root/.c9 \
+&& cd /root/.c9 \
 && mkdir -p ./node/bin ./bin ./node_modules \
 && ln -sf "`which tmux`" ./bin/tmux \
 && ln -s "`which node`" ./node/bin/node \

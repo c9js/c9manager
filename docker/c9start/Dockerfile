@@ -6,17 +6,17 @@ FROM alpine:3.11
 #┌────────────────┐
 #│ Базовые пакеты │
 #└────────────────┘
-RUN apk add sed bash openssh-client git --no-cache
+RUN apk add sed bash openssh-client git --no-cache \
 
 #┌────────┐
 #│ Docker │
 #└────────┘
-RUN apk add docker --no-cache
+&& apk add docker --no-cache \
 
 #┌──────┐
 #│ Bash │
 #└──────┘
-RUN echo > /etc/shells /bin/bash \
+&& echo > /etc/shells /bin/bash \
 && sed -i "s/root:x:0:0:root:\/root:\/bin\/ash/root:x:0:0:root:\/root:\/bin\/bash/" /etc/passwd \
 
 #┌───────────────────────────┐
