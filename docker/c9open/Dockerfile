@@ -8,6 +8,11 @@ FROM alpine:3.11
 #└────────────────┘
 RUN apk add g++ make python curl sed bash bash-doc bash-completion openssh-client git py-pip python-dev --no-cache \
 
+#┌────────┐
+#│ Docker │
+#└────────┘
+&& apk add docker docker-compose --no-cache \
+
 #┌──────┐
 #│ Tmux │
 #└──────┘
