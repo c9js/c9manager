@@ -18,7 +18,7 @@
         "@scrollPastEnd": 0.5,
         "@scrollSpeed": 2,
         "@selectionStyle": "line",
-        "@showFoldWidgets": false,
+        "@showFoldWidgets": true,
         "@showGutter": true,
         "@showInvisibles": false,
         "@showLineNumbers": true,
@@ -29,8 +29,9 @@
         "@wrapToView": true,
         "custom-types": {
             "json()": {
-                "^Untitled": "sh",
+                "^Untitled": "javascript",
                 "^lib": "sh",
+                "^plan": "sh",
                 "^ports": "javascript",
                 "^searchresults": "c9search",
                 "settings": "javascript",
@@ -53,7 +54,7 @@
     },
     "config": {
         "styles.css": {
-            "json()": "/* Шрифт в diff-редакторе */\n.ace_diff-container > .ace_editor {font-size:18px}\n\n/* Глобальный объект */\n.ace-app-init .ace_global1 {\n    color:#00440000;\n    background-color:#EE5CA525;\n    border-radius:7px;\n}\n.ace-app-init .ace_global2 {\n    background-color:#EE5CA510;\n    color:#EE5CA5;\n    border-radius:7px;\n}\n/*\n// Список стандартных цветов\n#458C45; // Зеленый\n#D54E53; // Красный\n#7AA6DA; // Синий\n#E78C45; // Оранжевый\n#C397D8; // Фиолетовый\n#EE5CA5; // Розовый\n#EC9076; // Персиковый\n#70C0B1; // Бирюзовый\n#006600; // Зеленый (темный)\nfont-weight:bold;\nfont-style:italic;\ntext-decoration:underline;\noutline-style:ridge;\noutline-color:#70C0B1;\ndotted\ndashed\nsolid\ndouble\ngroove\nridge\ninset\noutset\n*/\n"
+            "json()": ".ace-app-init .ace_log5,\n.ace-app-init .ace_log6 {\n    color:#FFF0;\n    background:none;\n}\n\n.ace-app-init .ace_log5::before,\n.ace-app-init .ace_log6::before {\n    position:absolute;\n    color:#C397D8;\n}\n\n.ace-app-init .ace_log5::before {content:' =>'}\n.ace-app-init .ace_log6::before {content:' => async'}\n\n/* Шрифт в diff-редакторе */\n.ace_diff-container > .ace_editor {font-size:18px}\n\n/* Глобальный объект */\n.ace-app-init .ace_global1 {\n    color:#00440000;\n    background-color:#EE5CA525;\n    border-radius:7px;\n}\n.ace-app-init .ace_global2 {\n    background-color:#EE5CA510;\n    color:#EE5CA5;\n    border-radius:7px;\n}\n/*\n// Список стандартных цветов\n#458C45; // Зеленый\n#D54E53; // Красный\n#7AA6DA; // Синий\n#E78C45; // Оранжевый\n#C397D8; // Фиолетовый\n#EE5CA5; // Розовый\n#EC9076; // Персиковый\n#70C0B1; // Бирюзовый\n#006600; // Зеленый (темный)\nfont-weight:bold;\nfont-style:italic;\ntext-decoration:underline;\noutline-style:ridge;\noutline-color:#70C0B1;\ndotted\ndashed\nsolid\ndouble\ngroove\nridge\ninset\noutset\n*/\n"
         }
     },
     "debug": {
@@ -432,6 +433,38 @@
                 "keys": {
                     "win": [
                         ""
+                    ]
+                }
+            },
+            {
+                "command": "restartc9",
+                "keys": {
+                    "win": [
+                        ""
+                    ]
+                }
+            },
+            {
+                "command": "navigate",
+                "keys": {
+                    "win": [
+                        "Ctrl-O"
+                    ]
+                }
+            },
+            {
+                "command": "foldOther",
+                "keys": {
+                    "win": [
+                        "Ctrl-E"
+                    ]
+                }
+            },
+            {
+                "command": "unfoldall",
+                "keys": {
+                    "win": [
+                        "Ctrl-R"
                     ]
                 }
             },

@@ -45,7 +45,7 @@ if [ -f '/root/.git-prompt.sh' ]; then
 fi
 
 alias c='reset'
-alias l='c && ls -AlF'
+alias l='c && ls -AFhl --group-directories-first'
 alias s='c && git status --short'
 alias ss='c && git status'
 # alias gitaddno="c && git add $PATH_WORKSPACE && git commit --amend --no-edit && git push -f && c && echo https://github.com/$GIT_USER/$GIT_REPO"
@@ -53,3 +53,4 @@ alias ss='c && git status'
 # alias npmi='c && npm install --no-package-lock'
 alias c9root='/root/.c9/start'
 alias start='./start'
+alias menu='npx -y c9js/menu'
